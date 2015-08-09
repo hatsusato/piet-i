@@ -1,6 +1,7 @@
 #ifndef PIET_I_CODEL_HPP
 #define PIET_I_CODEL_HPP
 
+#include <vector>
 #include "utils.hpp"
 
 struct Codel {
@@ -21,6 +22,21 @@ struct Codel {
   // Lower 4bits represent color
   // Next 2bits represent brightness
   Byte data;
+};
+
+class CodelTable {
+ public:
+  using RowType = std::vector<Codel>;
+  CodelTable();
+  CodelTable(size_t width, size_t heigth);
+  size_t width() const;
+  size_t height() const;
+  void resize(size_t width, size_t height);
+  RowType& operator[](size_t row);
+  const RowType& operator[](size_t row) const;
+ private:
+  size_t w, h;
+  std::vector<RowType> rows;
 };
 
 size_t codel_size(const Image& image);

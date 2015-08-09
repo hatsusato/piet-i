@@ -38,6 +38,34 @@ void Codel::brightness_part(Byte brightness) {
   data = brightness * 16 + color_part();
 }
 
+CodelTable::CodelTable()
+    : w(0), h(0), rows()
+{}
+CodelTable::CodelTable(size_t width, size_t height)
+    : w(width), h(height), rows() {
+  resize(width, height);
+}
+size_t CodelTable::width() const {
+  return w;
+}
+size_t CodelTable::height() const {
+  return h;
+}
+void CodelTable::resize(size_t width, size_t height) {
+  w = width;
+  h = height;
+  rows.resize(h);
+  for (auto&& row : rows) {
+    row.resize(w);
+  }
+}
+auto CodelTable::operator[](size_t row) -> RowType& {
+  return rows[row];
+}
+auto CodelTable::operator[](size_t row) const -> const RowType& {
+  return rows[row];
+}
+
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();

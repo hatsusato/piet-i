@@ -6,6 +6,9 @@ Codel::Codel()
 Codel::Codel(Color color, Brightness brightness)
     : data(static_cast<Byte>(color) + static_cast<Byte>(brightness) * 16)
 {}
+Codel::Codel(const Pixel& pixel)
+    : Codel(what_color(pixel), how_bright(pixel))
+{}
 bool Codel::is_valid() const {
   return (color_part() < static_cast<Byte>(Color::UNKNOWN) &&
           brightness_part() < static_cast<Byte>(Brightness::UNKNOWN));

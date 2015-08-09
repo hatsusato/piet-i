@@ -40,5 +40,6 @@ class CodelTable {
 };
 
 size_t codel_size(const Image& image);
+CodelTable make_codel_table(const Image& image);
 
 #endif  // PIET_I_CODEL_HPP

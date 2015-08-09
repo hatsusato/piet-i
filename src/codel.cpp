@@ -99,3 +99,18 @@ size_t codel_size(const Image& image) {
   }
   return minimum;
 }
+
+CodelTable make_codel_table(const Image& image) {
+  const auto step = codel_size(image);
+  const auto w = image.get_width() / step;
+  const auto h = image.get_height() / step;
+  CodelTable table(w, h);
+  for (size_t row = 0; row < h; ++row) {
+    const auto& src_row = image[row * step];
+    auto& dst_row = table[row];
+    for (size_t col = 0; col < w; ++col) {
+      dst_row[col] = src_row[col * step];
+    }
+  }
+  return table;
+}

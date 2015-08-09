@@ -3,15 +3,15 @@
 
 using Pixel = png::rgb_pixel;
 using Image = png::image<Pixel>;
-using byte = png::byte;
+using Byte = png::byte;
 
 enum class Color {
   BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, UNKNOWN
 };
 
 Color what_color(const Pixel& pixel) {
-  const byte r = pixel.red, g = pixel.green, b = pixel.blue;
-  const byte z = 0x00, c = 0xC0, f = 0xFF;
+  const Byte r = pixel.red, g = pixel.green, b = pixel.blue;
+  const Byte z = 0x00, c = 0xC0, f = 0xFF;
   if ((r == z || r == c || r == f) &&
       (g == z || g == c || g == f) &&
       (b == z || b == c || b == f)) {
@@ -49,8 +49,8 @@ Color what_color(const Pixel& pixel) {
 }
 
 Color how_bright(const Pixel& pixel) {
-  const byte r = pixel.red, g = pixel.green, b = pixel.blue;
-  const byte c = 0xC0;
+  const Byte r = pixel.red, g = pixel.green, b = pixel.blue;
+  const Byte c = 0xC0;
   const auto mini = std::min(r, std::min(g, b));
   const auto maxi = std::max(r, std::max(g, b));
   if (mini == c) {
@@ -69,7 +69,7 @@ void show_pixel(const Pixel& pixel) {
   static const char* back[] =
       {"\x1b[40;1m", "\x1b[41;1m", "\x1b[42;1m", "\x1b[43;1m",
        "\x1b[44;1m", "\x1b[45;1m", "\x1b[46;1m", "\x1b[47;1m"};
-  const auto reset = "\x1b[0m";
+  static const char* reset = "\x1b[0m";
   static const char text[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
   const auto color = what_color(pixel);
   const auto bright = how_bright(pixel);
@@ -90,8 +90,11 @@ size_t gcd(size_t a, size_t b) {
   }
 }
 
-bool same_pixel(const Pixel& lhs, const Pixel& rhs) {
+bool operator==(const Pixel& lhs, const Pixel& rhs) {
   return lhs.red == rhs.red && lhs.green == rhs.green && lhs.blue == rhs.blue;
+}
+bool operator!=(const Pixel& lhs, const Pixel& rhs) {
+  return !(lhs == rhs);
 }
 
 size_t codel_size(const Image& image) {
@@ -104,7 +107,7 @@ size_t codel_size(const Image& image) {
   for (size_t row = 0; row < height; ++row) {
     for (size_t col = 0; col < width; ++col) {
       const auto pixel = image[row][col];
-      if (0 < count && !same_pixel(prev, pixel)) {
+      if (0 < count && prev != pixel) {
         minimum = gcd(minimum, count);
         count = 0;
       }
@@ -117,7 +120,7 @@ size_t codel_size(const Image& image) {
   for (size_t col = 0; col < width; ++col) {
     for (size_t row = 0; row < height; ++row) {
       const auto pixel = image[row][col];
-      if (0 < count && !same_pixel(prev, pixel)) {
+      if (0 < count && prev != pixel) {
         minimum = gcd(minimum, count);
         count = 0;
       }

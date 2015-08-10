@@ -1,7 +1,7 @@
 #include "codel.hpp"
 
 Codel::Codel()
-    : color_part(0), brightness_part(0)
+    : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
 {}
 Codel::Codel(Color color, Brightness brightness)
     : color_part(static_cast<Byte>(color)),

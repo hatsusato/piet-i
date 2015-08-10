@@ -19,6 +19,8 @@ struct Codel {
     unsigned color_part : 4;
     unsigned brightness_part : 4;
   };
+ public:
+  static const Codel unknown;
 };
 bool operator==(const Codel& lhs, const Codel& rhs);
 bool operator!=(const Codel& lhs, const Codel& rhs);

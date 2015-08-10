@@ -34,6 +34,7 @@ bool operator==(const Codel& lhs, const Codel& rhs) {
 bool operator!=(const Codel& lhs, const Codel& rhs) {
   return !(lhs == rhs);
 }
+const auto Codel::unknown = Codel();
 
 CodelTable::CodelTable()
     : w(0), h(0), rows()

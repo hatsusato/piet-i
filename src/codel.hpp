@@ -8,7 +8,7 @@ struct Codel {
  public:
   Codel();
   Codel(Color color, Brightness brightness);
-  /* implicit */ Codel(const Pixel& pixel);
+  explicit Codel(const Pixel& pixel);
   bool is_valid() const;
   Color color() const;
   Brightness brightness() const;

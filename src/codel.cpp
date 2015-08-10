@@ -26,6 +26,14 @@ void Codel::set_color(Color color) {
 void Codel::set_brightness(Brightness brightness) {
   brightness_part = static_cast<Byte>(brightness);
 }
+bool operator==(const Codel& lhs, const Codel& rhs) {
+  return (lhs.is_valid() && rhs.is_valid() &&
+          lhs.color() == rhs.color() &&
+          lhs.brightness() == rhs.brightness());
+}
+bool operator!=(const Codel& lhs, const Codel& rhs) {
+  return !(lhs == rhs);
+}
 
 CodelTable::CodelTable()
     : w(0), h(0), rows()

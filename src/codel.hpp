@@ -20,6 +20,8 @@ struct Codel {
     unsigned brightness_part : 4;
   };
 };
+bool operator==(const Codel& lhs, const Codel& rhs);
+bool operator!=(const Codel& lhs, const Codel& rhs);
 
 class CodelTable {
  public:

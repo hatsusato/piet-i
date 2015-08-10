@@ -15,13 +15,10 @@ struct Codel {
   void set_color(Color color);
   void set_brightness(Brightness brightness);
  private:
-  Byte color_part() const;
-  void color_part(Byte color);
-  Byte brightness_part() const;
-  void brightness_part(Byte brightness);
-  // Lower 4bits represent color
-  // Next 2bits represent brightness
-  Byte data;
+  struct {
+    unsigned color_part : 4;
+    unsigned brightness_part : 4;
+  };
 };
 
 class CodelTable {

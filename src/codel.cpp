@@ -1,41 +1,30 @@
 #include "codel.hpp"
 
 Codel::Codel()
-    : data(0)
+    : color_part(0), brightness_part(0)
 {}
 Codel::Codel(Color color, Brightness brightness)
-    : data(static_cast<Byte>(color) + static_cast<Byte>(brightness) * 16)
+    : color_part(static_cast<Byte>(color)),
+      brightness_part(static_cast<Byte>(brightness))
 {}
 Codel::Codel(const Pixel& pixel)
     : Codel(what_color(pixel), how_bright(pixel))
 {}
 bool Codel::is_valid() const {
-  return (color_part() < static_cast<Byte>(Color::UNKNOWN) &&
-          brightness_part() < static_cast<Byte>(Brightness::UNKNOWN));
+  return (color_part < static_cast<Byte>(Color::UNKNOWN) &&
+          brightness_part < static_cast<Byte>(Brightness::UNKNOWN));
 }
 Color Codel::color() const {
-  return static_cast<Color>(color_part());
+  return static_cast<Color>(color_part);
 }
 Brightness Codel::brightness() const {
-  return static_cast<Brightness>(brightness_part());
+  return static_cast<Brightness>(brightness_part);
 }
 void Codel::set_color(Color color) {
-  color_part(static_cast<Byte>(color));
+  color_part = static_cast<Byte>(color);
 }
 void Codel::set_brightness(Brightness brightness) {
-  brightness_part(static_cast<Byte>(brightness));
-}
-Byte Codel::color_part() const {
-  return data % 16;
-}
-void Codel::color_part(Byte color) {
-  data = brightness_part() * 16 + color;
-}
-Byte Codel::brightness_part() const {
-  return data / 16;
-}
-void Codel::brightness_part(Byte brightness) {
-  data = brightness * 16 + color_part();
+  brightness_part = static_cast<Byte>(brightness);
 }
 
 CodelTable::CodelTable()

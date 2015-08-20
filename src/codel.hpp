@@ -45,6 +45,7 @@ class ConnectedCodel {
   explicit ConnectedCodel(const Codel& color);
   const Codel& color() const;
   const std::vector<Coord>& coordinates() const;
+  void push(int x, int y);
  private:
   Codel codel;
   std::vector<Coord> coords;

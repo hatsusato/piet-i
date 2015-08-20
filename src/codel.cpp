@@ -73,6 +73,9 @@ const Codel& ConnectedCodel::color() const {
 const std::vector<Coord>& ConnectedCodel::coordinates() const {
   return coords;
 }
+void ConnectedCodel::push(int x, int y) {
+  coords.emplace_back(x, y);
+}
 
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();

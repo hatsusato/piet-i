@@ -1,4 +1,5 @@
 #include "codel.hpp"
+#include <algorithm>
 
 Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
@@ -75,6 +76,11 @@ const std::vector<Coord>& ConnectedCodel::coordinates() const {
 }
 void ConnectedCodel::push(int x, int y) {
   coords.emplace_back(x, y);
+}
+bool ConnectedCodel::includes(const Coord& coord) const {
+  using std::begin;
+  using std::end;
+  return std::find(begin(coords), end(coords), coord) != end(coords);
 }
 
 size_t codel_size(const Image& image) {

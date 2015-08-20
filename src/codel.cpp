@@ -6,7 +6,7 @@
 
 namespace /* unnamed */ {
 std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
-  const auto& coords = connected.coordinates();
+  const auto& coords = connected.coords();
   assert(!coords.empty());
   int right, up, left, down;
   right = left = std::get<0>(coords.front());
@@ -57,7 +57,7 @@ std::tuple<Coord, Coord> directed_boundary(const ConnectedCodel& connected,
                                            Direction dir, int value) {
   using std::begin;
   using std::end;
-  const auto& coords = connected.coordinates();
+  const auto& coords = connected.coords();
   assert(!coords.empty());
   const auto same = generate_same_predicate(dir, value);
   const auto compare = generate_compare_predicate(dir);
@@ -74,27 +74,27 @@ Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
 {}
 Codel::Codel(Color color, Brightness brightness)
-    : color_part(static_cast<Byte>(color)),
-      brightness_part(static_cast<Byte>(brightness))
+    : color_part_(static_cast<unsigned>(color)),
+      brightness_part_(static_cast<unsigned>(brightness))
 {}
 Codel::Codel(const Pixel& pixel)
     : Codel(what_color(pixel), how_bright(pixel))
 {}
 bool Codel::is_valid() const {
-  return (color_part < static_cast<Byte>(Color::UNKNOWN) &&
-          brightness_part < static_cast<Byte>(Brightness::UNKNOWN));
+  return (color_part_ < static_cast<unsigned>(Color::UNKNOWN) &&
+          brightness_part_ < static_cast<unsigned>(Brightness::UNKNOWN));
 }
 Color Codel::color() const {
-  return static_cast<Color>(color_part);
+  return static_cast<Color>(color_part_);
 }
 Brightness Codel::brightness() const {
-  return static_cast<Brightness>(brightness_part);
+  return static_cast<Brightness>(brightness_part_);
 }
 void Codel::set_color(Color color) {
-  color_part = static_cast<Byte>(color);
+  color_part_ = static_cast<unsigned>(color);
 }
 void Codel::set_brightness(Brightness brightness) {
-  brightness_part = static_cast<Byte>(brightness);
+  brightness_part_ = static_cast<unsigned>(brightness);
 }
 bool operator==(const Codel& lhs, const Codel& rhs) {
   return (lhs.is_valid() && rhs.is_valid() &&
@@ -107,60 +107,60 @@ bool operator!=(const Codel& lhs, const Codel& rhs) {
 const auto Codel::unknown = Codel();
 
 CodelTable::CodelTable()
-    : w(0), h(0), rows()
+    : width_(0), height_(0), rows_()
 {}
 CodelTable::CodelTable(size_t width, size_t height)
-    : w(width), h(height), rows() {
+    : width_(width), height_(height), rows_() {
   resize(width, height);
 }
 size_t CodelTable::width() const {
-  return w;
+  return width_;
 }
 size_t CodelTable::height() const {
-  return h;
+  return height_;
 }
 void CodelTable::resize(size_t width, size_t height) {
-  w = width;
-  h = height;
-  rows.resize(h);
-  for (auto&& row : rows) {
-    row.resize(w);
+  width_ = width;
+  height_ = height;
+  rows_.resize(height);
+  for (auto&& row : rows_) {
+    row.resize(width);
   }
 }
 auto CodelTable::operator[](size_t row) -> RowType& {
-  return rows[row];
+  return rows_[row];
 }
 auto CodelTable::operator[](size_t row) const -> const RowType& {
-  return rows[row];
+  return rows_[row];
 }
 
-ConnectedCodel::ConnectedCodel(const Codel& color)
-    : codel(color), coords()
+ConnectedCodel::ConnectedCodel(const Codel& codel)
+    : codel_(codel), coords_()
 {}
-const Codel& ConnectedCodel::color() const {
-  return codel;
+const Codel& ConnectedCodel::codel() const {
+  return codel_;
 }
-const std::vector<Coord>& ConnectedCodel::coordinates() const {
-  return coords;
+const std::vector<Coord>& ConnectedCodel::coords() const {
+  return coords_;
 }
 void ConnectedCodel::push(int x, int y) {
-  coords.emplace_back(x, y);
+  coords_.emplace_back(x, y);
 }
 bool ConnectedCodel::includes(const Coord& coord) const {
   using std::begin;
   using std::end;
-  return std::find(begin(coords), end(coords), coord) != end(coords);
+  return std::find(begin(coords_), end(coords_), coord) != end(coords_);
 }
 
 ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
-    : boundary() {
+    : boundary_() {
   using std::begin;
   using std::end;
-  assert(!connected.coordinates().empty());
+  assert(!connected.coords().empty());
   const auto range = connected_codel_range(connected);
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
-    std::tie(boundary[i][0], boundary[i][1]) =
+    std::tie(boundary_[i][0], boundary_[i][1]) =
         directed_boundary(connected, dir, range[i]);
   }
 }
@@ -227,7 +227,7 @@ void search_connected_codel(CodelTable& table, ConnectedCodel& connected,
     const auto next_y = y + dy[i];
     if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
       const auto& next_codel = table[next_y][next_x];
-      if (next_codel.is_valid() && connected.color() == next_codel) {
+      if (next_codel.is_valid() && connected.codel() == next_codel) {
         search_connected_codel(table, connected, next_x, next_y);
       }
     }

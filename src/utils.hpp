@@ -1,12 +1,14 @@
 #ifndef PIET_I_UTILS_HPP
 #define PIET_I_UTILS_HPP
 
+#include <tuple>
 #include <png++/image.hpp>
 #include <png++/rgb_pixel.hpp>
 
 using Pixel = png::rgb_pixel;
 using Image = png::image<Pixel>;
 using Byte = png::byte;
+using Coord = std::tuple<int, int>;
 
 enum class Color {
   BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, UNKNOWN

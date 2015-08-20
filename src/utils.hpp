@@ -18,6 +18,14 @@ enum class Brightness {
   LIGHT, NORMAL, DARK, UNKNOWN
 };
 
+enum class Direction {
+  RIGHT, UP, LEFT, DOWN
+};
+
+enum class Choose {
+  LEFT, RIGHT
+};
+
 Color what_color(const Pixel& pixel);
 Brightness how_bright(const Pixel& pixel);
 bool operator==(const Pixel& lhs, const Pixel& rhs);

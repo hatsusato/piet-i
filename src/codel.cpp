@@ -251,3 +251,13 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
   }
   return result;
 }
+
+std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
+    const std::vector<ConnectedCodel>& connected_codels) {
+  std::vector<ConnectedCodelBoundary> result;
+  result.reserve(connected_codels.size());
+  for (auto&& connected : connected_codels) {
+    result.emplace_back(connected);
+  }
+  return result;
+}

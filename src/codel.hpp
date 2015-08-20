@@ -66,5 +66,7 @@ CodelTable make_codel_table(const Image& image);
 void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
                             int x, int y);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
+std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
+    const std::vector<ConnectedCodel>& connected_codels);
 
 #endif  // PIET_I_CODEL_HPP

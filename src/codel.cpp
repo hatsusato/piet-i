@@ -152,6 +152,19 @@ bool ConnectedCodel::includes(const Coord& coord) const {
   return std::find(begin(coords), end(coords), coord) != end(coords);
 }
 
+ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
+    : boundary() {
+  using std::begin;
+  using std::end;
+  assert(!connected.coordinates().empty());
+  const auto range = connected_codel_range(connected);
+  for (int i = 0; i < 4; ++i) {
+    const auto dir = static_cast<Direction>(i);
+    std::tie(boundary[i][0], boundary[i][1]) =
+        directed_boundary(connected, dir, range[i]);
+  }
+}
+
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();

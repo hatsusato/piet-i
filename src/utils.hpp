@@ -2,6 +2,7 @@
 #define PIET_I_UTILS_HPP
 
 #include <tuple>
+#include <cassert>
 #include <png++/image.hpp>
 #include <png++/rgb_pixel.hpp>
 

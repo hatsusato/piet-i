@@ -52,6 +52,14 @@ class ConnectedCodel {
   std::vector<Coord> coords;
 };
 
+class ConnectedCodelBoundary {
+ public:
+  explicit ConnectedCodelBoundary(const ConnectedCodel& connected);
+ private:
+  // Direction count is 4, Choose count is 2
+  Coord boundary[4][2];
+};
+
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 

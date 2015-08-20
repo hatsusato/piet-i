@@ -1,5 +1,25 @@
 #include "codel.hpp"
 #include <algorithm>
+#include <array>
+
+namespace /* unnamed */ {
+std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
+  const auto& coords = connected.coordinates();
+  assert(!coords.empty());
+  int right, up, left, down;
+  right = left = std::get<0>(coords.front());
+  up = down = std::get<1>(coords.front());
+  for (auto&& coord : coords) {
+    const auto x = std::get<0>(coord);
+    const auto y = std::get<1>(coord);
+    right = std::max(right, x);
+    up = std::min(up, y);
+    left = std::min(left, x);
+    down = std::max(down, y);
+  }
+  return {{right, up, left, down}};
+}
+}  // namespace /* unnamed */
 
 Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)

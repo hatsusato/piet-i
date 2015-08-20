@@ -64,6 +64,10 @@ auto CodelTable::operator[](size_t row) const -> const RowType& {
   return rows[row];
 }
 
+ConnectedCodel::ConnectedCodel(const Codel& color)
+    : codel(color), coords()
+{}
+
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();

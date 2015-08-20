@@ -40,6 +40,14 @@ class CodelTable {
   std::vector<RowType> rows;
 };
 
+class ConnectedCodel {
+ public:
+  explicit ConnectedCodel(const Codel& color);
+ private:
+  Codel codel;
+  std::vector<Coord> coords;
+};
+
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 

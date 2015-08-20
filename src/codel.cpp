@@ -151,3 +151,21 @@ void search_connected_codel(CodelTable& table, ConnectedCodel& connected,
     }
   }
 }
+
+std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
+  const auto w = static_cast<int>(table.width());
+  const auto h = static_cast<int>(table.height());
+  auto tmp = table;
+  std::vector<ConnectedCodel> result;
+  for (int y = 0; y < h; ++y) {
+    for (int x = 0; x < w; ++x) {
+      const auto& codel = tmp[y][x];
+      if (codel.is_valid()) {
+        ConnectedCodel current(codel);
+        search_connected_codel(tmp, current, x, y);
+        result.push_back(std::move(current));
+      }
+    }
+  }
+  return result;
+}

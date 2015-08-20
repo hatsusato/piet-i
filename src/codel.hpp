@@ -43,6 +43,8 @@ class CodelTable {
 class ConnectedCodel {
  public:
   explicit ConnectedCodel(const Codel& color);
+  const Codel& color() const;
+  const std::vector<Coord>& coordinates() const;
  private:
   Codel codel;
   std::vector<Coord> coords;

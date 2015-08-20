@@ -32,4 +32,9 @@ bool operator==(const Pixel& lhs, const Pixel& rhs);
 bool operator!=(const Pixel& lhs, const Pixel& rhs);
 size_t gcd(size_t a, size_t b);
 
+template <size_t N>
+bool same_element(const Coord& coord, int value) {
+  return std::get<N>(coord) == value;
+}
+
 #endif  // PIET_I_UTILS_HPP

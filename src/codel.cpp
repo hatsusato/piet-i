@@ -35,6 +35,23 @@ generate_same_predicate(Direction dir, int value) {
       return nullptr;
   }
 }
+std::function<bool(const Coord&, const Coord&)>
+generate_compare_predicate(Direction dir) {
+  // Choose::LEFT side is less than Choose::RIGHT side
+  switch (dir) {
+    case Direction::RIGHT:
+      return less_element<1>;
+    case Direction::UP:
+      return less_element<0>;
+    case Direction::LEFT:
+      return greater_element<1>;
+    case Direction::DOWN:
+      return greater_element<0>;
+    default:
+      assert(false);
+      return nullptr;
+  }
+}
 }  // namespace /* unnamed */
 
 Codel::Codel()

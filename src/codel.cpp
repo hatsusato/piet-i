@@ -1,6 +1,7 @@
 #include "codel.hpp"
 #include <algorithm>
 #include <array>
+#include <functional>
 
 namespace /* unnamed */ {
 std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
@@ -18,6 +19,21 @@ std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
     down = std::max(down, y);
   }
   return {{right, up, left, down}};
+}
+std::function<bool(const Coord&)>
+generate_same_predicate(Direction dir, int value) {
+  using namespace std::placeholders;
+  switch (dir) {
+    case Direction::RIGHT:
+    case Direction::LEFT:
+      return std::bind(same_element<0>, _1, value);
+    case Direction::UP:
+    case Direction::DOWN:
+      return std::bind(same_element<1>, _1, value);
+    default:
+      assert(false);
+      return nullptr;
+  }
 }
 }  // namespace /* unnamed */
 

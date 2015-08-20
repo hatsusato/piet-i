@@ -55,4 +55,7 @@ class ConnectedCodel {
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 
+void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
+                            int x, int y);
+
 #endif  // PIET_I_CODEL_HPP

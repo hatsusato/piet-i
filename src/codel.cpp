@@ -131,3 +131,23 @@ CodelTable make_codel_table(const Image& image) {
   }
   return table;
 }
+
+void search_connected_codel(CodelTable& table, ConnectedCodel& connected,
+                            int x, int y) {
+  static const int dx[] = {1, 0, -1, 0};
+  static const int dy[] = {0, -1, 0, 1};
+  const auto w = static_cast<int>(table.width());
+  const auto h = static_cast<int>(table.height());
+  connected.push(x, y);
+  table[y][x] = Codel::unknown;
+  for (int i = 0; i < 4; ++i) {
+    const auto next_x = x + dx[i];
+    const auto next_y = y + dy[i];
+    if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
+      const auto& next_codel = table[next_y][next_x];
+      if (next_codel.is_valid() && connected.color() == next_codel) {
+        search_connected_codel(table, connected, next_x, next_y);
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <array>
 #include <functional>
+#include <iterator>
 
 namespace /* unnamed */ {
 std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
@@ -51,6 +52,21 @@ generate_compare_predicate(Direction dir) {
       assert(false);
       return nullptr;
   }
+}
+std::tuple<Coord, Coord> directed_boundary(const ConnectedCodel& connected,
+                                           Direction dir, int value) {
+  using std::begin;
+  using std::end;
+  const auto& coords = connected.coordinates();
+  assert(!coords.empty());
+  const auto same = generate_same_predicate(dir, value);
+  const auto compare = generate_compare_predicate(dir);
+  std::vector<Coord> filtered;
+  std::copy_if(begin(coords), end(coords), std::back_inserter(filtered), same);
+  assert(!filtered.empty());
+  const auto minmax =
+      std::minmax_element(begin(filtered), end(filtered), compare);
+  return std::make_tuple(*std::get<0>(minmax), *std::get<1>(minmax));
 }
 }  // namespace /* unnamed */
 

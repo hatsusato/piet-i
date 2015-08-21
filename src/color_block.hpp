@@ -6,6 +6,10 @@
 class ColorBlockBase {
  public:
   virtual ~ColorBlockBase() = 0;
+ protected:
+  ColorBlockBase();
+ private:
+  ColorBlockBase(ColorBlockBase&&) = delete;
 };
 using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 

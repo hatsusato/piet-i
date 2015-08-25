@@ -1,6 +1,7 @@
 #ifndef PIET_I_UTILS_HPP
 #define PIET_I_UTILS_HPP
 
+#include <memory>
 #include <tuple>
 #include <cassert>
 #include <png++/image.hpp>
@@ -44,6 +45,10 @@ bool less_element(const Coord& lhs, const Coord& rhs) {
 template <size_t N>
 bool greater_element(const Coord& lhs, const Coord& rhs) {
   return std::get<N>(lhs) > std::get<N>(rhs);
+}
+template <typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args) {
+  return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 #endif  // PIET_I_UTILS_HPP

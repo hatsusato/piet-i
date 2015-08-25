@@ -1,5 +1,74 @@
 #include "codel.hpp"
 #include <algorithm>
+#include <array>
+#include <functional>
+#include <iterator>
+
+namespace /* unnamed */ {
+std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
+  const auto& coords = connected.coordinates();
+  assert(!coords.empty());
+  int right, up, left, down;
+  right = left = std::get<0>(coords.front());
+  up = down = std::get<1>(coords.front());
+  for (auto&& coord : coords) {
+    const auto x = std::get<0>(coord);
+    const auto y = std::get<1>(coord);
+    right = std::max(right, x);
+    up = std::min(up, y);
+    left = std::min(left, x);
+    down = std::max(down, y);
+  }
+  return {{right, up, left, down}};
+}
+std::function<bool(const Coord&)>
+generate_same_predicate(Direction dir, int value) {
+  using namespace std::placeholders;
+  switch (dir) {
+    case Direction::RIGHT:
+    case Direction::LEFT:
+      return std::bind(same_element<0>, _1, value);
+    case Direction::UP:
+    case Direction::DOWN:
+      return std::bind(same_element<1>, _1, value);
+    default:
+      assert(false);
+      return nullptr;
+  }
+}
+std::function<bool(const Coord&, const Coord&)>
+generate_compare_predicate(Direction dir) {
+  // Choose::LEFT side is less than Choose::RIGHT side
+  switch (dir) {
+    case Direction::RIGHT:
+      return less_element<1>;
+    case Direction::UP:
+      return less_element<0>;
+    case Direction::LEFT:
+      return greater_element<1>;
+    case Direction::DOWN:
+      return greater_element<0>;
+    default:
+      assert(false);
+      return nullptr;
+  }
+}
+std::tuple<Coord, Coord> directed_boundary(const ConnectedCodel& connected,
+                                           Direction dir, int value) {
+  using std::begin;
+  using std::end;
+  const auto& coords = connected.coordinates();
+  assert(!coords.empty());
+  const auto same = generate_same_predicate(dir, value);
+  const auto compare = generate_compare_predicate(dir);
+  std::vector<Coord> filtered;
+  std::copy_if(begin(coords), end(coords), std::back_inserter(filtered), same);
+  assert(!filtered.empty());
+  const auto minmax =
+      std::minmax_element(begin(filtered), end(filtered), compare);
+  return std::make_tuple(*std::get<0>(minmax), *std::get<1>(minmax));
+}
+}  // namespace /* unnamed */
 
 Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
@@ -81,6 +150,19 @@ bool ConnectedCodel::includes(const Coord& coord) const {
   using std::begin;
   using std::end;
   return std::find(begin(coords), end(coords), coord) != end(coords);
+}
+
+ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
+    : boundary() {
+  using std::begin;
+  using std::end;
+  assert(!connected.coordinates().empty());
+  const auto range = connected_codel_range(connected);
+  for (int i = 0; i < 4; ++i) {
+    const auto dir = static_cast<Direction>(i);
+    std::tie(boundary[i][0], boundary[i][1]) =
+        directed_boundary(connected, dir, range[i]);
+  }
 }
 
 size_t codel_size(const Image& image) {
@@ -166,6 +248,16 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
         result.push_back(std::move(current));
       }
     }
+  }
+  return result;
+}
+
+std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
+    const std::vector<ConnectedCodel>& connected_codels) {
+  std::vector<ConnectedCodelBoundary> result;
+  result.reserve(connected_codels.size());
+  for (auto&& connected : connected_codels) {
+    result.emplace_back(connected);
   }
   return result;
 }

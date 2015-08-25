@@ -52,11 +52,21 @@ class ConnectedCodel {
   std::vector<Coord> coords;
 };
 
+class ConnectedCodelBoundary {
+ public:
+  explicit ConnectedCodelBoundary(const ConnectedCodel& connected);
+ private:
+  // Direction count is 4, Choose count is 2
+  Coord boundary[4][2];
+};
+
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 
 void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
                             int x, int y);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
+std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
+    const std::vector<ConnectedCodel>& connected_codels);
 
 #endif  // PIET_I_CODEL_HPP

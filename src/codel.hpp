@@ -40,7 +40,23 @@ class CodelTable {
   std::vector<RowType> rows;
 };
 
+class ConnectedCodel {
+ public:
+  explicit ConnectedCodel(const Codel& color);
+  const Codel& color() const;
+  const std::vector<Coord>& coordinates() const;
+  void push(int x, int y);
+  bool includes(const Coord& coord) const;
+ private:
+  Codel codel;
+  std::vector<Coord> coords;
+};
+
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
+
+void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
+                            int x, int y);
+std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CODEL_HPP

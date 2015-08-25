@@ -1,4 +1,5 @@
 #include "codel.hpp"
+#include <algorithm>
 
 Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
@@ -64,6 +65,24 @@ auto CodelTable::operator[](size_t row) const -> const RowType& {
   return rows[row];
 }
 
+ConnectedCodel::ConnectedCodel(const Codel& color)
+    : codel(color), coords()
+{}
+const Codel& ConnectedCodel::color() const {
+  return codel;
+}
+const std::vector<Coord>& ConnectedCodel::coordinates() const {
+  return coords;
+}
+void ConnectedCodel::push(int x, int y) {
+  coords.emplace_back(x, y);
+}
+bool ConnectedCodel::includes(const Coord& coord) const {
+  using std::begin;
+  using std::end;
+  return std::find(begin(coords), end(coords), coord) != end(coords);
+}
+
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();
@@ -111,4 +130,42 @@ CodelTable make_codel_table(const Image& image) {
     }
   }
   return table;
+}
+
+void search_connected_codel(CodelTable& table, ConnectedCodel& connected,
+                            int x, int y) {
+  static const int dx[] = {1, 0, -1, 0};
+  static const int dy[] = {0, -1, 0, 1};
+  const auto w = static_cast<int>(table.width());
+  const auto h = static_cast<int>(table.height());
+  connected.push(x, y);
+  table[y][x] = Codel::unknown;
+  for (int i = 0; i < 4; ++i) {
+    const auto next_x = x + dx[i];
+    const auto next_y = y + dy[i];
+    if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
+      const auto& next_codel = table[next_y][next_x];
+      if (next_codel.is_valid() && connected.color() == next_codel) {
+        search_connected_codel(table, connected, next_x, next_y);
+      }
+    }
+  }
+}
+
+std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
+  const auto w = static_cast<int>(table.width());
+  const auto h = static_cast<int>(table.height());
+  auto tmp = table;
+  std::vector<ConnectedCodel> result;
+  for (int y = 0; y < h; ++y) {
+    for (int x = 0; x < w; ++x) {
+      const auto& codel = tmp[y][x];
+      if (codel.is_valid()) {
+        ConnectedCodel current(codel);
+        search_connected_codel(tmp, current, x, y);
+        result.push_back(std::move(current));
+      }
+    }
+  }
+  return result;
 }

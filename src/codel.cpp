@@ -156,12 +156,16 @@ ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
     : boundary() {
   using std::begin;
   using std::end;
+  static const int dx[] = {1, 0, -1, 0};
+  static const int dy[] = {0, -1, 0, 1};
   assert(!connected.coordinates().empty());
   const auto range = connected_codel_range(connected);
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
     std::tie(boundary[i][0], boundary[i][1]) =
         directed_boundary(connected, dir, range[i]);
+    boundary[i][0] += dx[i];
+    boundary[i][1] += dy[i];
   }
 }
 

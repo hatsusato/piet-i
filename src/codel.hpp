@@ -16,8 +16,8 @@ struct Codel {
   void set_brightness(Brightness brightness);
  private:
   struct {
-    unsigned color_part : 4;
-    unsigned brightness_part : 4;
+    unsigned color_part_ : 4;
+    unsigned brightness_part_ : 4;
   };
  public:
   static const Codel unknown;
@@ -36,20 +36,20 @@ class CodelTable {
   RowType& operator[](size_t row);
   const RowType& operator[](size_t row) const;
  private:
-  size_t w, h;
-  std::vector<RowType> rows;
+  size_t width_, height_;
+  std::vector<RowType> rows_;
 };
 
 class ConnectedCodel {
  public:
-  explicit ConnectedCodel(const Codel& color);
-  const Codel& color() const;
-  const std::vector<Coord>& coordinates() const;
+  explicit ConnectedCodel(const Codel& codel);
+  const Codel& codel() const;
+  const std::vector<Coord>& coords() const;
   void push(int x, int y);
   bool includes(const Coord& coord) const;
  private:
-  Codel codel;
-  std::vector<Coord> coords;
+  Codel codel_;
+  std::vector<Coord> coords_;
 };
 
 class ConnectedCodelBoundary {
@@ -57,7 +57,7 @@ class ConnectedCodelBoundary {
   explicit ConnectedCodelBoundary(const ConnectedCodel& connected);
  private:
   // Direction count is 4, Choose count is 2
-  Coord boundary[4][2];
+  Coord boundary_[4][2];
 };
 
 size_t codel_size(const Image& image);

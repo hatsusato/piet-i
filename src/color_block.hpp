@@ -6,6 +6,7 @@
 class ColorBlockBase {
  public:
   virtual ~ColorBlockBase() = 0;
+  const ColorBlockBase* address() const;
  protected:
   ColorBlockBase();
  private:

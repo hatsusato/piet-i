@@ -13,4 +13,13 @@ class ColorBlockBase {
 };
 using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 
+class ColorBlock : public ColorBlockBase {
+};
+
+class BlackBlock : public ColorBlockBase {
+};
+
+class WhiteBlock : public ColorBlockBase {
+};
+
 #endif  // PIET_I_COLOR_BLOCK_HPP

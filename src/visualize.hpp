@@ -3,7 +3,9 @@
 
 #include "utils.hpp"
 
-void show_pixel(const Pixel& pixel);
+struct Codel;
+
+void show_pixel(const Codel& codel);
 void visualize(const Image& image);
 
 #endif  // PIET_I_VISUALIZE_HPP

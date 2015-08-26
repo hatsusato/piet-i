@@ -5,8 +5,7 @@
 #include <iterator>
 
 namespace /* unnamed */ {
-std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
-  const auto& coords = connected.coords();
+std::array<int, 4> coordinates_range(const std::vector<Coord>& coords) {
   assert(!coords.empty());
   int right, up, left, down;
   right = left = std::get<0>(coords.front());
@@ -159,7 +158,7 @@ ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
   static const int dx[] = {1, 0, -1, 0};
   static const int dy[] = {0, -1, 0, 1};
   assert(!connected.coords().empty());
-  const auto range = connected_codel_range(connected);
+  const auto range = coordinates_range(connected.coords());
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
     std::tie(boundary_[i][0], boundary_[i][1]) =

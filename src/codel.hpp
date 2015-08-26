@@ -42,20 +42,17 @@ class CodelTable {
 
 class ConnectedCodel {
  public:
-  explicit ConnectedCodel(const Codel& codel);
+  explicit ConnectedCodel(const Codel& codel,
+                          const std::vector<Coord>& coords);
   const Codel& codel() const;
   const std::vector<Coord>& coords() const;
   void push(int x, int y);
   bool includes(const Coord& coord) const;
  private:
+  void calculate_boundary();
+ private:
   Codel codel_;
   std::vector<Coord> coords_;
-};
-
-class ConnectedCodelBoundary {
- public:
-  explicit ConnectedCodelBoundary(const ConnectedCodel& connected);
- private:
   // Direction count is 4, Choose count is 2
   Coord boundary_[4][2];
 };
@@ -66,7 +63,5 @@ CodelTable make_codel_table(const Image& image);
 void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
                             int x, int y);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
-std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
-    const std::vector<ConnectedCodel>& connected_codels);
 
 #endif  // PIET_I_CODEL_HPP

@@ -133,9 +133,11 @@ auto CodelTable::operator[](size_t row) const -> const RowType& {
   return rows_[row];
 }
 
-ConnectedCodel::ConnectedCodel(const Codel& codel)
-    : codel_(codel), coords_()
-{}
+ConnectedCodel::ConnectedCodel(const Codel& codel,
+                               const std::vector<Coord>& coords)
+    : codel_(codel), coords_(coords), boundary_() {
+  calculate_boundary();
+}
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
@@ -150,19 +152,17 @@ bool ConnectedCodel::includes(const Coord& coord) const {
   using std::end;
   return std::find(begin(coords_), end(coords_), coord) != end(coords_);
 }
-
-ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
-    : boundary_() {
+void ConnectedCodel::calculate_boundary() {
   using std::begin;
   using std::end;
   static const int dx[] = {1, 0, -1, 0};
   static const int dy[] = {0, -1, 0, 1};
-  assert(!connected.coords().empty());
-  const auto range = coordinates_range(connected.coords());
+  assert(!coords_.empty());
+  const auto range = coordinates_range(coords_);
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
     std::tie(boundary_[i][0], boundary_[i][1]) =
-        directed_boundary(connected, dir, range[i]);
+        directed_boundary(coords_, dir, range[i]);
     boundary_[i][0] += dx[i];
     boundary_[i][1] += dy[i];
   }
@@ -251,16 +251,6 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
         result.push_back(std::move(current));
       }
     }
-  }
-  return result;
-}
-
-std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
-    const std::vector<ConnectedCodel>& connected_codels) {
-  std::vector<ConnectedCodelBoundary> result;
-  result.reserve(connected_codels.size());
-  for (auto&& connected : connected_codels) {
-    result.emplace_back(connected);
   }
   return result;
 }

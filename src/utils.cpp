@@ -68,3 +68,8 @@ size_t gcd(size_t a, size_t b) {
     return gcd(b, a % b);
   }
 }
+
+Coord operator+(const Coord& lhs, const Coord& rhs) {
+  return std::make_tuple(std::get<0>(lhs) + std::get<0>(rhs),
+                         std::get<1>(lhs) + std::get<1>(rhs));
+}

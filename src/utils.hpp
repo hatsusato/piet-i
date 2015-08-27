@@ -34,6 +34,7 @@ bool operator==(const Pixel& lhs, const Pixel& rhs);
 bool operator!=(const Pixel& lhs, const Pixel& rhs);
 size_t gcd(size_t a, size_t b);
 Coord operator+(const Coord& lhs, const Coord& rhs);
+Coord canonical_basis(Direction dir);
 
 template <size_t N>
 bool same_element(const Coord& coord, int value) {

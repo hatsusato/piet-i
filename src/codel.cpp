@@ -154,14 +154,12 @@ bool ConnectedCodel::includes(const Coord& coord) const {
 void ConnectedCodel::calculate_boundary() {
   using std::begin;
   using std::end;
-  static const int dx[] = {1, 0, -1, 0};
-  static const int dy[] = {0, -1, 0, 1};
   assert(!coords_.empty());
   const auto range = coordinates_range(coords_);
   Coord left, right;
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
-    const auto dxy = Coord(dx[i], dy[i]);
+    const auto dxy = canonical_basis(dir);
     const auto same = generate_same_predicate(dir, range[i]);
     const auto compare = generate_compare_predicate(dir);
     std::tie(left, right) = range_edge(coords_, same, compare);

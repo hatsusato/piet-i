@@ -73,3 +73,10 @@ Coord operator+(const Coord& lhs, const Coord& rhs) {
   return std::make_tuple(std::get<0>(lhs) + std::get<0>(rhs),
                          std::get<1>(lhs) + std::get<1>(rhs));
 }
+
+Coord canonical_basis(Direction dir) {
+  static const int dx[] = {1, 0, -1, 0};
+  static const int dy[] = {0, -1, 0, 1};
+  const auto d = static_cast<int>(dir);
+  return Coord(dx[d], dy[d]);
+}

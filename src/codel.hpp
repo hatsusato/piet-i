@@ -45,8 +45,6 @@ class ConnectedCodel {
   explicit ConnectedCodel(const Codel& codel,
                           const std::vector<Coord>& coords);
   const Codel& codel() const;
-  const std::vector<Coord>& coords() const;
-  void push(int x, int y);
   bool includes(const Coord& coord) const;
  private:
   void calculate_boundary();

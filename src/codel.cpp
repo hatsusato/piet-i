@@ -153,12 +153,11 @@ void ConnectedCodel::calculate_boundary() {
   Coord left, right;
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
-    const auto dxy = canonical_basis(dir);
     const auto same = generate_same_predicate(dir, range[i]);
     const auto compare = generate_compare_predicate(dir);
     std::tie(left, right) = range_edge(coords_, same, compare);
-    boundary_[i][0] = left + dxy;
-    boundary_[i][1] = right + dxy;
+    boundary_[i][0] = next_coordinate(left, dir);
+    boundary_[i][1] = next_coordinate(right, dir);
   }
 }
 
@@ -219,8 +218,8 @@ void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
   table[y][x] = Codel::unknown;
   int next_x, next_y;
   for (int i = 0; i < 4; ++i) {
-    const auto dxy = canonical_basis(static_cast<Direction>(i));
-    std::tie(next_x, next_y) = Coord(x, y) + dxy;
+    const auto dir = static_cast<Direction>(i);
+    std::tie(next_x, next_y) = next_coordinate(Coord(x, y), dir);
     if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
       const auto& next_codel = table[next_y][next_x];
       if (next_codel.is_valid() && codel == next_codel) {

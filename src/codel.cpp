@@ -217,21 +217,20 @@ CodelTable make_codel_table(const Image& image) {
   return table;
 }
 
-void search_connected_codel(CodelTable& table, ConnectedCodel& connected,
-                            int x, int y) {
-  static const int dx[] = {1, 0, -1, 0};
-  static const int dy[] = {0, -1, 0, 1};
+void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
+                            const Codel& codel, int x, int y) {
   const auto w = static_cast<int>(table.width());
   const auto h = static_cast<int>(table.height());
-  connected.push(x, y);
+  coords.emplace_back(x, y);
   table[y][x] = Codel::unknown;
+  int next_x, next_y;
   for (int i = 0; i < 4; ++i) {
-    const auto next_x = x + dx[i];
-    const auto next_y = y + dy[i];
+    const auto dxy = canonical_basis(static_cast<Direction>(i));
+    std::tie(next_x, next_y) = Coord(x, y) + dxy;
     if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
       const auto& next_codel = table[next_y][next_x];
-      if (next_codel.is_valid() && connected.codel() == next_codel) {
-        search_connected_codel(table, connected, next_x, next_y);
+      if (next_codel.is_valid() && codel == next_codel) {
+        search_connected_codel(table, coords, codel, next_x, next_y);
       }
     }
   }
@@ -246,9 +245,9 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
     for (int x = 0; x < w; ++x) {
       const auto& codel = tmp[y][x];
       if (codel.is_valid()) {
-        ConnectedCodel current(codel);
-        search_connected_codel(tmp, current, x, y);
-        result.push_back(std::move(current));
+        std::vector<Coord> coords;
+        search_connected_codel(tmp, coords, codel, x, y);
+        result.emplace_back(codel, coords);
       }
     }
   }

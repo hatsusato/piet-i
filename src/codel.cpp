@@ -159,12 +159,13 @@ void ConnectedCodel::calculate_boundary() {
   static const int dy[] = {0, -1, 0, 1};
   assert(!coords_.empty());
   const auto range = coordinates_range(coords_);
+  Coord left, right;
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
-    std::tie(boundary_[i][0], boundary_[i][1]) =
-        directed_boundary(coords_, dir, range[i]);
-    boundary_[i][0] += dx[i];
-    boundary_[i][1] += dy[i];
+    const auto dxy = Coord(dx[i], dy[i]);
+    std::tie(left, right) = directed_boundary(coords_, dir, range[i]);
+    boundary_[i][0] = left + dxy;
+    boundary_[i][1] = right + dxy;
   }
 }
 

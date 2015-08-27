@@ -5,6 +5,9 @@
 #include <iterator>
 
 namespace /* unnamed */ {
+using UnaryPredicate = std::function<bool(const Coord&)>;
+using BinaryPredicate = std::function<bool(const Coord&, const Coord&)>;
+
 std::array<int, 4> coordinates_range(const std::vector<Coord>& coords) {
   assert(!coords.empty());
   int right, up, left, down;
@@ -20,8 +23,7 @@ std::array<int, 4> coordinates_range(const std::vector<Coord>& coords) {
   }
   return {{right, up, left, down}};
 }
-std::function<bool(const Coord&)>
-generate_same_predicate(Direction dir, int value) {
+UnaryPredicate generate_same_predicate(Direction dir, int value) {
   using namespace std::placeholders;
   switch (dir) {
     case Direction::RIGHT:
@@ -35,8 +37,7 @@ generate_same_predicate(Direction dir, int value) {
       return nullptr;
   }
 }
-std::function<bool(const Coord&, const Coord&)>
-generate_compare_predicate(Direction dir) {
+BinaryPredicate generate_compare_predicate(Direction dir) {
   // Choose::LEFT side is less than Choose::RIGHT side
   switch (dir) {
     case Direction::RIGHT:

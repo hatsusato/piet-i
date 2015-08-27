@@ -53,14 +53,12 @@ BinaryPredicate generate_compare_predicate(Direction dir) {
       return nullptr;
   }
 }
-std::tuple<Coord, Coord> directed_boundary(const ConnectedCodel& connected,
-                                           Direction dir, int value) {
+std::tuple<Coord, Coord> range_edge(const std::vector<Coord>& coords,
+                                    UnaryPredicate same,
+                                    BinaryPredicate compare) {
   using std::begin;
   using std::end;
-  const auto& coords = connected.coords();
   assert(!coords.empty());
-  const auto same = generate_same_predicate(dir, value);
-  const auto compare = generate_compare_predicate(dir);
   std::vector<Coord> filtered;
   std::copy_if(begin(coords), end(coords), std::back_inserter(filtered), same);
   assert(!filtered.empty());
@@ -164,7 +162,9 @@ void ConnectedCodel::calculate_boundary() {
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
     const auto dxy = Coord(dx[i], dy[i]);
-    std::tie(left, right) = directed_boundary(coords_, dir, range[i]);
+    const auto same = generate_same_predicate(dir, range[i]);
+    const auto compare = generate_compare_predicate(dir);
+    std::tie(left, right) = range_edge(coords_, same, compare);
     boundary_[i][0] = left + dxy;
     boundary_[i][1] = right + dxy;
   }

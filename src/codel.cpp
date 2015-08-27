@@ -5,8 +5,10 @@
 #include <iterator>
 
 namespace /* unnamed */ {
-std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
-  const auto& coords = connected.coords();
+using UnaryPredicate = std::function<bool(const Coord&)>;
+using BinaryPredicate = std::function<bool(const Coord&, const Coord&)>;
+
+std::array<int, 4> coordinates_range(const std::vector<Coord>& coords) {
   assert(!coords.empty());
   int right, up, left, down;
   right = left = std::get<0>(coords.front());
@@ -21,8 +23,7 @@ std::array<int, 4> connected_codel_range(const ConnectedCodel& connected) {
   }
   return {{right, up, left, down}};
 }
-std::function<bool(const Coord&)>
-generate_same_predicate(Direction dir, int value) {
+UnaryPredicate generate_same_predicate(Direction dir, int value) {
   using namespace std::placeholders;
   switch (dir) {
     case Direction::RIGHT:
@@ -36,8 +37,7 @@ generate_same_predicate(Direction dir, int value) {
       return nullptr;
   }
 }
-std::function<bool(const Coord&, const Coord&)>
-generate_compare_predicate(Direction dir) {
+BinaryPredicate generate_compare_predicate(Direction dir) {
   // Choose::LEFT side is less than Choose::RIGHT side
   switch (dir) {
     case Direction::RIGHT:
@@ -53,14 +53,12 @@ generate_compare_predicate(Direction dir) {
       return nullptr;
   }
 }
-std::tuple<Coord, Coord> directed_boundary(const ConnectedCodel& connected,
-                                           Direction dir, int value) {
+std::tuple<Coord, Coord> range_edge(const std::vector<Coord>& coords,
+                                    UnaryPredicate same,
+                                    BinaryPredicate compare) {
   using std::begin;
   using std::end;
-  const auto& coords = connected.coords();
   assert(!coords.empty());
-  const auto same = generate_same_predicate(dir, value);
-  const auto compare = generate_compare_predicate(dir);
   std::vector<Coord> filtered;
   std::copy_if(begin(coords), end(coords), std::back_inserter(filtered), same);
   assert(!filtered.empty());
@@ -134,9 +132,11 @@ auto CodelTable::operator[](size_t row) const -> const RowType& {
   return rows_[row];
 }
 
-ConnectedCodel::ConnectedCodel(const Codel& codel)
-    : codel_(codel), coords_()
-{}
+ConnectedCodel::ConnectedCodel(const Codel& codel,
+                               const std::vector<Coord>& coords)
+    : codel_(codel), coords_(coords), boundary_() {
+  calculate_boundary();
+}
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
@@ -151,21 +151,20 @@ bool ConnectedCodel::includes(const Coord& coord) const {
   using std::end;
   return std::find(begin(coords_), end(coords_), coord) != end(coords_);
 }
-
-ConnectedCodelBoundary::ConnectedCodelBoundary(const ConnectedCodel& connected)
-    : boundary_() {
+void ConnectedCodel::calculate_boundary() {
   using std::begin;
   using std::end;
-  static const int dx[] = {1, 0, -1, 0};
-  static const int dy[] = {0, -1, 0, 1};
-  assert(!connected.coords().empty());
-  const auto range = connected_codel_range(connected);
+  assert(!coords_.empty());
+  const auto range = coordinates_range(coords_);
+  Coord left, right;
   for (int i = 0; i < 4; ++i) {
     const auto dir = static_cast<Direction>(i);
-    std::tie(boundary_[i][0], boundary_[i][1]) =
-        directed_boundary(connected, dir, range[i]);
-    boundary_[i][0] += dx[i];
-    boundary_[i][1] += dy[i];
+    const auto dxy = canonical_basis(dir);
+    const auto same = generate_same_predicate(dir, range[i]);
+    const auto compare = generate_compare_predicate(dir);
+    std::tie(left, right) = range_edge(coords_, same, compare);
+    boundary_[i][0] = left + dxy;
+    boundary_[i][1] = right + dxy;
   }
 }
 
@@ -252,16 +251,6 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
         result.push_back(std::move(current));
       }
     }
-  }
-  return result;
-}
-
-std::vector<ConnectedCodelBoundary> make_connected_codel_boundaries(
-    const std::vector<ConnectedCodel>& connected_codels) {
-  std::vector<ConnectedCodelBoundary> result;
-  result.reserve(connected_codels.size());
-  for (auto&& connected : connected_codels) {
-    result.emplace_back(connected);
   }
   return result;
 }

@@ -140,12 +140,6 @@ ConnectedCodel::ConnectedCodel(const Codel& codel,
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
-const std::vector<Coord>& ConnectedCodel::coords() const {
-  return coords_;
-}
-void ConnectedCodel::push(int x, int y) {
-  coords_.emplace_back(x, y);
-}
 bool ConnectedCodel::includes(const Coord& coord) const {
   using std::begin;
   using std::end;

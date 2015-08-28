@@ -29,6 +29,8 @@ class ColorBlockInfo {
  public:
   ColorBlockInfo(const CodelTable& table);
  private:
+  void initialize();
+ private:
   CodelTable table_;
   std::vector<ColorBlockData> color_blocks_;
   std::vector<ColorBlockPtr> mono_blocks_;

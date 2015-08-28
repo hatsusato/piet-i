@@ -30,6 +30,7 @@ class ColorBlockInfo {
   ColorBlockInfo(const CodelTable& table);
  private:
   void initialize();
+  void connect(ColorBlockData& color_block);
  private:
   CodelTable table_;
   std::vector<ColorBlockData> color_blocks_;

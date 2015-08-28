@@ -19,3 +19,18 @@ void ColorBlockInfo::initialize() {
     color_blocks_.emplace_back(connected, std::move(block_pointer));
   }
 }
+void ColorBlockInfo::connect(ColorBlockData& color_block) {
+  const auto& connected = std::get<0>(color_block);
+  auto& pointer = std::get<1>(color_block);
+  if (connected.codel().is_colored()) {
+    for (int d = 0; d < 4; ++d) {
+      const auto direction = static_cast<Direction>(d);
+      for (int c = 0; c < 2; ++c) {
+        const auto choose = static_cast<Choose>(c);
+        const auto edge = connected.edge(direction, choose);
+        const auto next = get_access_point(edge, direction);
+        pointer->set_next(next, direction, choose);
+      }
+    }
+  }
+}

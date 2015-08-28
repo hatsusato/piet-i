@@ -24,6 +24,8 @@ class ColorBlock : public ColorBlockBase {
 };
 
 class BlackBlock : public ColorBlockBase {
+ public:
+  BlackBlock();
 };
 
 class WhiteBlock : public ColorBlockBase {

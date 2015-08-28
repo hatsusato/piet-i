@@ -10,3 +10,6 @@ ColorBlock::ColorBlock(const Codel& codel)
     : codel_(codel), next_() {
   assert(codel.is_colored());
 }
+
+BlackBlock::BlackBlock()
+{}

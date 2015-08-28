@@ -82,6 +82,10 @@ bool Codel::is_valid() const {
   return (color_part_ < static_cast<unsigned>(Color::UNKNOWN) &&
           brightness_part_ < static_cast<unsigned>(Brightness::UNKNOWN));
 }
+bool Codel::is_colored() const {
+  return (static_cast<unsigned>(Color::BLACK) < color_part_ &&
+          color_part_ < static_cast<unsigned>(Color::WHITE));
+}
 Color Codel::color() const {
   return static_cast<Color>(color_part_);
 }
@@ -140,10 +144,23 @@ ConnectedCodel::ConnectedCodel(const Codel& codel,
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
+const Coord& ConnectedCodel::edge(Direction direction, Choose choose) const {
+  const auto d = static_cast<int>(direction);
+  const auto c = static_cast<int>(choose);
+  return boundary_[d][c];
+}
 bool ConnectedCodel::includes(const Coord& coord) const {
   using std::begin;
   using std::end;
   return std::find(begin(coords_), end(coords_), coord) != end(coords_);
+}
+Coord ConnectedCodel::find_out_of_range(const Coord& coord,
+                                        Direction direction) const {
+  Coord current = coord;
+  while (includes(current)) {
+    current = next_coordinate(current, direction);
+  }
+  return current;
 }
 void ConnectedCodel::calculate_boundary() {
   using std::begin;

@@ -10,6 +10,7 @@ struct Codel {
   Codel(Color color, Brightness brightness);
   explicit Codel(const Pixel& pixel);
   bool is_valid() const;
+  bool is_colored() const;
   Color color() const;
   Brightness brightness() const;
   void set_color(Color color);
@@ -45,7 +46,9 @@ class ConnectedCodel {
   explicit ConnectedCodel(const Codel& codel,
                           const std::vector<Coord>& coords);
   const Codel& codel() const;
+  const Coord& edge(Direction direction, Choose choose) const;
   bool includes(const Coord& coord) const;
+  Coord find_out_of_range(const Coord& coord, Direction direction) const;
  private:
   void calculate_boundary();
  private:

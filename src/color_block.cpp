@@ -13,3 +13,7 @@ ColorBlock::ColorBlock(const Codel& codel)
 
 BlackBlock::BlackBlock()
 {}
+
+WhiteBlock::WhiteBlock(const ColorBlockBase* next)
+    : next_(next)
+{}

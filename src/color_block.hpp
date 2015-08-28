@@ -29,6 +29,10 @@ class BlackBlock : public ColorBlockBase {
 };
 
 class WhiteBlock : public ColorBlockBase {
+ public:
+  WhiteBlock(const ColorBlockBase* next);
+ private:
+  const ColorBlockBase* next_;
 };
 
 #endif  // PIET_I_COLOR_BLOCK_HPP

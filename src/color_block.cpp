@@ -10,6 +10,12 @@ ColorBlock::ColorBlock(const Codel& codel)
     : codel_(codel), next_() {
   assert(codel.is_colored());
 }
+void ColorBlock::set_next(const ColorBlockBase* next,
+                          Direction direction, Choose choose) {
+  const auto d = static_cast<int>(direction);
+  const auto c = static_cast<int>(choose);
+  next_[d][c] = next;
+}
 
 BlackBlock::BlackBlock()
 {}

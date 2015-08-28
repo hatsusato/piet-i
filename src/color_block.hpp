@@ -18,6 +18,8 @@ using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 class ColorBlock : public ColorBlockBase {
  public:
   ColorBlock(const Codel& codel);
+  void set_next(const ColorBlockBase* next,
+                Direction direction, Choose choose);
  private:
   Codel codel_;
   const ColorBlockBase* next_[4][2];

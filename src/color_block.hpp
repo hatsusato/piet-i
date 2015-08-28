@@ -31,6 +31,8 @@ class ColorBlockInfo {
  private:
   void initialize();
   void connect(ColorBlockData& color_block);
+  const ColorBlockBase* get_access_point(const Coord& coord,
+                                         Direction direction);
  private:
   CodelTable table_;
   std::vector<ColorBlockData> color_blocks_;

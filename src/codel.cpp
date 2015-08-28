@@ -82,6 +82,10 @@ bool Codel::is_valid() const {
   return (color_part_ < static_cast<unsigned>(Color::UNKNOWN) &&
           brightness_part_ < static_cast<unsigned>(Brightness::UNKNOWN));
 }
+bool Codel::is_colored() const {
+  return (static_cast<unsigned>(Color::BLACK) < color_part_ &&
+          color_part_ < static_cast<unsigned>(Color::WHITE));
+}
 Color Codel::color() const {
   return static_cast<Color>(color_part_);
 }

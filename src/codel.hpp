@@ -10,6 +10,7 @@ struct Codel {
   Codel(Color color, Brightness brightness);
   explicit Codel(const Pixel& pixel);
   bool is_valid() const;
+  bool is_colored() const;
   Color color() const;
   Brightness brightness() const;
   void set_color(Color color);

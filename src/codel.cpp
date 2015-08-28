@@ -144,6 +144,11 @@ ConnectedCodel::ConnectedCodel(const Codel& codel,
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
+const Coord& ConnectedCodel::edge(Direction direction, Choose choose) const {
+  const auto d = static_cast<int>(direction);
+  const auto c = static_cast<int>(choose);
+  return boundary_[d][c];
+}
 bool ConnectedCodel::includes(const Coord& coord) const {
   using std::begin;
   using std::end;

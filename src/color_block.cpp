@@ -70,3 +70,7 @@ const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
     }
   }
 }
+const ColorBlockBase* ColorBlockInfo::black_block() const {
+  assert(!mono_blocks_.empty());
+  return mono_blocks_.front()->address();
+}

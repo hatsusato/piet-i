@@ -1,5 +1,6 @@
 #include "color_block.hpp"
 #include <algorithm>
+#include <functional>
 
 ColorBlockBase::ColorBlockBase() {}
 ColorBlockBase::~ColorBlockBase() {}
@@ -28,6 +29,7 @@ WhiteBlock::WhiteBlock(const ColorBlockBase* next)
 ColorBlockInfo::ColorBlockInfo(const CodelTable& table)
     : table_(table), color_blocks_(), mono_blocks_() {
   initialize();
+  connect_all();
 }
 void ColorBlockInfo::initialize() {
   assert(color_blocks_.empty() && mono_blocks_.empty());
@@ -40,6 +42,13 @@ void ColorBlockInfo::initialize() {
         make_unique<ColorBlock>(codel) : nullptr;
     color_blocks_.emplace_back(connected, std::move(block_pointer));
   }
+}
+void ColorBlockInfo::connect_all() {
+  using namespace std::placeholders;
+  using std::begin;
+  using std::end;
+  const auto connect = std::bind(&ColorBlockInfo::connect, this, _1);
+  std::for_each(begin(color_blocks_), end(color_blocks_), connect);
 }
 void ColorBlockInfo::connect(ColorBlockData& color_block) {
   const auto& connected = std::get<0>(color_block);

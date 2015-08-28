@@ -44,6 +44,7 @@ class ColorBlockInfo {
   ColorBlockInfo(const CodelTable& table);
  private:
   void initialize();
+  void connect_all();
   void connect(ColorBlockData& color_block);
   const ColorBlockBase* get_access_point(const Coord& coord,
                                          Direction direction);

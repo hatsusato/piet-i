@@ -1,5 +1,6 @@
 #include "color_block.hpp"
 #include <algorithm>
+#include <iterator>
 #include <functional>
 
 ColorBlockBase::ColorBlockBase() {}
@@ -30,6 +31,23 @@ ColorBlockInfo::ColorBlockInfo(const CodelTable& table)
     : table_(table), color_blocks_(), mono_blocks_() {
   initialize();
   connect_all();
+}
+std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
+  using std::begin;
+  using std::end;
+  struct Extractor {
+    ColorBlockPtr operator()(ColorBlockData&& data) {
+      return std::move(std::get<1>(data));
+    }
+  };
+  std::vector<ColorBlockPtr> result;
+  std::transform(std::make_move_iterator(begin(color_blocks_)),
+                 std::make_move_iterator(end(color_blocks_)),
+                 std::back_inserter(result), Extractor());
+  std::move(begin(mono_blocks_), end(mono_blocks_), std::back_inserter(result));
+  color_blocks_.clear();
+  mono_blocks_.clear();
+  return result;
 }
 void ColorBlockInfo::initialize() {
   assert(color_blocks_.empty() && mono_blocks_.empty());

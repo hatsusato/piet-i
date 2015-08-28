@@ -42,6 +42,7 @@ class ColorBlockInfo {
                                     std::unique_ptr<ColorBlock> >;
  public:
   ColorBlockInfo(const CodelTable& table);
+  std::vector<ColorBlockPtr> extract_color_blocks();
  private:
   void initialize();
   void connect_all();

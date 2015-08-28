@@ -47,6 +47,7 @@ class ConnectedCodel {
                           const std::vector<Coord>& coords);
   const Codel& codel() const;
   bool includes(const Coord& coord) const;
+  Coord find_out_of_range(const Coord& coord, Direction direction) const;
  private:
   void calculate_boundary();
  private:

@@ -149,6 +149,14 @@ bool ConnectedCodel::includes(const Coord& coord) const {
   using std::end;
   return std::find(begin(coords_), end(coords_), coord) != end(coords_);
 }
+Coord ConnectedCodel::find_out_of_range(const Coord& coord,
+                                        Direction direction) const {
+  Coord current = coord;
+  while (includes(current)) {
+    current = next_coordinate(current, direction);
+  }
+  return current;
+}
 void ConnectedCodel::calculate_boundary() {
   using std::begin;
   using std::end;

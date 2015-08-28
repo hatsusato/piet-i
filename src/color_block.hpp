@@ -1,6 +1,7 @@
 #ifndef PIET_I_COLOR_BLOCK_HPP
 #define PIET_I_COLOR_BLOCK_HPP
 
+#include "codel.hpp"
 #include "utils.hpp"
 
 class ColorBlockBase {
@@ -15,6 +16,11 @@ class ColorBlockBase {
 using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 
 class ColorBlock : public ColorBlockBase {
+ public:
+  ColorBlock(const Codel& codel);
+ private:
+  Codel codel_;
+  const ColorBlockBase* next_[4][2];
 };
 
 class BlackBlock : public ColorBlockBase {

@@ -3,6 +3,15 @@
 #include <iterator>
 #include <functional>
 
+namespace /* unnamed */ {
+template <size_t N, class T>
+struct Extractor {
+  ColorBlockPtr operator()(T&& data) {
+    return std::move(std::get<N>(data));
+  }
+};
+}  // namespace /* unnamed */
+
 ColorBlockBase::ColorBlockBase() {}
 ColorBlockBase::~ColorBlockBase() {}
 const ColorBlockBase* ColorBlockBase::address() const {
@@ -35,11 +44,6 @@ ColorBlockInfo::ColorBlockInfo(const CodelTable& table)
 std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
   using std::begin;
   using std::end;
-  struct Extractor {
-    ColorBlockPtr operator()(ColorBlockData&& data) {
-      return std::move(std::get<1>(data));
-    }
-  };
   struct NullChecker {
     bool operator()(const ColorBlockPtr& ptr) {
       return static_cast<bool>(ptr);
@@ -48,19 +52,25 @@ std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
   std::vector<ColorBlockPtr> extracted;
   std::transform(std::make_move_iterator(begin(color_blocks_)),
                  std::make_move_iterator(end(color_blocks_)),
-                 std::back_inserter(extracted), Extractor());
+                 std::back_inserter(extracted),
+                 Extractor<1, ColorBlockData>());
   std::vector<ColorBlockPtr> result;
   std::copy_if(std::make_move_iterator(begin(extracted)),
                std::make_move_iterator(end(extracted)),
                std::back_inserter(result), NullChecker());
-  std::move(begin(mono_blocks_), end(mono_blocks_), std::back_inserter(result));
+  extracted.clear();
+  std::transform(std::make_move_iterator(begin(mono_blocks_)),
+                 std::make_move_iterator(end(mono_blocks_)),
+                 std::back_inserter(extracted),
+                 Extractor<1, MonoBlockData>());
+  std::move(begin(extracted), end(extracted), std::back_inserter(result));
   color_blocks_.clear();
   mono_blocks_.clear();
   return result;
 }
 void ColorBlockInfo::initialize() {
   assert(color_blocks_.empty() && mono_blocks_.empty());
-  mono_blocks_.push_back(make_unique<BlackBlock>());
+  mono_blocks_.emplace_back(nullptr, make_unique<BlackBlock>());
   const auto connected_codels = extract_connected_codels(table_);
   for (auto&& connected : connected_codels) {
     const auto& codel = connected.codel();
@@ -117,9 +127,10 @@ const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
       case Color::WHITE: {
         const auto next_coord = connected.find_out_of_range(coord, direction);
         const auto next_pointer = get_access_point(next_coord, direction);
-        mono_blocks_.push_back(make_unique<WhiteBlock>(next_pointer));
+        mono_blocks_.emplace_back(next_pointer,
+                                  make_unique<WhiteBlock>(next_pointer));
       }
-        return mono_blocks_.back()->address();
+        return std::get<1>(mono_blocks_.back())->address();
       case Color::BLACK:
         return black_block();
       default:
@@ -129,5 +140,5 @@ const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
 }
 const ColorBlockBase* ColorBlockInfo::black_block() const {
   assert(!mono_blocks_.empty());
-  return mono_blocks_.front()->address();
+  return std::get<1>(mono_blocks_.front())->address();
 }

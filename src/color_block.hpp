@@ -40,6 +40,7 @@ class WhiteBlock : public ColorBlockBase {
 class ColorBlockInfo {
   using ColorBlockData = std::tuple<ConnectedCodel,
                                     std::unique_ptr<ColorBlock> >;
+  using MonoBlockData = std::tuple<const ColorBlockBase*, ColorBlockPtr>;
  public:
   ColorBlockInfo(const CodelTable& table);
   std::vector<ColorBlockPtr> extract_color_blocks();
@@ -53,7 +54,7 @@ class ColorBlockInfo {
  private:
   CodelTable table_;
   std::vector<ColorBlockData> color_blocks_;
-  std::vector<ColorBlockPtr> mono_blocks_;
+  std::vector<MonoBlockData> mono_blocks_;
 };
 
 #endif  // PIET_I_COLOR_BLOCK_HPP

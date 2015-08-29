@@ -159,3 +159,7 @@ const ColorBlockBase* ColorBlockInfo::black_block() const {
   assert(!mono_blocks_.empty());
   return std::get<1>(mono_blocks_.front())->address();
 }
+
+std::vector<ColorBlockPtr> color_block_network(const CodelTable& table) {
+  return ColorBlockInfo(table).extract_color_blocks();
+}

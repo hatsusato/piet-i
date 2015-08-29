@@ -59,4 +59,6 @@ class ColorBlockInfo {
   std::vector<MonoBlockData> mono_blocks_;
 };
 
+std::vector<ColorBlockPtr> color_block_network(const CodelTable& table);
+
 #endif  // PIET_I_COLOR_BLOCK_HPP

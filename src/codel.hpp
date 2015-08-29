@@ -31,6 +31,7 @@ class CodelTable {
   using RowType = std::vector<Codel>;
   CodelTable();
   CodelTable(size_t width, size_t heigth);
+  CodelTable clone() const;
   size_t width() const;
   size_t height() const;
   void resize(size_t width, size_t height);
@@ -61,8 +62,8 @@ class ConnectedCodel {
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 
-void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
-                            int x, int y);
+void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
+                            const Codel& codel, int x, int y);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CODEL_HPP

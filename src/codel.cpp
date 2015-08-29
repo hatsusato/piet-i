@@ -115,6 +115,16 @@ CodelTable::CodelTable(size_t width, size_t height)
     : width_(width), height_(height), rows_() {
   resize(width, height);
 }
+CodelTable CodelTable::clone() const {
+  using std::begin;
+  using std::end;
+  CodelTable result(width_, height_);
+  auto dst = begin(result.rows_);
+  for (auto src = begin(rows_); src != end(rows_); ++src, ++dst) {
+    std::copy(begin(*src), end(*src), begin(*dst));
+  }
+  return result;
+}
 size_t CodelTable::width() const {
   return width_;
 }
@@ -249,11 +259,11 @@ void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
   const auto w = static_cast<int>(table.width());
   const auto h = static_cast<int>(table.height());
-  auto tmp = table;
+  auto tmp = table.clone();
   std::vector<ConnectedCodel> result;
   for (int y = 0; y < h; ++y) {
     for (int x = 0; x < w; ++x) {
-      const auto& codel = tmp[y][x];
+      const auto codel = tmp[y][x];
       if (codel.is_valid()) {
         std::vector<Coord> coords;
         search_connected_codel(tmp, coords, codel, x, y);

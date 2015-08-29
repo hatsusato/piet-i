@@ -40,10 +40,19 @@ std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
       return std::move(std::get<1>(data));
     }
   };
-  std::vector<ColorBlockPtr> result;
+  struct NullChecker {
+    bool operator()(const ColorBlockPtr& ptr) {
+      return static_cast<bool>(ptr);
+    }
+  };
+  std::vector<ColorBlockPtr> extracted;
   std::transform(std::make_move_iterator(begin(color_blocks_)),
                  std::make_move_iterator(end(color_blocks_)),
-                 std::back_inserter(result), Extractor());
+                 std::back_inserter(extracted), Extractor());
+  std::vector<ColorBlockPtr> result;
+  std::copy_if(std::make_move_iterator(begin(extracted)),
+               std::make_move_iterator(end(extracted)),
+               std::back_inserter(result), NullChecker());
   std::move(begin(mono_blocks_), end(mono_blocks_), std::back_inserter(result));
   color_blocks_.clear();
   mono_blocks_.clear();

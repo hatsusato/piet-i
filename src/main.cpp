@@ -1,4 +1,6 @@
 #include <iostream>
+#include "codel.hpp"
+#include "color_block.hpp"
 #include "utils.hpp"
 #include "visualize.hpp"
 
@@ -10,6 +12,8 @@ int main(int argc, char* argv[]) {
   try {
     auto image = Image(argv[1]);
     visualize(image);
+    const auto table = make_codel_table(image);
+    auto network = color_block_network(table);
   } catch (png::error& e) {
     std::cerr << e.what() << std::endl;
   }

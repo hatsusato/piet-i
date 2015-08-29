@@ -61,8 +61,8 @@ class ConnectedCodel {
 size_t codel_size(const Image& image);
 CodelTable make_codel_table(const Image& image);
 
-void search_connected_codel(CodelTable& image, ConnectedCodel& connected,
-                            int x, int y);
+void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
+                            const Codel& codel, int x, int y);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CODEL_HPP

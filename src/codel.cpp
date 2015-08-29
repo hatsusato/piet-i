@@ -253,7 +253,7 @@ std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table) {
   std::vector<ConnectedCodel> result;
   for (int y = 0; y < h; ++y) {
     for (int x = 0; x < w; ++x) {
-      const auto& codel = tmp[y][x];
+      const auto codel = tmp[y][x];
       if (codel.is_valid()) {
         std::vector<Coord> coords;
         search_connected_codel(tmp, coords, codel, x, y);

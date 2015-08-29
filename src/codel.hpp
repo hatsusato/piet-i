@@ -31,6 +31,7 @@ class CodelTable {
   using RowType = std::vector<Codel>;
   CodelTable();
   CodelTable(size_t width, size_t heigth);
+  CodelTable clone() const;
   size_t width() const;
   size_t height() const;
   void resize(size_t width, size_t height);

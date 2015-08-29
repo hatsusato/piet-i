@@ -50,6 +50,8 @@ class ColorBlockInfo {
   void connect(ColorBlockData& color_block);
   const ColorBlockBase* get_access_point(const Coord& coord,
                                          Direction direction);
+  const ColorBlockBase* make_white_path(
+      const ConnectedCodel& connected, const Coord& coord, Direction direction);
   const ColorBlockBase* black_block() const;
  private:
   CodelTable table_;

@@ -124,18 +124,35 @@ const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
     const auto& codel = connected.codel();
     assert(codel.is_valid());
     switch (codel.color()) {
-      case Color::WHITE: {
-        const auto next_coord = connected.find_out_of_range(coord, direction);
-        const auto next_pointer = get_access_point(next_coord, direction);
-        mono_blocks_.emplace_back(next_pointer,
-                                  make_unique<WhiteBlock>(next_pointer));
-      }
-        return std::get<1>(mono_blocks_.back())->address();
+      case Color::WHITE:
+        return make_white_path(connected, coord, direction);
       case Color::BLACK:
         return black_block();
       default:
         return color_block->address();
     }
+  }
+}
+const ColorBlockBase* ColorBlockInfo::make_white_path(
+    const ConnectedCodel& connected, const Coord& coord, Direction direction) {
+  struct HavePointer {
+    HavePointer(const ColorBlockBase* next) : next_(next) {}
+    bool operator()(const MonoBlockData& data) {
+      return std::get<0>(data) == next_;
+    }
+   private:
+    const ColorBlockBase* next_;
+  };
+  const auto next_coord = connected.find_out_of_range(coord, direction);
+  const auto next_pointer = get_access_point(next_coord, direction);
+  const auto exist = std::find_if(begin(mono_blocks_), end(mono_blocks_),
+                                  HavePointer(next_pointer));
+  if (exist == end(mono_blocks_)) {
+    mono_blocks_.emplace_back(next_pointer,
+                              make_unique<WhiteBlock>(next_pointer));
+    return std::get<1>(mono_blocks_.back())->address();
+  } else {
+    return std::get<1>(*exist)->address();
   }
 }
 const ColorBlockBase* ColorBlockInfo::black_block() const {

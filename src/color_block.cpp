@@ -18,9 +18,9 @@ const ColorBlockBase* ColorBlockBase::address() const {
   return this;
 }
 
-ColorBlock::ColorBlock(const Codel& codel)
-    : codel_(codel), next_() {
-  assert(codel.is_colored());
+ColorBlock::ColorBlock(const ConnectedCodel& connected)
+    : codel_(connected.codel()), codel_size_(connected.size()), next_() {
+  assert(codel_.is_colored());
 }
 void ColorBlock::set_next(const ColorBlockBase* next,
                           Direction direction, Choose choose) {
@@ -76,7 +76,7 @@ void ColorBlockInfo::initialize() {
     const auto& codel = connected.codel();
     assert(codel.is_valid());
     auto block_pointer = codel.is_colored() ?
-        make_unique<ColorBlock>(codel) : nullptr;
+        make_unique<ColorBlock>(connected) : nullptr;
     color_blocks_.emplace_back(connected, std::move(block_pointer));
   }
 }

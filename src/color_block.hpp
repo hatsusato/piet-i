@@ -17,11 +17,12 @@ using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 
 class ColorBlock : public ColorBlockBase {
  public:
-  explicit ColorBlock(const Codel& codel);
+  explicit ColorBlock(const ConnectedCodel& connected);
   void set_next(const ColorBlockBase* next,
                 Direction direction, Choose choose);
  private:
   Codel codel_;
+  size_t codel_size_;
   const ColorBlockBase* next_[4][2];
 };
 

@@ -13,7 +13,7 @@ using Byte = png::byte;
 using Coord = std::tuple<int, int>;
 
 enum class Color {
-  BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, UNKNOWN
+  BLACK, RED, YELLOW, GREEN, CYAN, BLUE, MAGENTA, WHITE, UNKNOWN
 };
 
 enum class Brightness {

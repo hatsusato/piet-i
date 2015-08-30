@@ -154,6 +154,9 @@ ConnectedCodel::ConnectedCodel(const Codel& codel,
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
+size_t ConnectedCodel::size() const {
+  return coords_.size();
+}
 const Coord& ConnectedCodel::edge(Direction direction, Choose choose) const {
   const auto d = static_cast<int>(direction);
   const auto c = static_cast<int>(choose);

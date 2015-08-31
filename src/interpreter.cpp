@@ -126,3 +126,6 @@ void Interpreter::pointer_command() {
 void Interpreter::switch_command() {
   choose_ = stack_.switch_command(choose_);
 }
+void Interpreter::duplicate_command() {
+  stack_.duplicate_command();
+}

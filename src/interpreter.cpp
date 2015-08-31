@@ -71,6 +71,12 @@ void Stack::in_char_command() {
   std::wcin >> character;
   push(static_cast<int>(character));
 }
+void Stack::out_number_command() {
+  std::wcout << pop_get();
+}
+void Stack::out_char_command() {
+  std::wcout << static_cast<wchar_t>(pop_get());
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

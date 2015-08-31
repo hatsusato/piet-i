@@ -19,6 +19,8 @@ class Stack : public std::stack<int, std::vector<int> > {
   void roll_command();
   void in_number_command();
   void in_char_command();
+  void out_number_command();
+  void out_char_command();
  private:
   int pop_get();
 };

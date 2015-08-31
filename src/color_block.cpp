@@ -20,6 +20,15 @@ size_t ColorBlockBase::codel_size() const {
 const ColorBlockBase* ColorBlockBase::address() const {
   return this;
 }
+bool ColorBlockBase::is_colored() const {
+  return false;
+}
+bool ColorBlockBase::is_white() const {
+  return false;
+}
+bool ColorBlockBase::is_black() const {
+  return false;
+}
 
 ColorBlock::ColorBlock(const ConnectedCodel& connected)
     : codel_(connected.codel()), codel_size_(connected.size()), next_() {
@@ -40,11 +49,17 @@ void ColorBlock::set_next(const ColorBlockBase* next,
   const auto c = static_cast<int>(choose);
   next_[d][c] = next;
 }
+bool ColorBlock::is_colored() const {
+  return true;
+}
 
 BlackBlock::BlackBlock()
 {}
 const ColorBlockBase* BlackBlock::next(Direction, Choose) const {
   return this;
+}
+bool BlackBlock::is_black() const {
+  return true;
 }
 
 WhiteBlock::WhiteBlock(const ColorBlockBase* next)
@@ -52,6 +67,9 @@ WhiteBlock::WhiteBlock(const ColorBlockBase* next)
 {}
 const ColorBlockBase* WhiteBlock::next(Direction, Choose) const {
   return next_;
+}
+bool WhiteBlock::is_white() const {
+  return true;
 }
 
 ColorBlockInfo::ColorBlockInfo(const CodelTable& table)

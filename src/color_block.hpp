@@ -11,6 +11,9 @@ class ColorBlockBase {
   virtual const ColorBlockBase* next(Direction direction,
                                      Choose choose) const = 0;
   const ColorBlockBase* address() const;
+  virtual bool is_colored() const;
+  virtual bool is_white() const;
+  virtual bool is_black() const;
  protected:
   ColorBlockBase();
  private:
@@ -26,6 +29,7 @@ class ColorBlock : public ColorBlockBase {
                              Choose choose) const override;
   void set_next(const ColorBlockBase* next,
                 Direction direction, Choose choose);
+  bool is_colored() const override;
  private:
   Codel codel_;
   size_t codel_size_;
@@ -37,6 +41,7 @@ class BlackBlock : public ColorBlockBase {
   BlackBlock();
   const ColorBlockBase* next(Direction direction,
                              Choose choose) const override;
+  bool is_black() const override;
 };
 
 class WhiteBlock : public ColorBlockBase {
@@ -44,6 +49,7 @@ class WhiteBlock : public ColorBlockBase {
   explicit WhiteBlock(const ColorBlockBase* next);
   const ColorBlockBase* next(Direction direction,
                              Choose choose) const override;
+  bool is_white() const override;
  private:
   const ColorBlockBase* next_;
 };

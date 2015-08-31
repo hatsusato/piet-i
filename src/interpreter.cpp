@@ -1,4 +1,6 @@
 #include "interpreter.hpp"
+#include <algorithm>
+#include <iterator>
 
 void Stack::push_command(size_t number) {
   push(static_cast<int>(number));
@@ -43,6 +45,20 @@ Choose Stack::switch_command(Choose choose) {
 void Stack::duplicate_command() {
   if (!empty()) {
     push(top());
+  }
+}
+void Stack::roll_command() {
+  if (2 <= size()) {
+    const auto depth = *std::next(c.rbegin());
+    if (0 <= depth && static_cast<size_t>(depth) <= size() - 2) {
+      const auto step = pop_get();
+      pop();
+      if (2 <= depth) {
+        const auto rolls = (step < 0) ? (step % depth + depth) : (step % depth);
+        const auto top = c.rbegin();
+        std::rotate(top, std::next(top, rolls), std::next(top, depth));
+      }
+    }
   }
 }
 int Stack::pop_get() {

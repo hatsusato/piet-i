@@ -17,11 +17,11 @@ std::array<int, 4> coordinates_range(const std::vector<Coord>& coords) {
     const auto x = std::get<0>(coord);
     const auto y = std::get<1>(coord);
     right = std::max(right, x);
-    up = std::min(up, y);
-    left = std::min(left, x);
     down = std::max(down, y);
+    left = std::min(left, x);
+    up = std::min(up, y);
   }
-  return {{right, up, left, down}};
+  return {{right, down, left, up}};
 }
 UnaryPredicate generate_same_predicate(Direction dir, int value) {
   using namespace std::placeholders;

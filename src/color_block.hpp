@@ -17,11 +17,12 @@ using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 
 class ColorBlock : public ColorBlockBase {
  public:
-  ColorBlock(const Codel& codel);
+  explicit ColorBlock(const ConnectedCodel& connected);
   void set_next(const ColorBlockBase* next,
                 Direction direction, Choose choose);
  private:
   Codel codel_;
+  size_t codel_size_;
   const ColorBlockBase* next_[4][2];
 };
 
@@ -32,7 +33,7 @@ class BlackBlock : public ColorBlockBase {
 
 class WhiteBlock : public ColorBlockBase {
  public:
-  WhiteBlock(const ColorBlockBase* next);
+  explicit WhiteBlock(const ColorBlockBase* next);
  private:
   const ColorBlockBase* next_;
 };
@@ -42,7 +43,7 @@ class ColorBlockInfo {
                                     std::unique_ptr<ColorBlock> >;
   using MonoBlockData = std::tuple<const ColorBlockBase*, ColorBlockPtr>;
  public:
-  ColorBlockInfo(const CodelTable& table);
+  explicit ColorBlockInfo(const CodelTable& table);
   std::vector<ColorBlockPtr> extract_color_blocks();
  private:
   void initialize();

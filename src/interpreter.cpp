@@ -113,6 +113,14 @@ bool Interpreter::stepwise_execute() {
   }
   return false;
 }
+void Interpreter::next_direction() {
+  const auto d = static_cast<int>(direction_) + 1;
+  direction_ = static_cast<Direction>(d % 4);
+}
+void Interpreter::next_choose() {
+  const auto c = static_cast<int>(choose_) + 1;
+  choose_ = static_cast<Choose>(c % 2);
+}
 void Interpreter::nop_command() {}
 void Interpreter::push_command() {
   stack_.push_command(current_->codel_size());

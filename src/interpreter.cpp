@@ -61,6 +61,16 @@ void Stack::roll_command() {
     }
   }
 }
+void Stack::in_number_command() {
+  int number;
+  std::wcin >> number;
+  push(number);
+}
+void Stack::in_char_command() {
+  wchar_t character;
+  std::wcin >> character;
+  push(static_cast<int>(character));
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

@@ -17,6 +17,8 @@ class Stack : public std::stack<int, std::vector<int> > {
   Choose switch_command(Choose choose);
   void duplicate_command();
   void roll_command();
+  void in_number_command();
+  void in_char_command();
  private:
   int pop_get();
 };

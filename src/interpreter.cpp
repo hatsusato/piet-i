@@ -87,6 +87,9 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       commands_() {
   set_commands();
 }
+void Interpreter::run() {
+  while (stepwise_execute()) {}
+}
 bool Interpreter::stepwise_execute() {
   for (int i = 0; i < 4; ++i, next_direction()) {
     bool choose_changed = false;

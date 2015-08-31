@@ -30,6 +30,7 @@ class Interpreter {
   using Command = void (Interpreter::*)();
  public:
   explicit Interpreter(std::vector<ColorBlockPtr>&& network);
+  void run();
   bool stepwise_execute();
  private:
   void do_command(const ColorBlockBase* current,

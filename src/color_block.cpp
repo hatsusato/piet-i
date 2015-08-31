@@ -142,6 +142,7 @@ void ColorBlockInfo::connect(ColorBlockData& color_block) {
         const auto choose = static_cast<Choose>(c);
         const auto edge = connected.edge(direction, choose);
         const auto next = get_access_point(edge, direction);
+        assert(pointer->codel() != next->codel());
         pointer->set_next(next, direction, choose);
       }
     }

@@ -138,3 +138,9 @@ void Interpreter::in_number_command() {
 void Interpreter::in_char_command() {
   stack_.in_command<wchar_t>();
 }
+void Interpreter::out_number_command() {
+  stack_.out_command<int>();
+}
+void Interpreter::out_char_command() {
+  stack_.out_command<wchar_t>();
+}

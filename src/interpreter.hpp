@@ -47,6 +47,8 @@ class Interpreter {
   void roll_command();
   void in_number_command();
   void in_char_command();
+  void out_number_command();
+  void out_char_command();
  private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;

@@ -18,6 +18,12 @@ void Stack::binary_command() {
     }
   }
 }
+template <typename Op>
+void Stack::unary_command() {
+  if (!empty()) {
+    push(static_cast<int>(Op()(pop_get())));
+  }
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

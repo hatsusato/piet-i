@@ -10,6 +10,8 @@ class Stack : public std::stack<int, std::vector<int> > {
   void pop_command();
   template <typename Op, bool zero_check = false>
   void binary_command();
+  template <typename Op>
+  void unary_command();
  private:
   int pop_get();
 };

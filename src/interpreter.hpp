@@ -15,6 +15,7 @@ class Stack : public std::stack<int, std::vector<int> > {
   void unary_command();
   Direction pointer_command(Direction direction);
   Choose switch_command(Choose choose);
+  void duplicate_command();
  private:
   int pop_get();
 };

@@ -40,6 +40,11 @@ Choose Stack::switch_command(Choose choose) {
     return choose;
   }
 }
+void Stack::duplicate_command() {
+  if (!empty()) {
+    push(top());
+  }
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

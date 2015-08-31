@@ -120,3 +120,9 @@ void Interpreter::not_command() {
 void Interpreter::greater_command() {
   stack_.binary_command<std::greater<int> >();
 }
+void Interpreter::pointer_command() {
+  direction_ = stack_.pointer_command(direction_);
+}
+void Interpreter::switch_command() {
+  choose_ = stack_.switch_command(choose_);
+}

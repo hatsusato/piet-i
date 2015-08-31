@@ -41,6 +41,8 @@ class Interpreter {
   void mod_command();
   void not_command();
   void greater_command();
+  void pointer_command();
+  void switch_command();
  private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;

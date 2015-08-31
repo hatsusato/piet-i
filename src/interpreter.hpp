@@ -17,10 +17,10 @@ class Stack : public std::stack<int, std::vector<int> > {
   Choose switch_command(Choose choose);
   void duplicate_command();
   void roll_command();
-  void in_number_command();
-  void in_char_command();
-  void out_number_command();
-  void out_char_command();
+  template <typename T>
+  void in_command();
+  template <typename T>
+  void out_command();
  private:
   int pop_get();
 };

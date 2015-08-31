@@ -61,21 +61,15 @@ void Stack::roll_command() {
     }
   }
 }
-void Stack::in_number_command() {
-  int number;
-  std::wcin >> number;
-  push(number);
+template <typename T>
+void Stack::in_command() {
+  T value;
+  std::wcin >> value;
+  push(static_cast<int>(value));
 }
-void Stack::in_char_command() {
-  wchar_t character;
-  std::wcin >> character;
-  push(static_cast<int>(character));
-}
-void Stack::out_number_command() {
-  std::wcout << pop_get();
-}
-void Stack::out_char_command() {
-  std::wcout << static_cast<wchar_t>(pop_get());
+template <typename T>
+void Stack::out_command() {
+  std::wcout << static_cast<T>(pop_get());
 }
 int Stack::pop_get() {
   const auto value = top();

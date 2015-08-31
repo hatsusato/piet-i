@@ -71,7 +71,7 @@ size_t gcd(size_t a, size_t b) {
 
 Coord next_coordinate(const Coord& coord, Direction dir) {
   static const int dx[] = {1, 0, -1, 0};
-  static const int dy[] = {0, -1, 0, 1};
+  static const int dy[] = {0, 1, 0, -1};
   const auto d = static_cast<int>(dir);
   int x, y;
   std::tie(x, y) = coord;

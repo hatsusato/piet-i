@@ -21,7 +21,7 @@ enum class Brightness {
 };
 
 enum class Direction {
-  RIGHT, UP, LEFT, DOWN
+  RIGHT, DOWN, LEFT, UP
 };
 
 enum class Choose {

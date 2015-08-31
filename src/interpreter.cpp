@@ -132,3 +132,9 @@ void Interpreter::duplicate_command() {
 void Interpreter::roll_command() {
   stack_.roll_command();
 }
+void Interpreter::in_number_command() {
+  stack_.in_command<int>();
+}
+void Interpreter::in_char_command() {
+  stack_.in_command<wchar_t>();
+}

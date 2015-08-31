@@ -3,6 +3,7 @@
 
 #include <stack>
 #include <vector>
+#include "utils.hpp"
 
 class Stack : public std::stack<int, std::vector<int> > {
  public:
@@ -12,6 +13,7 @@ class Stack : public std::stack<int, std::vector<int> > {
   void binary_command();
   template <typename Op>
   void unary_command();
+  Direction pointer_command(Direction direction);
  private:
   int pop_get();
 };

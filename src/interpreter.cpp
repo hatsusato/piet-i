@@ -24,6 +24,14 @@ void Stack::unary_command() {
     push(static_cast<int>(Op()(pop_get())));
   }
 }
+Direction Stack::pointer_command(Direction direction) {
+  if (!empty()) {
+    const auto d = static_cast<int>(direction) + pop_get();
+    return static_cast<Direction>(d % 4);
+  } else {
+    return direction;
+  }
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

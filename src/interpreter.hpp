@@ -49,6 +49,7 @@ class Interpreter {
   void in_char_command();
   void out_number_command();
   void out_char_command();
+  void set_commands();
  private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;

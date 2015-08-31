@@ -90,8 +90,9 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       direction_(Direction::RIGHT),
       choose_(Choose::LEFT),
       stack_(),
-      commands_()
-{}
+      commands_() {
+  set_commands();
+}
 void Interpreter::nop_command() {}
 void Interpreter::push_command() {
   stack_.push_command(current_->codel_size());
@@ -143,4 +144,24 @@ void Interpreter::out_number_command() {
 }
 void Interpreter::out_char_command() {
   stack_.out_command<wchar_t>();
+}
+void Interpreter::set_commands() {
+  commands_[0] = &Interpreter::nop_command;
+  commands_[1] = &Interpreter::push_command;
+  commands_[2] = &Interpreter::pop_command;
+  commands_[3] = &Interpreter::add_command;
+  commands_[4] = &Interpreter::subtract_command;
+  commands_[5] = &Interpreter::multiply_command;
+  commands_[6] = &Interpreter::divide_command;
+  commands_[7] = &Interpreter::mod_command;
+  commands_[8] = &Interpreter::not_command;
+  commands_[9] = &Interpreter::greater_command;
+  commands_[10] = &Interpreter::pointer_command;
+  commands_[11] = &Interpreter::switch_command;
+  commands_[12] = &Interpreter::duplicate_command;
+  commands_[13] = &Interpreter::roll_command;
+  commands_[14] = &Interpreter::in_number_command;
+  commands_[15] = &Interpreter::in_char_command;
+  commands_[16] = &Interpreter::out_number_command;
+  commands_[17] = &Interpreter::out_char_command;
 }

@@ -1,5 +1,6 @@
 #include "interpreter.hpp"
 #include <algorithm>
+#include <functional>
 #include <iterator>
 
 void Stack::push_command(size_t number) {
@@ -97,4 +98,16 @@ void Interpreter::push_command() {
 }
 void Interpreter::pop_command() {
   stack_.pop_command();
+}
+void Interpreter::add_command() {
+  stack_.binary_command<std::plus<int> >();
+}
+void Interpreter::subtract_command() {
+  stack_.binary_command<std::minus<int> >();
+}
+void Interpreter::multiply_command() {
+  stack_.binary_command<std::multiplies<int> >();
+}
+void Interpreter::greater_command() {
+  stack_.binary_command<std::greater<int> >();
 }

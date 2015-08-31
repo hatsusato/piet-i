@@ -34,6 +34,10 @@ class Interpreter {
   void nop_command();
   void push_command();
   void pop_command();
+  void add_command();
+  void subtract_command();
+  void multiply_command();
+  void greater_command();
  private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;

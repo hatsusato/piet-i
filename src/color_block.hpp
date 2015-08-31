@@ -7,6 +7,7 @@
 class ColorBlockBase {
  public:
   virtual ~ColorBlockBase() = 0;
+  virtual size_t codel_size() const;
   virtual const ColorBlockBase* next(Direction direction,
                                      Choose choose) const = 0;
   const ColorBlockBase* address() const;
@@ -20,6 +21,7 @@ using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 class ColorBlock : public ColorBlockBase {
  public:
   explicit ColorBlock(const ConnectedCodel& connected);
+  size_t codel_size() const override;
   const ColorBlockBase* next(Direction direction,
                              Choose choose) const override;
   void set_next(const ColorBlockBase* next,

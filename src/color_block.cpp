@@ -14,6 +14,9 @@ struct Extractor {
 
 ColorBlockBase::ColorBlockBase() {}
 ColorBlockBase::~ColorBlockBase() {}
+size_t ColorBlockBase::codel_size() const {
+  return 0;
+}
 const ColorBlockBase* ColorBlockBase::address() const {
   return this;
 }
@@ -21,6 +24,9 @@ const ColorBlockBase* ColorBlockBase::address() const {
 ColorBlock::ColorBlock(const ConnectedCodel& connected)
     : codel_(connected.codel()), codel_size_(connected.size()), next_() {
   assert(codel_.is_colored());
+}
+size_t ColorBlock::codel_size() const {
+  return codel_size_;
 }
 const ColorBlockBase* ColorBlock::next(Direction direction,
                                        Choose choose) const {

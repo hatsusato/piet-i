@@ -91,3 +91,4 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       stack_(),
       commands_()
 {}
+void Interpreter::nop_command() {}

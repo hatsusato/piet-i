@@ -31,6 +31,8 @@ class Interpreter {
  public:
   explicit Interpreter(std::vector<ColorBlockPtr>&& network);
  private:
+  void nop_command();
+ private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;
   Direction direction_;

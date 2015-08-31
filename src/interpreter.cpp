@@ -108,6 +108,12 @@ void Interpreter::subtract_command() {
 void Interpreter::multiply_command() {
   stack_.binary_command<std::multiplies<int> >();
 }
+void Interpreter::divide_command() {
+  stack_.binary_command<std::divides<int>, true>();
+}
+void Interpreter::mod_command() {
+  stack_.binary_command<std::modulus<int>, true>();
+}
 void Interpreter::greater_command() {
   stack_.binary_command<std::greater<int> >();
 }

@@ -37,6 +37,8 @@ class Interpreter {
   void add_command();
   void subtract_command();
   void multiply_command();
+  void divide_command();
+  void mod_command();
   void greater_command();
  private:
   const std::vector<ColorBlockPtr> network_;

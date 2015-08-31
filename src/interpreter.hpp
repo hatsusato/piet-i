@@ -14,6 +14,7 @@ class Stack : public std::stack<int, std::vector<int> > {
   template <typename Op>
   void unary_command();
   Direction pointer_command(Direction direction);
+  Choose switch_command(Choose choose);
  private:
   int pop_get();
 };

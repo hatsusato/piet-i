@@ -32,6 +32,14 @@ Direction Stack::pointer_command(Direction direction) {
     return direction;
   }
 }
+Choose Stack::switch_command(Choose choose) {
+  if (!empty()) {
+    const auto c = static_cast<int>(choose) + pop_get();
+    return static_cast<Choose>(c % 2);
+  } else {
+    return choose;
+  }
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

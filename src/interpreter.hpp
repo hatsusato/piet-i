@@ -32,6 +32,8 @@ class Interpreter {
   explicit Interpreter(std::vector<ColorBlockPtr>&& network);
   bool stepwise_execute();
  private:
+  void do_command(const ColorBlockBase* current,
+                  const ColorBlockBase* next);
   void next_direction();
   void next_choose();
   void nop_command();

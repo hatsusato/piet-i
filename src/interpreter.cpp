@@ -113,6 +113,19 @@ bool Interpreter::stepwise_execute() {
   }
   return false;
 }
+void Interpreter::do_command(const ColorBlockBase* current,
+                             const ColorBlockBase* next) {
+  const Codel& current_codel = current->codel();
+  const Codel& next_codel = next->codel();
+  const auto current_hue = static_cast<int>(current_codel.color());
+  const auto next_hue = static_cast<int>(next_codel.color());
+  const auto hue_diff = (next_hue - current_hue + 6) % 6;
+  const auto current_lightness = static_cast<int>(current_codel.brightness());
+  const auto next_lightness = static_cast<int>(next_codel.brightness());
+  const auto lightness_diff = (next_lightness - current_lightness + 3) % 3;
+  const auto diff = hue_diff * 3 + lightness_diff;
+  (this->*commands_[diff])();
+}
 void Interpreter::next_direction() {
   const auto d = static_cast<int>(direction_) + 1;
   direction_ = static_cast<Direction>(d % 4);

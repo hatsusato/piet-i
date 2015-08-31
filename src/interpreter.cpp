@@ -8,6 +8,16 @@ void Stack::pop_command() {
     pop();
   }
 }
+template <typename Op, bool zero_check>
+void Stack::binary_command() {
+  if (2 <= size()) {
+    if (!zero_check || top()) {
+      const auto rhs = pop_get();
+      const auto lhs = pop_get();
+      push(static_cast<int>(Op()(lhs, rhs)));
+    }
+  }
+}
 int Stack::pop_get() {
   const auto value = top();
   pop();

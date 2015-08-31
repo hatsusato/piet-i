@@ -114,6 +114,9 @@ void Interpreter::divide_command() {
 void Interpreter::mod_command() {
   stack_.binary_command<std::modulus<int>, true>();
 }
+void Interpreter::not_command() {
+  stack_.unary_command<std::logical_not<int> >();
+}
 void Interpreter::greater_command() {
   stack_.binary_command<std::greater<int> >();
 }

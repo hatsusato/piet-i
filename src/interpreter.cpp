@@ -8,3 +8,8 @@ void Stack::pop_command() {
     pop();
   }
 }
+int Stack::pop_get() {
+  const auto value = top();
+  pop();
+  return value;
+}

@@ -88,5 +88,6 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       current_(network_.front()->address()),
       direction_(Direction::RIGHT),
       choose_(Choose::LEFT),
-      stack_()
+      stack_(),
+      commands_()
 {}

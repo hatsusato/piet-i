@@ -27,6 +27,7 @@ class Stack : public std::stack<int, std::vector<int> > {
 };
 
 class Interpreter {
+  using Command = void (Interpreter::*)();
  public:
   explicit Interpreter(std::vector<ColorBlockPtr>&& network);
  private:
@@ -35,6 +36,7 @@ class Interpreter {
   Direction direction_;
   Choose choose_;
   Stack stack_;
+  Command commands_[18];
 };
 
 #endif  // PIET_I_INTERPRETER_HPP

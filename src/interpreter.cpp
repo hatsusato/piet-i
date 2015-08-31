@@ -92,3 +92,9 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       commands_()
 {}
 void Interpreter::nop_command() {}
+void Interpreter::push_command() {
+  stack_.push_command(current_->codel_size());
+}
+void Interpreter::pop_command() {
+  stack_.pop_command();
+}

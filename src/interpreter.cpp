@@ -1,5 +1,6 @@
 #include "interpreter.hpp"
 #include <algorithm>
+#include <functional>
 #include <iterator>
 
 void Stack::push_command(size_t number) {
@@ -75,4 +76,86 @@ int Stack::pop_get() {
   const auto value = top();
   pop();
   return value;
+}
+
+Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
+    : network_(std::move(network)),
+      current_(network_.front()->address()),
+      direction_(Direction::RIGHT),
+      choose_(Choose::LEFT),
+      stack_(),
+      commands_() {
+  set_commands();
+}
+void Interpreter::nop_command() {}
+void Interpreter::push_command() {
+  stack_.push_command(current_->codel_size());
+}
+void Interpreter::pop_command() {
+  stack_.pop_command();
+}
+void Interpreter::add_command() {
+  stack_.binary_command<std::plus<int> >();
+}
+void Interpreter::subtract_command() {
+  stack_.binary_command<std::minus<int> >();
+}
+void Interpreter::multiply_command() {
+  stack_.binary_command<std::multiplies<int> >();
+}
+void Interpreter::divide_command() {
+  stack_.binary_command<std::divides<int>, true>();
+}
+void Interpreter::mod_command() {
+  stack_.binary_command<std::modulus<int>, true>();
+}
+void Interpreter::not_command() {
+  stack_.unary_command<std::logical_not<int> >();
+}
+void Interpreter::greater_command() {
+  stack_.binary_command<std::greater<int> >();
+}
+void Interpreter::pointer_command() {
+  direction_ = stack_.pointer_command(direction_);
+}
+void Interpreter::switch_command() {
+  choose_ = stack_.switch_command(choose_);
+}
+void Interpreter::duplicate_command() {
+  stack_.duplicate_command();
+}
+void Interpreter::roll_command() {
+  stack_.roll_command();
+}
+void Interpreter::in_number_command() {
+  stack_.in_command<int>();
+}
+void Interpreter::in_char_command() {
+  stack_.in_command<wchar_t>();
+}
+void Interpreter::out_number_command() {
+  stack_.out_command<int>();
+}
+void Interpreter::out_char_command() {
+  stack_.out_command<wchar_t>();
+}
+void Interpreter::set_commands() {
+  commands_[0] = &Interpreter::nop_command;
+  commands_[1] = &Interpreter::push_command;
+  commands_[2] = &Interpreter::pop_command;
+  commands_[3] = &Interpreter::add_command;
+  commands_[4] = &Interpreter::subtract_command;
+  commands_[5] = &Interpreter::multiply_command;
+  commands_[6] = &Interpreter::divide_command;
+  commands_[7] = &Interpreter::mod_command;
+  commands_[8] = &Interpreter::not_command;
+  commands_[9] = &Interpreter::greater_command;
+  commands_[10] = &Interpreter::pointer_command;
+  commands_[11] = &Interpreter::switch_command;
+  commands_[12] = &Interpreter::duplicate_command;
+  commands_[13] = &Interpreter::roll_command;
+  commands_[14] = &Interpreter::in_number_command;
+  commands_[15] = &Interpreter::in_char_command;
+  commands_[16] = &Interpreter::out_number_command;
+  commands_[17] = &Interpreter::out_char_command;
 }

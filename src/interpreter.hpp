@@ -3,6 +3,7 @@
 
 #include <stack>
 #include <vector>
+#include "color_block.hpp"
 #include "utils.hpp"
 
 class Stack : public std::stack<int, std::vector<int> > {
@@ -23,6 +24,17 @@ class Stack : public std::stack<int, std::vector<int> > {
   void out_char_command();
  private:
   int pop_get();
+};
+
+class Interpreter {
+ public:
+  explicit Interpreter(std::vector<ColorBlockPtr>&& network);
+ private:
+  const std::vector<ColorBlockPtr> network_;
+  const ColorBlockBase* current_;
+  Direction direction_;
+  Choose choose_;
+  Stack stack_;
 };
 
 #endif  // PIET_I_INTERPRETER_HPP

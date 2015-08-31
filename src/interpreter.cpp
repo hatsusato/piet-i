@@ -82,3 +82,11 @@ int Stack::pop_get() {
   pop();
   return value;
 }
+
+Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
+    : network_(std::move(network)),
+      current_(network_.front()->address()),
+      direction_(Direction::RIGHT),
+      choose_(Choose::LEFT),
+      stack_()
+{}

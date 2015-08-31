@@ -22,6 +22,12 @@ ColorBlock::ColorBlock(const ConnectedCodel& connected)
     : codel_(connected.codel()), codel_size_(connected.size()), next_() {
   assert(codel_.is_colored());
 }
+const ColorBlockBase* ColorBlock::next(Direction direction,
+                                       Choose choose) const {
+  const auto d = static_cast<int>(direction);
+  const auto c = static_cast<int>(choose);
+  return next_[d][c];
+}
 void ColorBlock::set_next(const ColorBlockBase* next,
                           Direction direction, Choose choose) {
   const auto d = static_cast<int>(direction);
@@ -31,10 +37,16 @@ void ColorBlock::set_next(const ColorBlockBase* next,
 
 BlackBlock::BlackBlock()
 {}
+const ColorBlockBase* BlackBlock::next(Direction, Choose) const {
+  return this;
+}
 
 WhiteBlock::WhiteBlock(const ColorBlockBase* next)
     : next_(next)
 {}
+const ColorBlockBase* WhiteBlock::next(Direction, Choose) const {
+  return next_;
+}
 
 ColorBlockInfo::ColorBlockInfo(const CodelTable& table)
     : table_(table), color_blocks_(), mono_blocks_() {

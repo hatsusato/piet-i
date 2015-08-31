@@ -137,7 +137,9 @@ void Interpreter::next_choose() {
   const auto c = static_cast<int>(choose_) + 1;
   choose_ = static_cast<Choose>(c % 2);
 }
-void Interpreter::nop_command() {}
+void Interpreter::nop_command() {
+  assert(false);
+}
 void Interpreter::push_command() {
   stack_.push_command(current_->codel_size());
 }

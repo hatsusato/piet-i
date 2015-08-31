@@ -87,6 +87,32 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       commands_() {
   set_commands();
 }
+bool Interpreter::stepwise_execute() {
+  for (int i = 0; i < 4; ++i, next_direction()) {
+    bool choose_changed = false;
+    do {
+      bool next_changed = false;
+      auto next = current_->next(direction_, choose_);
+      if (next->is_white()) {
+        next = next->next(direction_, choose_);
+        next_changed = true;
+      }
+      if (next->is_colored()) {
+        if (!next_changed) {
+          do_command(current_, next);
+        }
+        current_ = next;
+        return true;
+      } else if (!choose_changed) {
+        next_choose();
+        choose_changed = true;
+        continue;
+      }
+      assert(next->is_black() && choose_changed);
+    } while(false);
+  }
+  return false;
+}
 void Interpreter::nop_command() {}
 void Interpreter::push_command() {
   stack_.push_command(current_->codel_size());

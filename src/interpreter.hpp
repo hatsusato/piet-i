@@ -30,6 +30,7 @@ class Interpreter {
   using Command = void (Interpreter::*)();
  public:
   explicit Interpreter(std::vector<ColorBlockPtr>&& network);
+  bool stepwise_execute();
  private:
   void nop_command();
   void push_command();

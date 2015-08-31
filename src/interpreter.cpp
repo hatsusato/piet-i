@@ -87,6 +87,56 @@ Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
       commands_() {
   set_commands();
 }
+void Interpreter::run() {
+  while (stepwise_execute()) {}
+}
+bool Interpreter::stepwise_execute() {
+  for (int i = 0; i < 4; ++i, next_direction()) {
+    bool choose_changed = false;
+    do {
+      bool next_changed = false;
+      auto next = current_->next(direction_, choose_);
+      if (next->is_white()) {
+        next = next->next(direction_, choose_);
+        next_changed = true;
+      }
+      if (next->is_colored()) {
+        if (!next_changed) {
+          do_command(current_, next);
+        }
+        current_ = next;
+        return true;
+      } else if (!choose_changed) {
+        next_choose();
+        choose_changed = true;
+        continue;
+      }
+      assert(next->is_black() && choose_changed);
+    } while(false);
+  }
+  return false;
+}
+void Interpreter::do_command(const ColorBlockBase* current,
+                             const ColorBlockBase* next) {
+  const Codel& current_codel = current->codel();
+  const Codel& next_codel = next->codel();
+  const auto current_hue = static_cast<int>(current_codel.color());
+  const auto next_hue = static_cast<int>(next_codel.color());
+  const auto hue_diff = (next_hue - current_hue + 6) % 6;
+  const auto current_lightness = static_cast<int>(current_codel.brightness());
+  const auto next_lightness = static_cast<int>(next_codel.brightness());
+  const auto lightness_diff = (next_lightness - current_lightness + 3) % 3;
+  const auto diff = hue_diff * 3 + lightness_diff;
+  (this->*commands_[diff])();
+}
+void Interpreter::next_direction() {
+  const auto d = static_cast<int>(direction_) + 1;
+  direction_ = static_cast<Direction>(d % 4);
+}
+void Interpreter::next_choose() {
+  const auto c = static_cast<int>(choose_) + 1;
+  choose_ = static_cast<Choose>(c % 2);
+}
 void Interpreter::nop_command() {}
 void Interpreter::push_command() {
   stack_.push_command(current_->codel_size());

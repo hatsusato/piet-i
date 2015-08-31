@@ -34,6 +34,9 @@ ColorBlock::ColorBlock(const ConnectedCodel& connected)
     : codel_(connected.codel()), codel_size_(connected.size()), next_() {
   assert(codel_.is_colored());
 }
+Codel ColorBlock::codel() const {
+  return codel_;
+}
 size_t ColorBlock::codel_size() const {
   return codel_size_;
 }
@@ -55,6 +58,9 @@ bool ColorBlock::is_colored() const {
 
 BlackBlock::BlackBlock()
 {}
+Codel BlackBlock::codel() const {
+  return Codel(Color::BLACK, Brightness::NORMAL);
+}
 const ColorBlockBase* BlackBlock::next(Direction, Choose) const {
   return this;
 }
@@ -65,6 +71,9 @@ bool BlackBlock::is_black() const {
 WhiteBlock::WhiteBlock(const ColorBlockBase* next)
     : next_(next)
 {}
+Codel WhiteBlock::codel() const {
+  return Codel(Color::WHITE, Brightness::NORMAL);
+}
 const ColorBlockBase* WhiteBlock::next(Direction, Choose) const {
   return next_;
 }

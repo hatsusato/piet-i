@@ -129,3 +129,6 @@ void Interpreter::switch_command() {
 void Interpreter::duplicate_command() {
   stack_.duplicate_command();
 }
+void Interpreter::roll_command() {
+  stack_.roll_command();
+}

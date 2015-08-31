@@ -44,6 +44,7 @@ class Interpreter {
   void pointer_command();
   void switch_command();
   void duplicate_command();
+  void roll_command();
  private:
   const std::vector<ColorBlockPtr> network_;
   const ColorBlockBase* current_;

@@ -13,6 +13,8 @@ struct Codel {
   Codel(Hue hue, Lightness lightness);
   explicit Codel(Colour colour);
   explicit Codel(ColourType type);
+  Colour colour() const;
+  ColourType type() const;
  public:
   friend bool operator==(const Codel&, const Codel&);
  private:

@@ -14,6 +14,12 @@ Codel::Codel(ColourType type)
     : colour_(),
       type_(type == ColourType::COLOUR ? ColourType::UNKNOWN : type)
 {}
+Colour Codel::colour() const {
+  return colour_;
+}
+ColourType Codel::type() const {
+  return type_;
+}
 
 bool operator==(const Codel& lhs, const Codel& rhs) {
   return (lhs.colour_ == rhs.colour_ && lhs.type_ == rhs.type_);

@@ -25,7 +25,6 @@ enum class Choose {
 
 Color what_color(const Pixel& pixel);
 Brightness how_bright(const Pixel& pixel);
-size_t gcd(size_t a, size_t b);
 Coord next_coordinate(const Coord& coord, Direction dir);
 
 template <size_t N>

@@ -2,8 +2,13 @@
 #define PIET_I_CODEL_TABLE_HPP
 
 #include <vector>
-#include "codel.hpp"
-#include "utils.hpp"
+#include "png.hpp"
+
+struct Codel;
+
+enum class RegardUnknownAs {
+  BLACK, WHITE, UNKNOWN
+};
 
 class CodelTable {
  public:
@@ -22,6 +27,6 @@ class CodelTable {
 };
 
 size_t codel_size(const Image& image);
-CodelTable make_codel_table(const Image& image);
+CodelTable make_codel_table(const Image& image, RegardUnknownAs as);
 
 #endif  // PIET_I_CODEL_TABLE_HPP

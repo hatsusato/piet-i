@@ -34,10 +34,9 @@ void Codel::set_color(Color color) {
 void Codel::set_brightness(Brightness brightness) {
   brightness_part_ = static_cast<unsigned>(brightness);
 }
+
 bool operator==(const Codel& lhs, const Codel& rhs) {
-  return (lhs.is_valid() && rhs.is_valid() &&
-          lhs.color() == rhs.color() &&
-          lhs.brightness() == rhs.brightness());
+  return (lhs.colour_ == rhs.colour_ && lhs.type_ == rhs.type_);
 }
 bool operator!=(const Codel& lhs, const Codel& rhs) {
   return !(lhs == rhs);

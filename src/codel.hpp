@@ -19,10 +19,13 @@ struct Codel {
   Brightness brightness() const;
   void set_color(Color color);
   void set_brightness(Brightness brightness);
+ public:
+  friend bool operator==(const Codel&, const Codel&);
  private:
   Colour colour_;
   ColourType type_;
 };
+
 bool operator==(const Codel& lhs, const Codel& rhs);
 bool operator!=(const Codel& lhs, const Codel& rhs);
 

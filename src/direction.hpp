@@ -12,4 +12,7 @@ enum class CC {
   LEFT, RIGHT
 };
 
+CC& operator++(CC& cc);
+CC& operator+=(CC& cc, int value);
+
 #endif  // PIET_I_DIRECTION_HPP

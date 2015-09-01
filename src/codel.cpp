@@ -14,6 +14,9 @@ Codel::Codel(ColourType type)
     : colour_(),
       type_(type == ColourType::COLOUR ? ColourType::UNKNOWN : type)
 {}
+Codel::operator bool() const {
+  return type_ != ColourType::UNKNOWN;
+}
 Colour Codel::colour() const {
   return colour_;
 }

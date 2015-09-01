@@ -14,6 +14,7 @@ struct Codel {
   Codel(Hue hue, Lightness lightness);
   explicit Codel(Colour colour);
   explicit Codel(ColourType type);
+  explicit operator bool() const;
   Colour colour() const;
   ColourType type() const;
  public:

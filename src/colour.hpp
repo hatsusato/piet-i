@@ -15,6 +15,8 @@ struct Colour {
   Colour(Hue hue, Lightness lightness);
   Hue hue() const;
   Lightness lightness() const;
+ public:
+  static const Colour unknown;
  private:
   Hue hue_;
   Lightness lightness_;

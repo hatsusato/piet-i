@@ -13,3 +13,5 @@ Hue Colour::hue() const {
 Lightness Colour::lightness() const {
   return lightness_;
 }
+
+const Colour Colour::unknown;

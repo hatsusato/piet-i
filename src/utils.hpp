@@ -4,12 +4,7 @@
 #include <memory>
 #include <tuple>
 #include <cassert>
-#include <png++/image.hpp>
-#include <png++/rgb_pixel.hpp>
 
-using Pixel = png::rgb_pixel;
-using Image = png::image<Pixel>;
-using Byte = png::byte;
 using Coord = std::tuple<int, int>;
 
 enum class Color {
@@ -30,8 +25,6 @@ enum class Choose {
 
 Color what_color(const Pixel& pixel);
 Brightness how_bright(const Pixel& pixel);
-bool operator==(const Pixel& lhs, const Pixel& rhs);
-bool operator!=(const Pixel& lhs, const Pixel& rhs);
 size_t gcd(size_t a, size_t b);
 Coord next_coordinate(const Coord& coord, Direction dir);
 

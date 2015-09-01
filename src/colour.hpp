@@ -1,0 +1,4 @@
+#ifndef PIET_I_COLOUR_HPP
+#define PIET_I_COLOUR_HPP
+
+#endif  // PIET_I_COLOUR_HPP

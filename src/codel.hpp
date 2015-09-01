@@ -1,29 +1,38 @@
 #ifndef PIET_I_CODEL_HPP
 #define PIET_I_CODEL_HPP
 
+#include "colour.hpp"
 #include "png.hpp"
-#include "utils.hpp"
+
+enum class ColourType {
+  BLACK, WHITE, COLOUR, UNKNOWN
+};
 
 struct Codel {
  public:
   Codel();
-  Codel(Color color, Brightness brightness);
-  explicit Codel(const Pixel& pixel);
-  bool is_valid() const;
-  bool is_colored() const;
-  Color color() const;
-  Brightness brightness() const;
-  void set_color(Color color);
-  void set_brightness(Brightness brightness);
- private:
-  struct {
-    unsigned color_part_ : 4;
-    unsigned brightness_part_ : 4;
-  };
+  Codel(Hue hue, Lightness lightness);
+  explicit Codel(Colour colour);
+  explicit Codel(ColourType type);
+  explicit operator bool() const;
+  bool is_colour() const;
+  bool is_black() const;
+  bool is_white() const;
+  Colour colour() const;
+  ColourType type() const;
  public:
+  static const Codel black;
+  static const Codel white;
   static const Codel unknown;
+  friend bool operator==(const Codel&, const Codel&);
+ private:
+  Colour colour_;
+  ColourType type_;
 };
+
 bool operator==(const Codel& lhs, const Codel& rhs);
 bool operator!=(const Codel& lhs, const Codel& rhs);
+
+Codel make_codel(const Pixel& pixel);
 
 #endif  // PIET_I_CODEL_HPP

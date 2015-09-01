@@ -1,41 +1,62 @@
 #include "codel.hpp"
 
 Codel::Codel()
-    : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
+    : colour_(), type_(ColourType::UNKNOWN)
 {}
-Codel::Codel(Color color, Brightness brightness)
-    : color_part_(static_cast<unsigned>(color)),
-      brightness_part_(static_cast<unsigned>(brightness))
+Codel::Codel(Hue hue, Lightness lightness)
+    : colour_(hue, lightness),
+      type_(colour_ ? ColourType::COLOUR : ColourType::UNKNOWN)
 {}
-Codel::Codel(const Pixel& pixel)
-    : Codel(what_color(pixel), how_bright(pixel))
+Codel::Codel(Colour colour)
+    : colour_(colour), type_(ColourType::COLOUR)
 {}
-bool Codel::is_valid() const {
-  return (color_part_ < static_cast<unsigned>(Color::UNKNOWN) &&
-          brightness_part_ < static_cast<unsigned>(Brightness::UNKNOWN));
+Codel::Codel(ColourType type)
+    : colour_(),
+      type_(type == ColourType::COLOUR ? ColourType::UNKNOWN : type)
+{}
+Codel::operator bool() const {
+  return type_ != ColourType::UNKNOWN;
 }
-bool Codel::is_colored() const {
-  return (static_cast<unsigned>(Color::BLACK) < color_part_ &&
-          color_part_ < static_cast<unsigned>(Color::WHITE));
+bool Codel::is_colour() const {
+  return type_ == ColourType::COLOUR;
 }
-Color Codel::color() const {
-  return static_cast<Color>(color_part_);
+bool Codel::is_black() const {
+  return type_ == ColourType::BLACK;
 }
-Brightness Codel::brightness() const {
-  return static_cast<Brightness>(brightness_part_);
+bool Codel::is_white() const {
+  return type_ == ColourType::WHITE;
 }
-void Codel::set_color(Color color) {
-  color_part_ = static_cast<unsigned>(color);
+Colour Codel::colour() const {
+  return colour_;
 }
-void Codel::set_brightness(Brightness brightness) {
-  brightness_part_ = static_cast<unsigned>(brightness);
+ColourType Codel::type() const {
+  return type_;
 }
+
+const Codel Codel::black = Codel(ColourType::BLACK);
+const Codel Codel::white = Codel(ColourType::WHITE);
+const Codel Codel::unknown = Codel(ColourType::UNKNOWN);
+
 bool operator==(const Codel& lhs, const Codel& rhs) {
-  return (lhs.is_valid() && rhs.is_valid() &&
-          lhs.color() == rhs.color() &&
-          lhs.brightness() == rhs.brightness());
+  return (lhs.colour_ == rhs.colour_ && lhs.type_ == rhs.type_);
 }
 bool operator!=(const Codel& lhs, const Codel& rhs) {
   return !(lhs == rhs);
 }
-const auto Codel::unknown = Codel();
+
+Codel make_codel(const Pixel& pixel) {
+  const auto colour = make_colour(pixel);
+  if (colour) {
+    return Codel(colour);
+  } else {
+    const Byte r = pixel.red, g = pixel.green, b = pixel.blue;
+    const Byte z = 0x00, f = 0xFF;
+    if (r == z && g == z && b == z) {
+      return Codel::black;
+    } else if (r == f && g == f && b == f) {
+      return Codel::white;
+    } else {
+      return Codel::unknown;
+    }
+  }
+}

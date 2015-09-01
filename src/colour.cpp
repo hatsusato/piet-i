@@ -25,3 +25,42 @@ bool operator==(const Colour& lhs, const Colour& rhs) {
 bool operator!=(const Colour& lhs, const Colour& rhs) {
   return !(lhs == rhs);
 }
+
+Colour make_colour(const Pixel& pixel) {
+  const Byte r = pixel.red, g = pixel.green, b = pixel.blue;
+  const Byte z = 0x00, c = 0xC0, f = 0xFF;
+  const auto which_hue = [r, g, b](Byte lower, Byte upper) -> Hue {
+    if (b == lower) {
+      if (g == lower) {
+        return Hue::RED;
+      } else if (r == upper) {
+        return Hue::YELLOW;
+      } else {
+        return Hue::GREEN;
+      }
+    } else {
+      if (g == upper) {
+        return Hue::CYAN;
+      } else if(r == lower) {
+        return Hue::BLUE;
+      } else {
+        return Hue::MAGENTA;
+      }
+    }
+  };
+  if ((r == z || r == c || r == f) &&
+      (g == z || g == c || g == f) &&
+      (b == z || b == c || b == f)) {
+    const bool has_z = (r == z || g == z || b == z);
+    const bool has_c = (r == c || g == c || b == c);
+    const bool has_f = (r == f || g == f || b == f);
+    if (!has_z && has_c && has_f) {
+      return Colour(which_hue(c, f), Lightness::LIGHT);
+    } else if (has_z && !has_c && has_f) {
+      return Colour(which_hue(z, f), Lightness::NORMAL);
+    } else if (has_z && has_c && !has_f) {
+      return Colour(which_hue(z, c), Lightness::DARK);
+    }
+  }
+  return Colour::unknown;
+}

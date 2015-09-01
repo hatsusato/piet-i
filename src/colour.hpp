@@ -1,6 +1,8 @@
 #ifndef PIET_I_COLOUR_HPP
 #define PIET_I_COLOUR_HPP
 
+#include "png.hpp"
+
 enum class Hue {
   RED, YELLOW, GREEN, CYAN, BLUE, MAGENTA, COUNT
 };
@@ -26,5 +28,7 @@ struct Colour {
 
 bool operator==(const Colour& lhs, const Colour& rhs);
 bool operator!=(const Colour& lhs, const Colour& rhs);
+
+Colour make_colour(const Pixel& pixel);
 
 #endif  // PIET_I_COLOUR_HPP

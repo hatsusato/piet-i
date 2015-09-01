@@ -15,3 +15,10 @@ Lightness Colour::lightness() const {
 }
 
 const Colour Colour::unknown;
+
+bool operator==(const Colour& lhs, const Colour& rhs) {
+  return (lhs.hue_ == rhs.hue_ && lhs.lightness_ == rhs.lightness_);
+}
+bool operator!=(const Colour& lhs, const Colour& rhs) {
+  return !(lhs == rhs);
+}

@@ -17,9 +17,13 @@ struct Colour {
   Lightness lightness() const;
  public:
   static const Colour unknown;
+  friend bool operator==(const Colour&, const Colour&);
  private:
   Hue hue_;
   Lightness lightness_;
 };
+
+bool operator==(const Colour& lhs, const Colour& rhs);
+bool operator!=(const Colour& lhs, const Colour& rhs);
 
 #endif  // PIET_I_COLOUR_HPP

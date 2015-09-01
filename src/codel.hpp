@@ -2,6 +2,7 @@
 #define PIET_I_CODEL_HPP
 
 #include "colour.hpp"
+#include "png.hpp"
 
 enum class ColourType {
   BLACK, WHITE, COLOUR, UNKNOWN
@@ -27,5 +28,7 @@ struct Codel {
 
 bool operator==(const Codel& lhs, const Codel& rhs);
 bool operator!=(const Codel& lhs, const Codel& rhs);
+
+Codel make_codel(const Pixel& pixel);
 
 #endif  // PIET_I_CODEL_HPP

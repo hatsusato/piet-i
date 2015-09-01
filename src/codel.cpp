@@ -31,3 +31,20 @@ bool operator==(const Codel& lhs, const Codel& rhs) {
 bool operator!=(const Codel& lhs, const Codel& rhs) {
   return !(lhs == rhs);
 }
+
+Codel make_codel(const Pixel& pixel) {
+  const auto colour = make_colour(pixel);
+  if (colour) {
+    return Codel(colour);
+  } else {
+    const Byte r = pixel.red, g = pixel.green, b = pixel.blue;
+    const Byte z = 0x00, f = 0xFF;
+    if (r == z && g == z && b == z) {
+      return Codel::black;
+    } else if (r == f && g == f && b == f) {
+      return Codel::white;
+    } else {
+      return Codel::unknown;
+    }
+  }
+}

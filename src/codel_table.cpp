@@ -1,5 +1,15 @@
 #include "codel_table.hpp"
 
+namespace /* unnamed */ {
+size_t gcd(size_t a, size_t b) {
+  if (b == 0) {
+    return a;
+  } else {
+    return gcd(b, a % b);
+  }
+}
+}  // namespace /* unnamed */
+
 CodelTable::CodelTable()
     : width_(0), height_(0), rows_()
 {}

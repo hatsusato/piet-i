@@ -53,14 +53,6 @@ Brightness how_bright(const Pixel& pixel) {
   }
 }
 
-size_t gcd(size_t a, size_t b) {
-  if (b == 0) {
-    return a;
-  } else {
-    return gcd(b, a % b);
-  }
-}
-
 Coord next_coordinate(const Coord& coord, Direction dir) {
   static const int dx[] = {1, 0, -1, 0};
   static const int dy[] = {0, 1, 0, -1};

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "codel.hpp"
-#include "utils.hpp"
+#include "png.hpp"
 
 class CodelTable {
  public:

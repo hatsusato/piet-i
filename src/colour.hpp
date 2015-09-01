@@ -10,6 +10,9 @@ enum class Lightness {
 };
 
 struct Colour {
+ public:
+  Colour();
+  Colour(Hue hue, Lightness lightness);
  private:
   Hue hue_;
   Lightness lightness_;

@@ -111,6 +111,17 @@ std::array<int, 4> Coordinates::range() const {
   return {{right, down, left, up}};
 }
 
+Edges::Edges(const Coordinates& coords)
+    : edges_() {
+  assert(!coords.empty());
+  const auto range = coords.range();
+  for (Direction direction; direction; ++direction) {
+    const auto minmax =
+        edge_minmax(coords, direction, range[direction.value()]);
+    edge(direction, CC::LEFT) = std::get<0>(minmax);
+    edge(direction, CC::RIGHT) = std::get<1>(minmax);
+  }
+}
 Coord& Edges::edge(Direction direction, Choose choose) {
   return edges_[direction.value()][choose.value()];
 }

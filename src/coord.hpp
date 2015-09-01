@@ -24,4 +24,10 @@ class Coordinates : public std::vector<Coord> {
   std::array<int, 4> range() const;
 };
 
+class Edges {
+  using BothChoose = std::array<Coord, 2>;
+ private:
+  std::array<BothChoose, 4> edges_;
+};
+
 #endif  // PIET_I_COORD_HPP

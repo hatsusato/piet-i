@@ -10,8 +10,9 @@ enum class ColourType {
 struct Codel {
  public:
   Codel();
-  Codel(Color color, Brightness brightness);
-  explicit Codel(const Pixel& pixel);
+  Codel(Hue hue, Lightness lightness);
+  explicit Codel(Colour colour);
+  explicit Codel(ColourType type);
   bool is_valid() const;
   bool is_colored() const;
   Color color() const;

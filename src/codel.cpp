@@ -1,14 +1,18 @@
 #include "codel.hpp"
 
 Codel::Codel()
-    : Codel(Color::UNKNOWN, Brightness::UNKNOWN)
+    : colour_(), type_(ColourType::UNKNOWN)
 {}
-Codel::Codel(Color color, Brightness brightness)
-    : color_part_(static_cast<unsigned>(color)),
-      brightness_part_(static_cast<unsigned>(brightness))
+Codel::Codel(Hue hue, Lightness lightness)
+    : colour_(hue, lightness),
+      type_(colour_ ? ColourType::COLOUR : ColourType::UNKNOWN)
 {}
-Codel::Codel(const Pixel& pixel)
-    : Codel(what_color(pixel), how_bright(pixel))
+Codel::Codel(Colour colour)
+    : colour_(colour), type_(ColourType::COLOUR)
+{}
+Codel::Codel(ColourType type)
+    : colour_(),
+      type_(type == ColourType::COLOUR ? ColourType::UNKNOWN : type)
 {}
 bool Codel::is_valid() const {
   return (color_part_ < static_cast<unsigned>(Color::UNKNOWN) &&

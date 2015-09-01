@@ -7,6 +7,9 @@ Colour::Colour(Hue hue, Lightness lightness)
     : hue_(lightness == Lightness::COUNT ? Hue::COUNT : hue),
       lightness_(hue == Hue::COUNT ? Lightness::COUNT : lightness)
 {}
+Colour::operator bool() const {
+  return *this != unknown;
+}
 Hue Colour::hue() const {
   return hue_;
 }

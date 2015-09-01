@@ -13,6 +13,7 @@ struct Colour {
  public:
   Colour();
   Colour(Hue hue, Lightness lightness);
+  explicit operator bool() const;
   Hue hue() const;
   Lightness lightness() const;
  public:

@@ -9,4 +9,10 @@ enum class Lightness {
   LIGHT, NORMAL, DARK, COUNT
 };
 
+struct Colour {
+ private:
+  Hue hue_;
+  Lightness lightness_;
+};
+
 #endif  // PIET_I_COLOUR_HPP

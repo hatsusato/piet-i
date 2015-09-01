@@ -92,7 +92,8 @@ CodelTable make_codel_table(const Image& image) {
     const auto& src_row = image[row * step];
     auto& dst_row = table[row];
     for (size_t col = 0; col < w; ++col) {
-      dst_row[col] = static_cast<Codel>(src_row[col * step]);
+      const auto& pixel = src_row[col * step];
+      dst_row[col] = make_codel(pixel);
     }
   }
   return table;

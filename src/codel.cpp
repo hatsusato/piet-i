@@ -21,6 +21,10 @@ ColourType Codel::type() const {
   return type_;
 }
 
+const Codel Codel::black = Codel(ColourType::BLACK);
+const Codel Codel::white = Codel(ColourType::WHITE);
+const Codel Codel::unknown = Codel(ColourType::UNKNOWN);
+
 bool operator==(const Codel& lhs, const Codel& rhs) {
   return (lhs.colour_ == rhs.colour_ && lhs.type_ == rhs.type_);
 }

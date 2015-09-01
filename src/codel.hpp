@@ -16,6 +16,9 @@ struct Codel {
   Colour colour() const;
   ColourType type() const;
  public:
+  static const Codel black;
+  static const Codel white;
+  static const Codel unknown;
   friend bool operator==(const Codel&, const Codel&);
  private:
   Colour colour_;

@@ -18,3 +18,10 @@ int& Coord::y() {
 const int& Coord::y() const {
   return std::get<1>(*this);
 }
+Coord& Coord::next(Direction direction) {
+  static const int dx[] = {1, 0, -1, 0};
+  static const int dy[] = {0, 1, 0, -1};
+  x() += dx[direction.value()];
+  y() += dy[direction.value()];
+  return *this;
+}

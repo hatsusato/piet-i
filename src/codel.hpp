@@ -4,6 +4,10 @@
 #include "png.hpp"
 #include "utils.hpp"
 
+enum class ColourType {
+  BLACK, WHITE, COLOUR, UNKNOWN
+};
+
 struct Codel {
  public:
   Codel();

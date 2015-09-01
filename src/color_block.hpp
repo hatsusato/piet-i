@@ -2,6 +2,7 @@
 #define PIET_I_COLOR_BLOCK_HPP
 
 #include "codel.hpp"
+#include "memory.hpp"
 #include "utils.hpp"
 
 class ColorBlockBase {

@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <cassert>
+#include "png.hpp"
 
 using Coord = std::tuple<int, int>;
 

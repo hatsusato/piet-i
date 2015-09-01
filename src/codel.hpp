@@ -2,6 +2,7 @@
 #define PIET_I_CODEL_HPP
 
 #include <vector>
+#include "png.hpp"
 #include "utils.hpp"
 
 struct Codel {

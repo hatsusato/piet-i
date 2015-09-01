@@ -26,6 +26,9 @@ class Coordinates : public std::vector<Coord> {
 
 class Edges {
   using BothChoose = std::array<Coord, 2>;
+ public:
+  Coord& edge(Direction direction, Choose choose);
+  const Coord& edge(Direction direction, Choose choose) const;
  private:
   std::array<BothChoose, 4> edges_;
 };

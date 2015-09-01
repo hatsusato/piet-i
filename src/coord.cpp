@@ -43,3 +43,10 @@ std::array<int, 4> Coordinates::range() const {
   }
   return {{right, down, left, up}};
 }
+
+Coord& Edges::edge(Direction direction, Choose choose) {
+  return edges_[direction.value()][choose.value()];
+}
+const Coord& Edges::edge(Direction direction, Choose choose) const {
+  return edges_[direction.value()][choose.value()];
+}

@@ -13,6 +13,8 @@ struct Colour {
  public:
   Colour();
   Colour(Hue hue, Lightness lightness);
+  Hue hue() const;
+  Lightness lightness() const;
  private:
   Hue hue_;
   Lightness lightness_;

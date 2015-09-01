@@ -1,4 +1,5 @@
 #include "codel_table.hpp"
+#include "codel.hpp"
 
 namespace /* unnamed */ {
 size_t gcd(size_t a, size_t b) {

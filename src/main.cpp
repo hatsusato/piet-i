@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
   try {
-    auto image = Image(argv[1]);
+    const auto image = Image(argv[1]);
     visualize(image);
     const auto table = make_codel_table(image);
     auto network = color_block_network(table);

@@ -1,7 +1,6 @@
 #ifndef PIET_I_CODEL_HPP
 #define PIET_I_CODEL_HPP
 
-#include <vector>
 #include "utils.hpp"
 
 struct Codel {

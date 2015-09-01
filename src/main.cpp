@@ -1,5 +1,6 @@
 #include <iostream>
 #include "codel.hpp"
+#include "codel_table.hpp"
 #include "color_block.hpp"
 #include "interpreter.hpp"
 #include "utils.hpp"

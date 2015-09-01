@@ -1,4 +1,8 @@
 #include "connected_codel.hpp"
+#include <algorithm>
+#include <array>
+#include <functional>
+#include <iterator>
 
 namespace /* unnamed */ {
 using UnaryPredicate = std::function<bool(const Coord&)>;

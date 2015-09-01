@@ -1,5 +1,6 @@
 #include "visualize.hpp"
 #include "codel.hpp"
+#include "codel_table.hpp"
 
 void show_pixel(const Codel& codel) {
   static const char* fore[] =

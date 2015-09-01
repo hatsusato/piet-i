@@ -1,6 +1,10 @@
 #ifndef PIET_I_CONNECTED_CODEL_HPP
 #define PIET_I_CONNECTED_CODEL_HPP
 
+#include "codel.hpp"
+#include "codel_table.hpp"
+#include "utils.hpp"
+
 class ConnectedCodel {
  public:
   explicit ConnectedCodel(const Codel& codel,

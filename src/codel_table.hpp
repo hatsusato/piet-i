@@ -1,6 +1,10 @@
 #ifndef PIET_I_CODEL_TABLE_HPP
 #define PIET_I_CODEL_TABLE_HPP
 
+#include <vector>
+#include "codel.hpp"
+#include "utils.hpp"
+
 class CodelTable {
  public:
   using RowType = std::vector<Codel>;

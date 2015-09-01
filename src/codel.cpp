@@ -1,8 +1,4 @@
 #include "codel.hpp"
-#include <algorithm>
-#include <array>
-#include <functional>
-#include <iterator>
 
 Codel::Codel()
     : Codel(Color::UNKNOWN, Brightness::UNKNOWN)

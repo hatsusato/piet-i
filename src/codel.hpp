@@ -15,6 +15,9 @@ struct Codel {
   explicit Codel(Colour colour);
   explicit Codel(ColourType type);
   explicit operator bool() const;
+  bool is_colour() const;
+  bool is_black() const;
+  bool is_white() const;
   Colour colour() const;
   ColourType type() const;
  public:

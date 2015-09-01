@@ -17,6 +17,15 @@ Codel::Codel(ColourType type)
 Codel::operator bool() const {
   return type_ != ColourType::UNKNOWN;
 }
+bool Codel::is_colour() const {
+  return type_ == ColourType::COLOUR;
+}
+bool Codel::is_black() const {
+  return type_ == ColourType::BLACK;
+}
+bool Codel::is_white() const {
+  return type_ == ColourType::WHITE;
+}
 Colour Codel::colour() const {
   return colour_;
 }

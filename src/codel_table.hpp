@@ -1,0 +1,4 @@
+#ifndef PIET_I_CODEL_TABLE_HPP
+#define PIET_I_CODEL_TABLE_HPP
+
+#endif  // PIET_I_CODEL_TABLE_HPP

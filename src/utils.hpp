@@ -7,24 +7,6 @@
 
 using Coord = std::tuple<int, int>;
 
-enum class Color {
-  BLACK, RED, YELLOW, GREEN, CYAN, BLUE, MAGENTA, WHITE, UNKNOWN
-};
-
-enum class Brightness {
-  LIGHT, NORMAL, DARK, UNKNOWN
-};
-
-enum class Direction {
-  RIGHT, DOWN, LEFT, UP
-};
-
-enum class Choose {
-  LEFT, RIGHT
-};
-
-Color what_color(const Pixel& pixel);
-Brightness how_bright(const Pixel& pixel);
 Coord next_coordinate(const Coord& coord, Direction dir);
 
 template <size_t N>

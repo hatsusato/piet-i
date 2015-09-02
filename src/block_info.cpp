@@ -10,11 +10,11 @@ struct Extractor {
 }  // namespace /* unnamed */
 
 BlockInfo::BlockInfo(const CodelTable& table)
-    : table_(table), color_blocks_(), mono_blocks_() {
+    : table_(table), colour_blocks_(), mono_blocks_() {
   initialize();
   connect_all();
 }
-std::vector<Block> BlockInfo::extract_color_blocks() {
+std::vector<Block> BlockInfo::extract_colour_blocks() {
   using std::begin;
   using std::end;
   struct NullChecker {
@@ -23,10 +23,10 @@ std::vector<Block> BlockInfo::extract_color_blocks() {
     }
   };
   std::vector<Block> extracted;
-  std::transform(std::make_move_iterator(begin(color_blocks_)),
-                 std::make_move_iterator(end(color_blocks_)),
+  std::transform(std::make_move_iterator(begin(colour_blocks_)),
+                 std::make_move_iterator(end(colour_blocks_)),
                  std::back_inserter(extracted),
-                 Extractor<1, ColorBlockData>());
+                 Extractor<1, ColourBlockData>());
   std::vector<Block> result;
   std::copy_if(std::make_move_iterator(begin(extracted)),
                std::make_move_iterator(end(extracted)),
@@ -37,20 +37,20 @@ std::vector<Block> BlockInfo::extract_color_blocks() {
                  std::back_inserter(extracted),
                  Extractor<1, MonoBlockData>());
   std::move(begin(extracted), end(extracted), std::back_inserter(result));
-  color_blocks_.clear();
+  colour_blocks_.clear();
   mono_blocks_.clear();
   return result;
 }
 void BlockInfo::initialize() {
-  assert(color_blocks_.empty() && mono_blocks_.empty());
+  assert(colour_blocks_.empty() && mono_blocks_.empty());
   mono_blocks_.emplace_back(nullptr, make_unique<BlackBlock>());
   const auto connected_codels = extract_connected_codels(table_);
   for (auto&& connected : connected_codels) {
     const auto& codel = connected.codel();
     assert(codel.is_valid());
     auto block_pointer = codel.is_colored() ?
-        make_unique<ColorBlock>(connected) : nullptr;
-    color_blocks_.emplace_back(connected, std::move(block_pointer));
+        make_unique<ColourBlock>(connected) : nullptr;
+    colour_blocks_.emplace_back(connected, std::move(block_pointer));
   }
 }
 void BlockInfo::connect_all() {
@@ -58,11 +58,11 @@ void BlockInfo::connect_all() {
   using std::begin;
   using std::end;
   const auto connect = std::bind(&BlockInfo::connect, this, _1);
-  std::for_each(begin(color_blocks_), end(color_blocks_), connect);
+  std::for_each(begin(colour_blocks_), end(colour_blocks_), connect);
 }
-void BlockInfo::connect(ColorBlockData& color_block) {
-  const auto& connected = std::get<0>(color_block);
-  auto& pointer = std::get<1>(color_block);
+void BlockInfo::connect(ColourBlockData& colour_block) {
+  const auto& connected = std::get<0>(colour_block);
+  auto& pointer = std::get<1>(colour_block);
   if (connected.codel().is_colored()) {
     for (int d = 0; d < 4; ++d) {
       const auto direction = static_cast<Direction>(d);
@@ -82,28 +82,28 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
   using std::end;
   struct IncludesPredicate {
     IncludesPredicate(const Coord& coord) : coord_(coord) {}
-    bool operator()(const ColorBlockData& color_block) {
-      return std::get<0>(color_block).includes(coord_);
+    bool operator()(const ColourBlockData& colour_block) {
+      return std::get<0>(colour_block).includes(coord_);
     }
    private:
     Coord coord_;
   };
-  const auto includes = std::find_if(begin(color_blocks_), end(color_blocks_),
+  const auto includes = std::find_if(begin(colour_blocks_), end(colour_blocks_),
                                      IncludesPredicate(coord));
-  if (includes == end(color_blocks_)) {
+  if (includes == end(colour_blocks_)) {
     return black_block();
   } else {
     const auto& connected = std::get<0>(*includes);
-    const auto& color_block = std::get<1>(*includes);
+    const auto& colour_block = std::get<1>(*includes);
     const auto& codel = connected.codel();
     assert(codel.is_valid());
-    switch (codel.color()) {
-      case Color::WHITE:
+    switch (codel.colour()) {
+      case Colour::WHITE:
         return make_white_path(connected, coord, direction);
-      case Color::BLACK:
+      case Colour::BLACK:
         return black_block();
       default:
-        return color_block->address();
+        return colour_block->address();
     }
   }
 }
@@ -134,6 +134,6 @@ BlockPointer BlockInfo::black_block() const {
   return std::get<1>(mono_blocks_.front())->address();
 }
 
-std::vector<Block> color_block_network(const CodelTable& table) {
-  return BlockInfo(table).extract_color_blocks();
+std::vector<Block> colour_block_network(const CodelTable& table) {
+  return BlockInfo(table).extract_colour_blocks();
 }

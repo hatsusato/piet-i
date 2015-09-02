@@ -40,16 +40,15 @@ void BlockInfo::connect_all() {
 }
 void BlockInfo::connect(ColourBlockData& colour_block) {
   const auto& connected = std::get<0>(colour_block);
-  auto& pointer = std::get<1>(colour_block);
-  if (connected.codel().is_colored()) {
-    for (int d = 0; d < 4; ++d) {
-      const auto direction = static_cast<Direction>(d);
-      for (int c = 0; c < 2; ++c) {
-        const auto choose = static_cast<Choose>(c);
-        const auto edge = connected.edge(direction, choose);
+  auto& block = std::get<1>(colour_block);
+  if (connected.codel().is_colour()) {
+    for (Direction direction; direction; ++direction) {
+      for (Choose choose; choose; ++choose) {
+        const auto& edge = connected.edge(direction, choose);
         const auto next = get_access_point(edge, direction);
-        assert(pointer->codel() != next->codel());
-        pointer->set_next(next, direction, choose);
+        assert(block->colour() && next->colour());
+        assert(block->colour() != next->colour());
+        block->set_next(next, direction, choose);
       }
     }
   }

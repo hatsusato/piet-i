@@ -16,3 +16,10 @@ CC& operator++(CC& cc) {
 CC& operator+=(CC& cc, int value) {
   return value % 2 ? operator++(cc) : cc;
 }
+
+Direction::Direction()
+    : valid_(true), dp_(DP::RIGHT)
+{}
+Direction::Direction(DP dp)
+    : valid_(true), dp_(dp)
+{}

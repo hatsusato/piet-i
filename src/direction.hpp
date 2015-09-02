@@ -15,4 +15,13 @@ enum class CC {
 CC& operator++(CC& cc);
 CC& operator+=(CC& cc, int value);
 
+struct Direction {
+ public:
+  Direction();
+  Direction(DP dp);
+ private:
+  bool valid_;
+  DP dp_;
+};
+
 #endif  // PIET_I_DIRECTION_HPP

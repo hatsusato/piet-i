@@ -1,4 +1,5 @@
 #include "coord.hpp"
+#include <algorithm>
 
 Coord::Coord()
     : Base(0, 0)
@@ -27,4 +28,18 @@ Coord& Coord::next(Direction direction) {
 }
 bool Coord::inside(int left, int top, int right, int bottom) const {
   return (left <= x() && top <= y() && x() < right && y() < bottom);
+}
+
+std::array<int, 4> Coordinates::range() const {
+  assert(!empty());
+  int right, down, left, up;
+  right = left = front().x();
+  up = down = front().y();
+  for (auto&& coord : *this) {
+    right = std::max(right, coord.x());
+    down = std::max(down, coord.y());
+    left = std::min(left, coord.x());
+    up = std::min(up, coord.y());
+  }
+  return {{right, down, left, up}};
 }

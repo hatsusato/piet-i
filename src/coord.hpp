@@ -1,6 +1,7 @@
 #ifndef PIET_I_COORD_HPP
 #define PIET_I_COORD_HPP
 
+#include <array>
 #include <tuple>
 #include <vector>
 #include "direction.hpp"
@@ -19,6 +20,8 @@ class Coord : public std::tuple<int, int> {
 };
 
 class Coordinates : public std::vector<Coord> {
+ public:
+  std::array<int, 4> range() const;
 };
 
 #endif  // PIET_I_COORD_HPP

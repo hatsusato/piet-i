@@ -8,9 +8,6 @@ BlockBase::~BlockBase() {}
 size_t BlockBase::codel_size() const {
   return 0;
 }
-BlockPointer BlockBase::address() const {
-  return this;
-}
 bool BlockBase::is_colored() const {
   return false;
 }
@@ -19,6 +16,9 @@ bool BlockBase::is_white() const {
 }
 bool BlockBase::is_black() const {
   return false;
+}
+BlockPointer BlockBase::address() const {
+  return this;
 }
 
 ColorBlock::ColorBlock(const ConnectedCodel& connected)
@@ -31,6 +31,9 @@ Codel ColorBlock::codel() const {
 size_t ColorBlock::codel_size() const {
   return codel_size_;
 }
+bool ColorBlock::is_colored() const {
+  return true;
+}
 BlockPointer ColorBlock::next(Direction direction, Choose choose) const {
   const auto d = static_cast<int>(direction);
   const auto c = static_cast<int>(choose);
@@ -42,20 +45,17 @@ void ColorBlock::set_next(BlockPointer next,
   const auto c = static_cast<int>(choose);
   next_[d][c] = next;
 }
-bool ColorBlock::is_colored() const {
-  return true;
-}
 
 BlackBlock::BlackBlock()
 {}
 Codel BlackBlock::codel() const {
   return Codel(Color::BLACK, Brightness::NORMAL);
 }
-BlockPointer BlackBlock::next(Direction, Choose) const {
-  return this;
-}
 bool BlackBlock::is_black() const {
   return true;
+}
+BlockPointer BlackBlock::next(Direction, Choose) const {
+  return this;
 }
 
 WhiteBlock::WhiteBlock(BlockPointer next)
@@ -64,9 +64,9 @@ WhiteBlock::WhiteBlock(BlockPointer next)
 Codel WhiteBlock::codel() const {
   return Codel(Color::WHITE, Brightness::NORMAL);
 }
-BlockPointer WhiteBlock::next(Direction, Choose) const {
-  return next_;
-}
 bool WhiteBlock::is_white() const {
   return true;
+}
+BlockPointer WhiteBlock::next(Direction, Choose) const {
+  return next_;
 }

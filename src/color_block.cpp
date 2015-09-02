@@ -24,26 +24,26 @@ BlockPointer BlockBase::address() const {
   return this;
 }
 
-ColorBlock::ColorBlock(const ConnectedCodel& connected)
+ColourBlock::ColourBlock(const ConnectedCodel& connected)
     : colour_(connected.colour()), codel_size_(connected.size()), next_() {
   assert(colour_.is_colour());
 }
-Colour ColorBlock::colour() const {
+Colour ColourBlock::colour() const {
   return colour_;
 }
-size_t ColorBlock::codel_size() const {
+size_t ColourBlock::codel_size() const {
   return codel_size_;
 }
-bool ColorBlock::is_colour() const {
+bool ColourBlock::is_colour() const {
   return true;
 }
-BlockPointer ColorBlock::next(Direction direction, Choose choose) const {
+BlockPointer ColourBlock::next(Direction direction, Choose choose) const {
   const auto d = static_cast<int>(direction);
   const auto c = static_cast<int>(choose);
   return next_[d][c];
 }
-void ColorBlock::set_next(BlockPointer next,
-                          Direction direction, Choose choose) {
+void ColourBlock::set_next(BlockPointer next,
+                           Direction direction, Choose choose) {
   const auto d = static_cast<int>(direction);
   const auto c = static_cast<int>(choose);
   next_[d][c] = next;

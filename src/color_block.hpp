@@ -25,9 +25,9 @@ class BlockBase {
   BlockBase(BlockBase&&) = delete;
 };
 
-class ColorBlock : public BlockBase {
+class ColourBlock : public BlockBase {
  public:
-  explicit ColorBlock(const ConnectedCodel& connected);
+  explicit ColourBlock(const ConnectedCodel& connected);
   Colour colour() const override;
   size_t codel_size() const override;
   bool is_colour() const override;

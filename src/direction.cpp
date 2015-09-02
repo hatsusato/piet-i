@@ -51,3 +51,6 @@ Choose::Choose(CC cc)
 Choose::operator bool() const {
   return valid_;
 }
+Choose::operator CC() const {
+  return cc_;
+}

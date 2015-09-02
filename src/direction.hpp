@@ -33,6 +33,7 @@ struct Choose {
   Choose();
   Choose(CC cc);
   explicit operator bool() const;
+  operator CC() const;
  private:
   bool valid_;
   CC cc_;

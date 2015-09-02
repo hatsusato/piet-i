@@ -19,4 +19,6 @@ class Edges {
   std::array<BothChoose, 4> edges_;
 };
 
+Edges<Coord> make_edges(const Coordinates& coords);
+
 #endif  // PIET_I_EDGE_HPP

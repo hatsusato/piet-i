@@ -67,3 +67,16 @@ std::tuple<Coord, Coord> edge_minmax(const Coordinates& coords,
   return std::make_tuple(make(*minimum), make(*maximum));
 }
 }  // namespace /* unnamed */
+
+Edges<Coord> make_edges(const Coordinates& coords) {
+  assert(!coords.empty());
+  Edges<Coord> result;
+  const auto range = coords.range();
+  for (Direction direction; direction; ++direction) {
+    const auto minmax =
+        edge_minmax(coords, direction, range[direction.value()]);
+    result.edge(direction, CC::LEFT) = std::get<0>(minmax);
+    result.edge(direction, CC::RIGHT) = std::get<1>(minmax);
+  }
+  return result;
+}

@@ -5,12 +5,16 @@
 #include "coord.hpp"
 #include "direction.hpp"
 
+template <typename T>
 class Edges {
-  using BothChoose = std::array<Coord, 2>;
+  using BothChoose = std::array<T, 2>;
  public:
-  Edges(const Coordinates& coords);
-  Coord& edge(Direction direction, Choose choose);
-  const Coord& edge(Direction direction, Choose choose) const;
+  T& edge(Direction direction, Choose choose) {
+    return edges_[direction.value()][choose.value()];
+  }
+  const T& edge(Direction direction, Choose choose) const {
+    return edges_[direction.value()][choose.value()];
+  }
  private:
   std::array<BothChoose, 4> edges_;
 };

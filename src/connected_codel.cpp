@@ -68,11 +68,9 @@ std::tuple<Coord, Coord> range_edge(const std::vector<Coord>& coords,
 }
 }  // namespace /* unnamed */
 
-ConnectedCodel::ConnectedCodel(const Codel& codel,
-                               const std::vector<Coord>& coords)
-    : codel_(codel), coords_(coords), boundary_() {
-  calculate_boundary();
-}
+ConnectedCodel::ConnectedCodel(const Codel& codel, const Coordinates& coords)
+    : codel_(codel), coords_(coords), edges_(coords)
+{}
 const Codel& ConnectedCodel::codel() const {
   return codel_;
 }
@@ -80,37 +78,14 @@ size_t ConnectedCodel::size() const {
   return coords_.size();
 }
 const Coord& ConnectedCodel::edge(Direction direction, Choose choose) const {
-  const auto d = static_cast<int>(direction);
-  const auto c = static_cast<int>(choose);
-  return boundary_[d][c];
+  return edges_.edge(direction, choose);
 }
 bool ConnectedCodel::includes(const Coord& coord) const {
-  using std::begin;
-  using std::end;
-  return std::find(begin(coords_), end(coords_), coord) != end(coords_);
+  return coords_.includes(coord);
 }
 Coord ConnectedCodel::find_out_of_range(const Coord& coord,
                                         Direction direction) const {
-  Coord current = coord;
-  while (includes(current)) {
-    current = next_coordinate(current, direction);
-  }
-  return current;
-}
-void ConnectedCodel::calculate_boundary() {
-  using std::begin;
-  using std::end;
-  assert(!coords_.empty());
-  const auto range = coordinates_range(coords_);
-  Coord left, right;
-  for (int i = 0; i < 4; ++i) {
-    const auto dir = static_cast<Direction>(i);
-    const auto same = generate_same_predicate(dir, range[i]);
-    const auto compare = generate_compare_predicate(dir);
-    std::tie(left, right) = range_edge(coords_, same, compare);
-    boundary_[i][0] = next_coordinate(left, dir);
-    boundary_[i][1] = next_coordinate(right, dir);
-  }
+  return coords_.find_out_of_range(coord, direction);
 }
 
 void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,

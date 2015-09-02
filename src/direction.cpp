@@ -54,3 +54,12 @@ Choose::operator bool() const {
 Choose::operator CC() const {
   return cc_;
 }
+Choose& Choose::operator++() {
+  if (valid_) {
+    ++cc_;
+    if (cc_ == CC::LEFT) {
+      valid_ = false;
+    }
+  }
+  return *this;
+}

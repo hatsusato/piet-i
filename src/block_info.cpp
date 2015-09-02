@@ -3,7 +3,7 @@
 namespace /* unnamed */ {
 template <size_t N, class T>
 struct Extractor {
-  ColorBlockPtr operator()(T&& data) {
+  Block operator()(T&& data) {
     return std::move(std::get<N>(data));
   }
 };
@@ -14,20 +14,20 @@ BlockInfo::BlockInfo(const CodelTable& table)
   initialize();
   connect_all();
 }
-std::vector<ColorBlockPtr> BlockInfo::extract_color_blocks() {
+std::vector<Block> BlockInfo::extract_color_blocks() {
   using std::begin;
   using std::end;
   struct NullChecker {
-    bool operator()(const ColorBlockPtr& ptr) {
+    bool operator()(const Block& ptr) {
       return static_cast<bool>(ptr);
     }
   };
-  std::vector<ColorBlockPtr> extracted;
+  std::vector<Block> extracted;
   std::transform(std::make_move_iterator(begin(color_blocks_)),
                  std::make_move_iterator(end(color_blocks_)),
                  std::back_inserter(extracted),
                  Extractor<1, ColorBlockData>());
-  std::vector<ColorBlockPtr> result;
+  std::vector<Block> result;
   std::copy_if(std::make_move_iterator(begin(extracted)),
                std::make_move_iterator(end(extracted)),
                std::back_inserter(result), NullChecker());
@@ -134,6 +134,6 @@ BlockPointer BlockInfo::black_block() const {
   return std::get<1>(mono_blocks_.front())->address();
 }
 
-std::vector<ColorBlockPtr> color_block_network(const CodelTable& table) {
+std::vector<Block> color_block_network(const CodelTable& table) {
   return BlockInfo(table).extract_color_blocks();
 }

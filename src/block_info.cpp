@@ -57,30 +57,24 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
                                          Direction direction) {
   using std::begin;
   using std::end;
-  struct IncludesPredicate {
-    IncludesPredicate(const Coord& coord) : coord_(coord) {}
-    bool operator()(const ColourBlockData& colour_block) {
-      return std::get<0>(colour_block).includes(coord_);
-    }
-   private:
-    Coord coord_;
-  };
-  const auto includes = std::find_if(begin(colour_blocks_), end(colour_blocks_),
-                                     IncludesPredicate(coord));
+  const auto includes =
+      std::find_if(begin(colour_blocks_), end(colour_blocks_),
+                   [coord](const ColourBlockData& data) -> bool {
+                     return std::get<0>(data).includes(coord);
+                   });
   if (includes == end(colour_blocks_)) {
     return black_block();
   } else {
     const auto& connected = std::get<0>(*includes);
-    const auto& colour_block = std::get<1>(*includes);
-    const auto& codel = connected.codel();
-    assert(codel.is_valid());
-    switch (codel.colour()) {
-      case Colour::WHITE:
+    const auto& block = std::get<1>(*includes);
+    assert(connected.codel());
+    switch (connected.codel().type()) {
+      case ColourType::WHITE:
         return make_white_path(connected, coord, direction);
-      case Colour::BLACK:
+      case ColourType::BLACK:
         return black_block();
       default:
-        return colour_block->address();
+        return block->address();
     }
   }
 }

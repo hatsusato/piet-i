@@ -24,9 +24,9 @@ BlockPointer BlockBase::address() const {
   return this;
 }
 
-ColourBlock::ColourBlock(const ConnectedCodel& connected)
-    : colour_(connected.colour()), codel_size_(connected.size()), next_() {
-  assert(colour_.is_colour());
+ColourBlock::ColourBlock(Colour colour, size_t size)
+    : colour_(colour), codel_size_(size), next_() {
+  assert(colour_);
 }
 Colour ColourBlock::colour() const {
   return colour_;

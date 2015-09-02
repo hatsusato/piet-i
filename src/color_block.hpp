@@ -27,7 +27,7 @@ class BlockBase {
 
 class ColourBlock : public BlockBase {
  public:
-  explicit ColourBlock(const ConnectedCodel& connected);
+  ColourBlock(Colour colour, size_t size);
   Colour colour() const override;
   size_t codel_size() const override;
   bool is_colour() const override;

@@ -21,20 +21,15 @@ Coord ConnectedCodel::find_out_of_range(const Coord& coord,
   return coords_.find_out_of_range(coord, direction);
 }
 
-void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
-                            const Codel& codel, int x, int y) {
-  const auto w = static_cast<int>(table.width());
-  const auto h = static_cast<int>(table.height());
-  coords.emplace_back(x, y);
-  table[y][x] = Codel::unknown;
-  int next_x, next_y;
-  for (int i = 0; i < 4; ++i) {
-    const auto dir = static_cast<Direction>(i);
-    std::tie(next_x, next_y) = next_coordinate(Coord(x, y), dir);
-    if (0 <= next_x && next_x < w && 0 <= next_y && next_y < h) {
-      const auto& next_codel = table[next_y][next_x];
-      if (next_codel.is_valid() && codel == next_codel) {
-        search_connected_codel(table, coords, codel, next_x, next_y);
+void search_connected_codel(CodelTable& table, Coordinates& coords,
+                            const Codel& codel, Coord current) {
+  coords.push_back(current);
+  table.at(current) = Codel::unknown;
+  for (Direction direction; direction; ++direction) {
+    const auto next = current.next(direction);
+    if (next.inside(0, 0, table.width(), table.height())) {
+      if (table.at(next) == codel) {
+        search_connected_codel(table, coords, codel, next);
       }
     }
   }

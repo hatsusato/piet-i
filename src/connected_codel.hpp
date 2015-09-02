@@ -20,8 +20,8 @@ class ConnectedCodel {
   Edges edges_;
 };
 
-void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
-                            const Codel& codel, int x, int y);
+void search_connected_codel(CodelTable& table, Coordinates& coords,
+                            const Codel& codel, Coord current);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CONNECTED_CODEL_HPP

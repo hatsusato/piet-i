@@ -63,3 +63,6 @@ Choose& Choose::operator++() {
   }
   return *this;
 }
+int Choose::value() const {
+  return static_cast<int>(cc_);
+}

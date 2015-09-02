@@ -35,6 +35,7 @@ struct Choose {
   explicit operator bool() const;
   operator CC() const;
   Choose& operator++();
+  int value() const;
  private:
   bool valid_;
   CC cc_;

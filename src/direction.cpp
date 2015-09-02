@@ -41,3 +41,10 @@ Direction& Direction::operator++() {
 int Direction::value() const {
   return static_cast<int>(dp_);
 }
+
+Choose::Choose()
+    : valid_(true), cc_(CC::LEFT)
+{}
+Choose::Choose(CC cc)
+    : valid_(true), cc_(cc)
+{}

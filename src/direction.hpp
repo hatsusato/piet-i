@@ -28,4 +28,13 @@ struct Direction {
   DP dp_;
 };
 
+struct Choose {
+ public:
+  Choose();
+  Choose(CC cc);
+ private:
+  bool valid_;
+  CC cc_;
+};
+
 #endif  // PIET_I_DIRECTION_HPP

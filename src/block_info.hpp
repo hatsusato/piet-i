@@ -12,7 +12,7 @@ class BlockInfo {
   using MonoBlockData = std::tuple<BlockPointer, Block>;
  public:
   explicit BlockInfo(const CodelTable& table);
-  std::vector<Block> extract_colour_blocks();
+  std::vector<Block> extract_blocks();
  private:
   void initialize(const std::vector<ConnectedCodel>& connected_codels);
   void connect_all();

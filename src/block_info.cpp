@@ -1,42 +1,20 @@
 #include "block_info.hpp"
 
-namespace /* unnamed */ {
-template <size_t N, class T>
-struct Extractor {
-  Block operator()(T&& data) {
-    return std::move(std::get<N>(data));
-  }
-};
-}  // namespace /* unnamed */
-
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {
   initialize(extract_connected_codels(table));
   connect_all();
 }
-std::vector<Block> BlockInfo::extract_colour_blocks() {
-  using std::begin;
-  using std::end;
-  struct NullChecker {
-    bool operator()(const Block& ptr) {
-      return static_cast<bool>(ptr);
-    }
-  };
-  std::vector<Block> extracted;
-  std::transform(std::make_move_iterator(begin(colour_blocks_)),
-                 std::make_move_iterator(end(colour_blocks_)),
-                 std::back_inserter(extracted),
-                 Extractor<1, ColourBlockData>());
+std::vector<Block> BlockInfo::extract_blocks() {
   std::vector<Block> result;
-  std::copy_if(std::make_move_iterator(begin(extracted)),
-               std::make_move_iterator(end(extracted)),
-               std::back_inserter(result), NullChecker());
-  extracted.clear();
-  std::transform(std::make_move_iterator(begin(mono_blocks_)),
-                 std::make_move_iterator(end(mono_blocks_)),
-                 std::back_inserter(extracted),
-                 Extractor<1, MonoBlockData>());
-  std::move(begin(extracted), end(extracted), std::back_inserter(result));
+  for (auto&& data : std::move(colour_blocks_)) {
+    if (auto block = std::move(std::get<1>(data))) {
+      result.push_back(std::move(block));
+    }
+  }
+  for (auto&& data : std::move(mono_blocks_)) {
+    result.push_back(std::move(std::get<1>(data)));
+  }
   colour_blocks_.clear();
   mono_blocks_.clear();
   return result;
@@ -135,5 +113,5 @@ BlockPointer BlockInfo::black_block() const {
 }
 
 std::vector<Block> colour_block_network(const CodelTable& table) {
-  return BlockInfo(table).extract_colour_blocks();
+  return BlockInfo(table).extract_blocks();
 }

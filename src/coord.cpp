@@ -115,6 +115,14 @@ bool Coordinates::includes(const Coord& coord) const {
   using std::end;
   return std::find(begin(*this), end(*this), coord) != end(*this);
 }
+Coord Coordinates::find_out_of_range(const Coord& coord,
+                                     Direction direction) const {
+  Coord current = coord;
+  while (includes(current)) {
+    current.next(direction);
+  }
+  return current;
+}
 
 Edges::Edges(const Coordinates& coords)
     : edges_() {

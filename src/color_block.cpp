@@ -1,7 +1,4 @@
 #include "color_block.hpp"
-#include <algorithm>
-#include <iterator>
-#include <functional>
 
 BlockBase::BlockBase() {}
 BlockBase::~BlockBase() {}

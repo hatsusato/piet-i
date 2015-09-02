@@ -1,10 +1,9 @@
 #ifndef PIET_I_COLOR_BLOCK_HPP
 #define PIET_I_COLOR_BLOCK_HPP
 
-#include "codel.hpp"
-#include "codel_table.hpp"
-#include "connected_codel.hpp"
-#include "memory.hpp"
+#include "colour.hpp"
+#include "direction.hpp"
+#include "edge.hpp"
 
 class BlockBase;
 using BlockPointer = const BlockBase*;

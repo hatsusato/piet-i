@@ -29,3 +29,12 @@ Direction:: operator bool() const {
 Direction::operator DP() const {
   return dp_;
 }
+Direction& Direction::operator++() {
+  if (valid_) {
+    ++dp_;
+    if (dp_ == DP::RIGHT) {
+      valid_ = false;
+    }
+  }
+  return *this;
+}

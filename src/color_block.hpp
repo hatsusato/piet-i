@@ -5,7 +5,6 @@
 #include "codel_table.hpp"
 #include "connected_codel.hpp"
 #include "memory.hpp"
-#include "utils.hpp"
 
 class ColorBlockBase {
  public:

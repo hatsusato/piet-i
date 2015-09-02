@@ -4,7 +4,6 @@
 #include "color_block.hpp"
 #include "interpreter.hpp"
 #include "png.hpp"
-#include "utils.hpp"
 #include "visualize.hpp"
 
 int main(int argc, char* argv[]) {

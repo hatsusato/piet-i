@@ -5,6 +5,7 @@
 #include "png.hpp"
 
 struct Codel;
+class Coord;
 
 enum class RegardUnknownAs {
   BLACK, WHITE, UNKNOWN
@@ -21,6 +22,8 @@ class CodelTable {
   void resize(size_t width, size_t height);
   RowType& operator[](size_t row);
   const RowType& operator[](size_t row) const;
+  Codel& at(const Coord& position);
+  const Codel& at(const Coord& position) const;
  private:
   size_t width_, height_;
   std::vector<RowType> rows_;

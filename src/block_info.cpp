@@ -1,4 +1,8 @@
 #include "block_info.hpp"
+#include <algorithm>
+#include "codel_table.hpp"
+#include "connected_codel.hpp"
+#include "coord.hpp"
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {

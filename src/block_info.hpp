@@ -1,10 +1,15 @@
 #ifndef PIET_I_BLOCK_INFO_HPP
 #define PIET_I_BLOCK_INFO_HPP
 
-#include "memory.hpp"
+#include <tuple>
 #include "color_block.hpp"
+#include "direction.hpp"
+#include "memory.hpp"
 
-class Block = std::unique_ptr<BlockBase>;
+using Block = std::unique_ptr<BlockBase>;
+class CodelTable;
+class ConnectedCodel;
+class Coord;
 
 class BlockInfo {
   using ColourBlockData = std::tuple<ConnectedCodel,

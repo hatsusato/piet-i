@@ -19,6 +19,7 @@ struct Direction {
  public:
   Direction();
   Direction(DP dp);
+  explicit operator bool() const;
  private:
   bool valid_;
   DP dp_;

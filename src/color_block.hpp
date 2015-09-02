@@ -14,7 +14,7 @@ class BlockBase {
   BlockBase();
  public:
   virtual ~BlockBase() = 0;
-  virtual Colour colour() const = 0;
+  virtual Colour colour() const;
   virtual size_t codel_size() const;
   virtual bool is_colour() const;
   virtual bool is_white() const;
@@ -42,7 +42,6 @@ class ColorBlock : public BlockBase {
 class BlackBlock : public BlockBase {
  public:
   BlackBlock();
-  Colour colour() const override;
   bool is_black() const override;
   BlockPointer next(Direction direction, Choose choose) const override;
 };
@@ -50,7 +49,6 @@ class BlackBlock : public BlockBase {
 class WhiteBlock : public BlockBase {
  public:
   explicit WhiteBlock(BlockPointer next);
-  Colour colour() const override;
   bool is_white() const override;
   BlockPointer next(Direction direction, Choose choose) const override;
  private:

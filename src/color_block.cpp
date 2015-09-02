@@ -5,6 +5,9 @@
 
 BlockBase::BlockBase() {}
 BlockBase::~BlockBase() {}
+Colour BlockBase::colour() const {
+  return Colour::unknown;
+}
 size_t BlockBase::codel_size() const {
   return 0;
 }
@@ -48,9 +51,6 @@ void ColorBlock::set_next(BlockPointer next,
 
 BlackBlock::BlackBlock()
 {}
-Colour BlackBlock::colour() const {
-  return Colour(Color::BLACK, Brightness::NORMAL);
-}
 bool BlackBlock::is_black() const {
   return true;
 }
@@ -61,9 +61,6 @@ BlockPointer BlackBlock::next(Direction, Choose) const {
 WhiteBlock::WhiteBlock(BlockPointer next)
     : next_(next)
 {}
-Colour WhiteBlock::colour() const {
-  return Colour(Color::WHITE, Brightness::NORMAL);
-}
 bool WhiteBlock::is_white() const {
   return true;
 }

@@ -10,8 +10,8 @@ struct Extractor {
 }  // namespace /* unnamed */
 
 BlockInfo::BlockInfo(const CodelTable& table)
-    : table_(table), colour_blocks_(), mono_blocks_() {
-  initialize();
+    : colour_blocks_(), mono_blocks_() {
+  initialize(extract_connected_codels(table));
   connect_all();
 }
 std::vector<Block> BlockInfo::extract_colour_blocks() {
@@ -41,16 +41,16 @@ std::vector<Block> BlockInfo::extract_colour_blocks() {
   mono_blocks_.clear();
   return result;
 }
-void BlockInfo::initialize() {
+void BlockInfo::initialize(
+    const std::vector<ConnectedCodel>& connected_codels) {
   assert(colour_blocks_.empty() && mono_blocks_.empty());
   mono_blocks_.emplace_back(nullptr, make_unique<BlackBlock>());
-  const auto connected_codels = extract_connected_codels(table_);
   for (auto&& connected : connected_codels) {
     const auto& codel = connected.codel();
-    assert(codel.is_valid());
-    auto block_pointer = codel.is_colored() ?
-        make_unique<ColourBlock>(connected) : nullptr;
-    colour_blocks_.emplace_back(connected, std::move(block_pointer));
+    assert(codel);
+    auto block = codel.is_colour() ?
+        make_unique<ColourBlock>(codel.colour(), connected.size()) : nullptr;
+    colour_blocks_.emplace_back(connected, std::move(block));
   }
 }
 void BlockInfo::connect_all() {

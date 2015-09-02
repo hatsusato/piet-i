@@ -25,3 +25,6 @@ Coord& Coord::next(Direction direction) {
   y() += dy[direction.value()];
   return *this;
 }
+bool Coord::inside(int left, int top, int right, int bottom) const {
+  return (left <= x() && top <= y() && x() < right && y() < bottom);
+}

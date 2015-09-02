@@ -22,11 +22,11 @@ BlockPointer BlockBase::address() const {
 }
 
 ColorBlock::ColorBlock(const ConnectedCodel& connected)
-    : codel_(connected.codel()), codel_size_(connected.size()), next_() {
-  assert(codel_.is_colour());
+    : colour_(connected.colour()), codel_size_(connected.size()), next_() {
+  assert(colour_.is_colour());
 }
-Codel ColorBlock::codel() const {
-  return codel_;
+Colour ColorBlock::colour() const {
+  return colour_;
 }
 size_t ColorBlock::codel_size() const {
   return codel_size_;
@@ -48,8 +48,8 @@ void ColorBlock::set_next(BlockPointer next,
 
 BlackBlock::BlackBlock()
 {}
-Codel BlackBlock::codel() const {
-  return Codel(Color::BLACK, Brightness::NORMAL);
+Colour BlackBlock::colour() const {
+  return Colour(Color::BLACK, Brightness::NORMAL);
 }
 bool BlackBlock::is_black() const {
   return true;
@@ -61,8 +61,8 @@ BlockPointer BlackBlock::next(Direction, Choose) const {
 WhiteBlock::WhiteBlock(BlockPointer next)
     : next_(next)
 {}
-Codel WhiteBlock::codel() const {
-  return Codel(Color::WHITE, Brightness::NORMAL);
+Colour WhiteBlock::colour() const {
+  return Colour(Color::WHITE, Brightness::NORMAL);
 }
 bool WhiteBlock::is_white() const {
   return true;

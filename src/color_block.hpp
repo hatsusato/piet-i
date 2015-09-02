@@ -14,7 +14,7 @@ class BlockBase {
   BlockBase();
  public:
   virtual ~BlockBase() = 0;
-  virtual Codel codel() const = 0;
+  virtual Colour colour() const = 0;
   virtual size_t codel_size() const;
   virtual bool is_colour() const;
   virtual bool is_white() const;
@@ -28,13 +28,13 @@ class BlockBase {
 class ColorBlock : public BlockBase {
  public:
   explicit ColorBlock(const ConnectedCodel& connected);
-  Codel codel() const override;
+  Colour colour() const override;
   size_t codel_size() const override;
   bool is_colour() const override;
   BlockPointer next(Direction direction, Choose choose) const override;
   void set_next(BlockPointer next, Direction direction, Choose choose);
  private:
-  Codel codel_;
+  Colour colour_;
   size_t codel_size_;
   BlockPointer next_[4][2];
 };
@@ -42,7 +42,7 @@ class ColorBlock : public BlockBase {
 class BlackBlock : public BlockBase {
  public:
   BlackBlock();
-  Codel codel() const override;
+  Colour colour() const override;
   bool is_black() const override;
   BlockPointer next(Direction direction, Choose choose) const override;
 };
@@ -50,7 +50,7 @@ class BlackBlock : public BlockBase {
 class WhiteBlock : public BlockBase {
  public:
   explicit WhiteBlock(BlockPointer next);
-  Codel codel() const override;
+  Colour colour() const override;
   bool is_white() const override;
   BlockPointer next(Direction direction, Choose choose) const override;
  private:

@@ -5,6 +5,9 @@ enum class DP {
   RIGHT, DOWN, LEFT, UP
 };
 
+DP& operator++(DP& dp);
+DP& operator+=(DP& dp, int value);
+
 enum class CC {
   LEFT, RIGHT
 };

@@ -26,3 +26,6 @@ Direction::Direction(DP dp)
 Direction:: operator bool() const {
   return valid_;
 }
+Direction::operator DP() const {
+  return dp_;
+}

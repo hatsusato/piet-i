@@ -59,32 +59,33 @@ const Codel& CodelTable::at(const Coord& position) const {
 size_t codel_size(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();
-  Pixel prev;
   size_t minimum = gcd(width, height);
-  size_t count = 0;
-  // vertical iterate
   for (size_t row = 0; row < height; ++row) {
+    // horizontal traverse
+    Pixel prev_horz;
+    size_t count_horz = 0;
     for (size_t col = 0; col < width; ++col) {
-      const auto pixel = image[row][col];
-      if (0 < count && prev != pixel) {
-        minimum = gcd(minimum, count);
-        count = 0;
+      const auto& pixel = image[row][col];
+      if (0 < count_horz && prev_horz != pixel) {
+        minimum = gcd(minimum, count_horz);
+        count_horz = 0;
       }
-      ++count;
-      prev = pixel;
+      ++count_horz;
+      prev_horz = pixel;
     }
   }
-  count = 0;
-  // horizontal iterate
   for (size_t col = 0; col < width; ++col) {
+    // vertical traverse
+    Pixel prev_vert;
+    size_t count_vert = 0;
     for (size_t row = 0; row < height; ++row) {
-      const auto pixel = image[row][col];
-      if (0 < count && prev != pixel) {
-        minimum = gcd(minimum, count);
-        count = 0;
+      const auto& pixel = image[row][col];
+      if (0 < count_vert && prev_vert != pixel) {
+        minimum = gcd(minimum, count_vert);
+        count_vert = 0;
       }
-      ++count;
-      prev = pixel;
+      ++count_vert;
+      prev_vert = pixel;
     }
   }
   return minimum;

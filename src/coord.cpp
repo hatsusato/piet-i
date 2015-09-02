@@ -110,6 +110,11 @@ std::array<int, 4> Coordinates::range() const {
   }
   return {{right, down, left, up}};
 }
+bool Coordinates::includes(const Coord& coord) const {
+  using std::begin;
+  using std::end;
+  return std::find(begin(*this), end(*this), coord) != end(*this);
+}
 
 Edges::Edges(const Coordinates& coords)
     : edges_() {

@@ -22,6 +22,7 @@ class Coord : public std::tuple<int, int> {
 class Coordinates : public std::vector<Coord> {
  public:
   std::array<int, 4> range() const;
+  bool includes(const Coord& coord) const;
 };
 
 class Edges {

@@ -3,6 +3,7 @@
 
 #include "codel.hpp"
 #include "coord.hpp"
+#include "edge.hpp"
 
 class CodelTable;
 
@@ -17,7 +18,7 @@ class ConnectedCodel {
  private:
   Codel codel_;
   Coordinates coords_;
-  Edges edges_;
+  Edges<Coord> edges_;
 };
 
 void search_connected_codel(CodelTable& table, Coordinates& coords,

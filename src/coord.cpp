@@ -50,6 +50,22 @@ generate_utilities(Direction direction, int value) {
       return std::make_tuple(nullptr, nullptr, nullptr);
   }
 }
+std::tuple<Coord, Coord> edge_minmax(const Coordinates& coords,
+                                     Direction direction, int border) {
+  using std::begin;
+  using std::end;
+  assert(!coords.empty());
+  const auto functions = generate_utilities(direction, border);
+  const auto filter = std::get<0>(functions);
+  const auto make = std::get<1>(functions);
+  const auto compare = std::get<2>(functions);
+  const auto filtered = filter(coords);
+  decltype(begin(filtered)) minimum, maximum;
+  std::tie(minimum, maximum) =
+      std::minmax_element(begin(filtered), end(filtered), compare);
+  assert(minimum != end(filtered) && maximum != end(filtered));
+  return std::make_tuple(make(*minimum), make(*maximum));
+}
 }  // namespace /* unnamed */
 
 Coord::Coord()

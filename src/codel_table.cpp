@@ -1,5 +1,6 @@
 #include "codel_table.hpp"
 #include "codel.hpp"
+#include "coord.hpp"
 
 namespace /* unnamed */ {
 size_t gcd(size_t a, size_t b) {
@@ -47,6 +48,12 @@ auto CodelTable::operator[](size_t row) -> RowType& {
 }
 auto CodelTable::operator[](size_t row) const -> const RowType& {
   return rows_[row];
+}
+Codel& CodelTable::at(const Coord& position) {
+  return rows_[position.y()][position.x()];
+}
+const Codel& CodelTable::at(const Coord& position) const {
+  return rows_[position.y()][position.x()];
 }
 
 size_t codel_size(const Image& image) {

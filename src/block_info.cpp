@@ -9,12 +9,12 @@ struct Extractor {
 };
 }  // namespace /* unnamed */
 
-ColorBlockInfo::ColorBlockInfo(const CodelTable& table)
+BlockInfo::BlockInfo(const CodelTable& table)
     : table_(table), color_blocks_(), mono_blocks_() {
   initialize();
   connect_all();
 }
-std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
+std::vector<ColorBlockPtr> BlockInfo::extract_color_blocks() {
   using std::begin;
   using std::end;
   struct NullChecker {
@@ -41,7 +41,7 @@ std::vector<ColorBlockPtr> ColorBlockInfo::extract_color_blocks() {
   mono_blocks_.clear();
   return result;
 }
-void ColorBlockInfo::initialize() {
+void BlockInfo::initialize() {
   assert(color_blocks_.empty() && mono_blocks_.empty());
   mono_blocks_.emplace_back(nullptr, make_unique<BlackBlock>());
   const auto connected_codels = extract_connected_codels(table_);
@@ -53,14 +53,14 @@ void ColorBlockInfo::initialize() {
     color_blocks_.emplace_back(connected, std::move(block_pointer));
   }
 }
-void ColorBlockInfo::connect_all() {
+void BlockInfo::connect_all() {
   using namespace std::placeholders;
   using std::begin;
   using std::end;
-  const auto connect = std::bind(&ColorBlockInfo::connect, this, _1);
+  const auto connect = std::bind(&BlockInfo::connect, this, _1);
   std::for_each(begin(color_blocks_), end(color_blocks_), connect);
 }
-void ColorBlockInfo::connect(ColorBlockData& color_block) {
+void BlockInfo::connect(ColorBlockData& color_block) {
   const auto& connected = std::get<0>(color_block);
   auto& pointer = std::get<1>(color_block);
   if (connected.codel().is_colored()) {
@@ -76,7 +76,7 @@ void ColorBlockInfo::connect(ColorBlockData& color_block) {
     }
   }
 }
-const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
+const ColorBlockBase* BlockInfo::get_access_point(const Coord& coord,
                                                        Direction direction) {
   using std::begin;
   using std::end;
@@ -107,7 +107,7 @@ const ColorBlockBase* ColorBlockInfo::get_access_point(const Coord& coord,
     }
   }
 }
-const ColorBlockBase* ColorBlockInfo::make_white_path(
+const ColorBlockBase* BlockInfo::make_white_path(
     const ConnectedCodel& connected, const Coord& coord, Direction direction) {
   struct HavePointer {
     HavePointer(const ColorBlockBase* next) : next_(next) {}
@@ -129,11 +129,11 @@ const ColorBlockBase* ColorBlockInfo::make_white_path(
     return std::get<1>(*exist)->address();
   }
 }
-const ColorBlockBase* ColorBlockInfo::black_block() const {
+const ColorBlockBase* BlockInfo::black_block() const {
   assert(!mono_blocks_.empty());
   return std::get<1>(mono_blocks_.front())->address();
 }
 
 std::vector<ColorBlockPtr> color_block_network(const CodelTable& table) {
-  return ColorBlockInfo(table).extract_color_blocks();
+  return BlockInfo(table).extract_color_blocks();
 }

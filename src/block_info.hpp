@@ -1,12 +1,12 @@
 #ifndef PIET_I_BLOCK_INFO_HPP
 #define PIET_I_BLOCK_INFO_HPP
 
-class ColorBlockInfo {
+class BlockInfo {
   using ColorBlockData = std::tuple<ConnectedCodel,
                                     std::unique_ptr<ColorBlock> >;
   using MonoBlockData = std::tuple<const ColorBlockBase*, ColorBlockPtr>;
  public:
-  explicit ColorBlockInfo(const CodelTable& table);
+  explicit BlockInfo(const CodelTable& table);
   std::vector<ColorBlockPtr> extract_color_blocks();
  private:
   void initialize();

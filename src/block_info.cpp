@@ -76,8 +76,8 @@ void BlockInfo::connect(ColorBlockData& color_block) {
     }
   }
 }
-const ColorBlockBase* BlockInfo::get_access_point(const Coord& coord,
-                                                       Direction direction) {
+BlockPointer BlockInfo::get_access_point(const Coord& coord,
+                                         Direction direction) {
   using std::begin;
   using std::end;
   struct IncludesPredicate {
@@ -107,15 +107,15 @@ const ColorBlockBase* BlockInfo::get_access_point(const Coord& coord,
     }
   }
 }
-const ColorBlockBase* BlockInfo::make_white_path(
+BlockPointer BlockInfo::make_white_path(
     const ConnectedCodel& connected, const Coord& coord, Direction direction) {
   struct HavePointer {
-    HavePointer(const ColorBlockBase* next) : next_(next) {}
+    HavePointer(BlockPointer next) : next_(next) {}
     bool operator()(const MonoBlockData& data) {
       return std::get<0>(data) == next_;
     }
    private:
-    const ColorBlockBase* next_;
+    BlockPointer next_;
   };
   const auto next_coord = connected.find_out_of_range(coord, direction);
   const auto next_pointer = get_access_point(next_coord, direction);
@@ -129,7 +129,7 @@ const ColorBlockBase* BlockInfo::make_white_path(
     return std::get<1>(*exist)->address();
   }
 }
-const ColorBlockBase* BlockInfo::black_block() const {
+BlockPointer BlockInfo::black_block() const {
   assert(!mono_blocks_.empty());
   return std::get<1>(mono_blocks_.front())->address();
 }

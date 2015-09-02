@@ -80,18 +80,13 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
 }
 BlockPointer BlockInfo::make_white_path(
     const ConnectedCodel& connected, const Coord& coord, Direction direction) {
-  struct HavePointer {
-    HavePointer(BlockPointer next) : next_(next) {}
-    bool operator()(const MonoBlockData& data) {
-      return std::get<0>(data) == next_;
-    }
-   private:
-    BlockPointer next_;
-  };
   const auto next_coord = connected.find_out_of_range(coord, direction);
   const auto next_pointer = get_access_point(next_coord, direction);
-  const auto exist = std::find_if(begin(mono_blocks_), end(mono_blocks_),
-                                  HavePointer(next_pointer));
+  const auto exist = std::find_if(
+      begin(mono_blocks_), end(mono_blocks_),
+      [next_pointer](const MonoBlockData& data) -> bool {
+        return std::get<0>(data) == next_pointer;
+      });
   if (exist == end(mono_blocks_)) {
     mono_blocks_.emplace_back(next_pointer,
                               make_unique<WhiteBlock>(next_pointer));

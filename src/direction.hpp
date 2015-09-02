@@ -22,6 +22,7 @@ struct Direction {
   explicit operator bool() const;
   operator DP() const;
   Direction& operator++();
+  int value() const;
  private:
   bool valid_;
   DP dp_;

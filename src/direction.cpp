@@ -38,3 +38,6 @@ Direction& Direction::operator++() {
   }
   return *this;
 }
+int Direction::value() const {
+  return static_cast<int>(dp_);
+}

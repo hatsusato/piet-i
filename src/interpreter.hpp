@@ -1,9 +1,13 @@
 #ifndef PIET_I_INTERPRETER_HPP
 #define PIET_I_INTERPRETER_HPP
 
+#include <array>
 #include <stack>
 #include <vector>
 #include "block.hpp"
+#include "block_info.hpp"
+
+class CodelTable;
 
 class Stack : public std::stack<int, std::vector<int> > {
  public:
@@ -13,8 +17,8 @@ class Stack : public std::stack<int, std::vector<int> > {
   void binary_command();
   template <typename Op>
   void unary_command();
-  Direction pointer_command(Direction direction);
-  Choose switch_command(Choose choose);
+  void pointer_command(DP& dp);
+  void switch_command(CC& cc);
   void duplicate_command();
   void roll_command();
   template <typename T>
@@ -28,12 +32,11 @@ class Stack : public std::stack<int, std::vector<int> > {
 class Interpreter {
   using Command = void (Interpreter::*)();
  public:
-  explicit Interpreter(std::vector<ColorBlockPtr>&& network);
+  explicit Interpreter(const CodelTable& table);
   void run();
   bool stepwise_execute();
  private:
-  void do_command(const ColorBlockBase* current,
-                  const ColorBlockBase* next);
+  void do_command(BlockPointer next);
   void next_direction();
   void next_choose();
   void nop_command();
@@ -54,14 +57,13 @@ class Interpreter {
   void in_char_command();
   void out_number_command();
   void out_char_command();
-  void set_commands();
  private:
-  const std::vector<ColorBlockPtr> network_;
-  const ColorBlockBase* current_;
-  Direction direction_;
-  Choose choose_;
+  const std::vector<Block> network_;
+  BlockPointer current_;
+  DP dp_;
+  CC cc_;
   Stack stack_;
-  Command commands_[18];
+  std::array<Command, 18> commands_;
 };
 
 #endif  // PIET_I_INTERPRETER_HPP

@@ -12,9 +12,9 @@ class ConnectedCodel;
 class Coord;
 
 class BlockInfo {
-  using ColourBlockData = std::tuple<ConnectedCodel,
-                                     std::unique_ptr<ColourBlock> >;
-  using MonoBlockData = std::tuple<BlockPointer, Block>;
+  using ColourBlockData =
+      std::tuple<std::unique_ptr<ColourBlock>, ConnectedCodel>;
+  using MonoBlockData = std::tuple<Block, BlockPointer>;
  public:
   explicit BlockInfo(const CodelTable& table);
   std::vector<Block> extract_blocks();

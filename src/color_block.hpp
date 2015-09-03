@@ -1,87 +1,57 @@
 #ifndef PIET_I_COLOR_BLOCK_HPP
 #define PIET_I_COLOR_BLOCK_HPP
 
-#include "codel.hpp"
-#include "codel_table.hpp"
-#include "connected_codel.hpp"
-#include "memory.hpp"
+#include "colour.hpp"
+#include "direction.hpp"
+#include "edge.hpp"
 
-class ColorBlockBase {
+class BlockBase;
+using BlockPointer = const BlockBase*;
+
+class BlockBase {
+ protected:
+  BlockBase();
  public:
-  virtual ~ColorBlockBase() = 0;
-  virtual Codel codel() const = 0;
+  virtual ~BlockBase() = 0;
+  virtual Colour colour() const;
   virtual size_t codel_size() const;
-  virtual const ColorBlockBase* next(Direction direction,
-                                     Choose choose) const = 0;
-  const ColorBlockBase* address() const;
-  virtual bool is_colored() const;
+  virtual bool is_colour() const;
   virtual bool is_white() const;
   virtual bool is_black() const;
- protected:
-  ColorBlockBase();
+  virtual BlockPointer next(Direction direction, Choose choose) const = 0;
+  BlockPointer address() const;
  private:
-  ColorBlockBase(ColorBlockBase&&) = delete;
+  BlockBase(BlockBase&&) = delete;
 };
-using ColorBlockPtr = std::unique_ptr<ColorBlockBase>;
 
-class ColorBlock : public ColorBlockBase {
+class ColourBlock : public BlockBase {
  public:
-  explicit ColorBlock(const ConnectedCodel& connected);
-  Codel codel() const override;
+  ColourBlock(Colour colour, size_t size);
+  Colour colour() const override;
   size_t codel_size() const override;
-  const ColorBlockBase* next(Direction direction,
-                             Choose choose) const override;
-  void set_next(const ColorBlockBase* next,
-                Direction direction, Choose choose);
-  bool is_colored() const override;
+  bool is_colour() const override;
+  BlockPointer next(Direction direction, Choose choose) const override;
+  void set_next(BlockPointer next, Direction direction, Choose choose);
  private:
-  Codel codel_;
+  Colour colour_;
   size_t codel_size_;
-  const ColorBlockBase* next_[4][2];
+  Edges<BlockPointer> next_;
 };
 
-class BlackBlock : public ColorBlockBase {
+class BlackBlock : public BlockBase {
  public:
   BlackBlock();
-  Codel codel() const override;
-  const ColorBlockBase* next(Direction direction,
-                             Choose choose) const override;
   bool is_black() const override;
+  BlockPointer next(Direction direction, Choose choose) const override;
 };
 
-class WhiteBlock : public ColorBlockBase {
+class WhiteBlock : public BlockBase {
  public:
-  explicit WhiteBlock(const ColorBlockBase* next);
-  Codel codel() const override;
-  const ColorBlockBase* next(Direction direction,
-                             Choose choose) const override;
+  explicit WhiteBlock(BlockPointer next);
   bool is_white() const override;
+  BlockPointer next(Direction direction, Choose choose) const override;
  private:
-  const ColorBlockBase* next_;
+  BlockPointer next_;
 };
-
-class ColorBlockInfo {
-  using ColorBlockData = std::tuple<ConnectedCodel,
-                                    std::unique_ptr<ColorBlock> >;
-  using MonoBlockData = std::tuple<const ColorBlockBase*, ColorBlockPtr>;
- public:
-  explicit ColorBlockInfo(const CodelTable& table);
-  std::vector<ColorBlockPtr> extract_color_blocks();
- private:
-  void initialize();
-  void connect_all();
-  void connect(ColorBlockData& color_block);
-  const ColorBlockBase* get_access_point(const Coord& coord,
-                                         Direction direction);
-  const ColorBlockBase* make_white_path(
-      const ConnectedCodel& connected, const Coord& coord, Direction direction);
-  const ColorBlockBase* black_block() const;
- private:
-  CodelTable table_;
-  std::vector<ColorBlockData> color_blocks_;
-  std::vector<MonoBlockData> mono_blocks_;
-};
-
-std::vector<ColorBlockPtr> color_block_network(const CodelTable& table);
 
 #endif  // PIET_I_COLOR_BLOCK_HPP

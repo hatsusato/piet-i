@@ -14,8 +14,8 @@ class Stack : public std::stack<int, std::vector<int> > {
   void binary_command();
   template <typename Op>
   void unary_command();
-  Direction pointer_command(Direction direction);
-  Choose switch_command(Choose choose);
+  void pointer_command(DP& dp);
+  void switch_command(CC& cc);
   void duplicate_command();
   void roll_command();
   template <typename T>
@@ -58,8 +58,8 @@ class Interpreter {
  private:
   const std::vector<Block> network_;
   BlockPointer current_;
-  Direction direction_;
-  Choose choose_;
+  DP dp_;
+  CC cc_;
   Stack stack_;
   Command commands_[18];
 };

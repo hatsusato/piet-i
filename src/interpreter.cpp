@@ -27,20 +27,14 @@ void Stack::unary_command() {
     push(static_cast<int>(Op()(pop_get())));
   }
 }
-Direction Stack::pointer_command(Direction direction) {
+void Stack::pointer_command(DP& dp) {
   if (!empty()) {
-    const auto d = static_cast<int>(direction) + pop_get();
-    return static_cast<Direction>(d % 4);
-  } else {
-    return direction;
+    dp += pop_get();
   }
 }
-Choose Stack::switch_command(Choose choose) {
+void Stack::switch_command(CC& cc) {
   if (!empty()) {
-    const auto c = static_cast<int>(choose) + pop_get();
-    return static_cast<Choose>(c % 2);
-  } else {
-    return choose;
+    cc += pop_get();
   }
 }
 void Stack::duplicate_command() {
@@ -81,8 +75,8 @@ int Stack::pop_get() {
 Interpreter::Interpreter(std::vector<Block>&& network)
     : network_(std::move(network)),
       current_(network_.front()->address()),
-      direction_(Direction::RIGHT),
-      choose_(Choose::LEFT),
+      dp_(DP::RIGHT),
+      cc_(CC::LEFT),
       stack_(),
       commands_() {
   set_commands();
@@ -91,13 +85,13 @@ void Interpreter::run() {
   while (stepwise_execute()) {}
 }
 bool Interpreter::stepwise_execute() {
-  for (int i = 0; i < 4; ++i, next_direction()) {
+  for (int i = 0; i < 4; ++i, ++dp_) {
     bool choose_changed = false;
     do {
       bool next_changed = false;
-      auto next = current_->next(direction_, choose_);
+      auto next = current_->next(dp_, cc_);
       if (next->is_white()) {
-        next = next->next(direction_, choose_);
+        next = next->next(dp_, cc_);
         next_changed = true;
       }
       if (next->is_colored()) {
@@ -107,7 +101,7 @@ bool Interpreter::stepwise_execute() {
         current_ = next;
         return true;
       } else if (!choose_changed) {
-        next_choose();
+        ++cc_;
         choose_changed = true;
         continue;
       }
@@ -127,14 +121,6 @@ void Interpreter::do_command(BlockPointer current, BlockPointer next) {
   const auto lightness_diff = (next_lightness - current_lightness + 3) % 3;
   const auto diff = hue_diff * 3 + lightness_diff;
   (this->*commands_[diff])();
-}
-void Interpreter::next_direction() {
-  const auto d = static_cast<int>(direction_) + 1;
-  direction_ = static_cast<Direction>(d % 4);
-}
-void Interpreter::next_choose() {
-  const auto c = static_cast<int>(choose_) + 1;
-  choose_ = static_cast<Choose>(c % 2);
 }
 void Interpreter::nop_command() {
   assert(false);
@@ -167,10 +153,10 @@ void Interpreter::greater_command() {
   stack_.binary_command<std::greater<int> >();
 }
 void Interpreter::pointer_command() {
-  direction_ = stack_.pointer_command(direction_);
+  stack_.pointer_command(dp_);
 }
 void Interpreter::switch_command() {
-  choose_ = stack_.switch_command(choose_);
+  stack_.switch_command(cc_);
 }
 void Interpreter::duplicate_command() {
   stack_.duplicate_command();

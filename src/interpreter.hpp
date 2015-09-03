@@ -6,6 +6,8 @@
 #include "block.hpp"
 #include "block_info.hpp"
 
+class CodelTable;
+
 class Stack : public std::stack<int, std::vector<int> > {
  public:
   void push_command(size_t number);
@@ -29,7 +31,7 @@ class Stack : public std::stack<int, std::vector<int> > {
 class Interpreter {
   using Command = void (Interpreter::*)();
  public:
-  explicit Interpreter(std::vector<Block>&& network);
+  explicit Interpreter(const CodelTable& table);
   void run();
   bool stepwise_execute();
  private:

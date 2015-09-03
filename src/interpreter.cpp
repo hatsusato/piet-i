@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include "codel_table.hpp"
 #include "colour.hpp"
 
 void Stack::push_command(size_t number) {
@@ -73,8 +74,8 @@ int Stack::pop_get() {
   return value;
 }
 
-Interpreter::Interpreter(std::vector<Block>&& network)
-    : network_(std::move(network)),
+Interpreter::Interpreter(const CodelTable& table)
+    : network_(colour_block_network(table)),
       current_(network_.front()->address()),
       dp_(DP::RIGHT),
       cc_(CC::LEFT),

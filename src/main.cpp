@@ -14,9 +14,8 @@ int main(int argc, char* argv[]) {
   try {
     const auto image = Image(argv[1]);
     visualize(image);
-    const auto table = make_codel_table(image);
-    auto network = color_block_network(table);
-    Interpreter interpreter(std::move(network));
+    const auto table = make_codel_table(image, RegardUnknownAs::WHITE);
+    Interpreter interpreter(table);
     interpreter.run();
   } catch (png::error& e) {
     std::cerr << e.what() << std::endl;

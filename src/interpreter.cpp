@@ -85,28 +85,25 @@ void Interpreter::run() {
   while (stepwise_execute()) {}
 }
 bool Interpreter::stepwise_execute() {
-  for (int i = 0; i < 4; ++i, ++dp_) {
-    bool choose_changed = false;
-    do {
-      bool next_changed = false;
-      auto next = current_->next(dp_, cc_);
-      if (next->is_white()) {
-        next = next->next(dp_, cc_);
-        next_changed = true;
+  for (int i = 0; i < 8; ++i) {
+    auto next = current_->next(dp_, cc_);
+    const bool through_white = next->is_white();
+    if (through_white) {
+      next = next->next(dp_, cc_);
+    }
+    if (next->is_colour()) {
+      if (!through_white) {
+        do_command(current_, next);
       }
-      if (next->is_colored()) {
-        if (!next_changed) {
-          do_command(current_, next);
-        }
-        current_ = next;
-        return true;
-      } else if (!choose_changed) {
-        ++cc_;
-        choose_changed = true;
-        continue;
-      }
-      assert(next->is_black() && choose_changed);
-    } while(false);
+      current_ = next;
+      return true;
+    }
+    assert(next->is_black());
+    if (i % 2) {
+      ++dp_;
+    } else {
+      ++cc_;
+    }
   }
   return false;
 }

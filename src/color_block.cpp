@@ -38,15 +38,11 @@ bool ColourBlock::is_colour() const {
   return true;
 }
 BlockPointer ColourBlock::next(Direction direction, Choose choose) const {
-  const auto d = static_cast<int>(direction);
-  const auto c = static_cast<int>(choose);
-  return next_[d][c];
+  return next_.edge(direction, choose);
 }
 void ColourBlock::set_next(BlockPointer next,
                            Direction direction, Choose choose) {
-  const auto d = static_cast<int>(direction);
-  const auto c = static_cast<int>(choose);
-  next_[d][c] = next;
+  next_.edge(direction, choose) = next;
 }
 
 BlackBlock::BlackBlock()

@@ -36,7 +36,7 @@ class ColourBlock : public BlockBase {
  private:
   Colour colour_;
   size_t codel_size_;
-  BlockPointer next_[4][2];
+  Edges<BlockPointer> next_;
 };
 
 class BlackBlock : public BlockBase {

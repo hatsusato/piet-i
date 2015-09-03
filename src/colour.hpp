@@ -30,5 +30,6 @@ bool operator==(const Colour& lhs, const Colour& rhs);
 bool operator!=(const Colour& lhs, const Colour& rhs);
 
 Colour make_colour(const Pixel& pixel);
+int difference(const Colour& current, const Colour& next);
 
 #endif  // PIET_I_COLOUR_HPP

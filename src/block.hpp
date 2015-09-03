@@ -3,7 +3,7 @@
 
 #include "colour.hpp"
 #include "direction.hpp"
-#include "edge.hpp"
+#include "edges.hpp"
 
 class BlockBase;
 using BlockPointer = const BlockBase*;

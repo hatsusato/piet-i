@@ -1,4 +1,4 @@
-#include "edge.hpp"
+#include "edges.hpp"
 #include <cassert>
 #include <algorithm>
 #include <functional>

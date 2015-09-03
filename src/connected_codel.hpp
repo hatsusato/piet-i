@@ -3,7 +3,7 @@
 
 #include "codel.hpp"
 #include "coord.hpp"
-#include "edge.hpp"
+#include "edges.hpp"
 
 class CodelTable;
 

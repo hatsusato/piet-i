@@ -1,6 +1,7 @@
 #ifndef PIET_I_INTERPRETER_HPP
 #define PIET_I_INTERPRETER_HPP
 
+#include <array>
 #include <stack>
 #include <vector>
 #include "block.hpp"
@@ -56,14 +57,13 @@ class Interpreter {
   void in_char_command();
   void out_number_command();
   void out_char_command();
-  void set_commands();
  private:
   const std::vector<Block> network_;
   BlockPointer current_;
   DP dp_;
   CC cc_;
   Stack stack_;
-  Command commands_[18];
+  std::array<Command, 18> commands_;
 };
 
 #endif  // PIET_I_INTERPRETER_HPP

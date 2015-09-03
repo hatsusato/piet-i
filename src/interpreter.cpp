@@ -81,7 +81,26 @@ Interpreter::Interpreter(const CodelTable& table)
       cc_(CC::LEFT),
       stack_(),
       commands_() {
-  set_commands();
+  commands_ = {{
+      &Interpreter::nop_command,
+      &Interpreter::push_command,
+      &Interpreter::pop_command,
+      &Interpreter::add_command,
+      &Interpreter::subtract_command,
+      &Interpreter::multiply_command,
+      &Interpreter::divide_command,
+      &Interpreter::mod_command,
+      &Interpreter::not_command,
+      &Interpreter::greater_command,
+      &Interpreter::pointer_command,
+      &Interpreter::switch_command,
+      &Interpreter::duplicate_command,
+      &Interpreter::roll_command,
+      &Interpreter::in_number_command,
+      &Interpreter::in_char_command,
+      &Interpreter::out_number_command,
+      &Interpreter::out_char_command
+    }};
 }
 void Interpreter::run() {
   while (stepwise_execute()) {}
@@ -167,24 +186,4 @@ void Interpreter::out_number_command() {
 }
 void Interpreter::out_char_command() {
   stack_.out_command<wchar_t>();
-}
-void Interpreter::set_commands() {
-  commands_[0] = &Interpreter::nop_command;
-  commands_[1] = &Interpreter::push_command;
-  commands_[2] = &Interpreter::pop_command;
-  commands_[3] = &Interpreter::add_command;
-  commands_[4] = &Interpreter::subtract_command;
-  commands_[5] = &Interpreter::multiply_command;
-  commands_[6] = &Interpreter::divide_command;
-  commands_[7] = &Interpreter::mod_command;
-  commands_[8] = &Interpreter::not_command;
-  commands_[9] = &Interpreter::greater_command;
-  commands_[10] = &Interpreter::pointer_command;
-  commands_[11] = &Interpreter::switch_command;
-  commands_[12] = &Interpreter::duplicate_command;
-  commands_[13] = &Interpreter::roll_command;
-  commands_[14] = &Interpreter::in_number_command;
-  commands_[15] = &Interpreter::in_char_command;
-  commands_[16] = &Interpreter::out_number_command;
-  commands_[17] = &Interpreter::out_char_command;
 }

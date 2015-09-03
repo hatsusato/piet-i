@@ -2,7 +2,7 @@
 #define PIET_I_BLOCK_INFO_HPP
 
 #include <tuple>
-#include "color_block.hpp"
+#include "block.hpp"
 #include "direction.hpp"
 #include "memory.hpp"
 

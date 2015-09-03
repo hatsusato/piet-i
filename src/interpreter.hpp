@@ -3,7 +3,7 @@
 
 #include <stack>
 #include <vector>
-#include "color_block.hpp"
+#include "block.hpp"
 
 class Stack : public std::stack<int, std::vector<int> > {
  public:

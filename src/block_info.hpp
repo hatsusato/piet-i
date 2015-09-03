@@ -1,28 +1,37 @@
 #ifndef PIET_I_BLOCK_INFO_HPP
 #define PIET_I_BLOCK_INFO_HPP
 
-class ColorBlockInfo {
-  using ColorBlockData = std::tuple<ConnectedCodel,
-                                    std::unique_ptr<ColorBlock> >;
-  using MonoBlockData = std::tuple<const ColorBlockBase*, ColorBlockPtr>;
+#include <tuple>
+#include "color_block.hpp"
+#include "direction.hpp"
+#include "memory.hpp"
+
+using Block = std::unique_ptr<BlockBase>;
+class CodelTable;
+class ConnectedCodel;
+class Coord;
+
+class BlockInfo {
+  using ColourBlockData =
+      std::tuple<std::unique_ptr<ColourBlock>, ConnectedCodel>;
+  using MonoBlockData = std::tuple<Block, BlockPointer>;
  public:
-  explicit ColorBlockInfo(const CodelTable& table);
-  std::vector<ColorBlockPtr> extract_color_blocks();
+  explicit BlockInfo(const CodelTable& table);
+  std::vector<Block> extract_blocks();
  private:
-  void initialize();
+  void initialize(const std::vector<ConnectedCodel>& connected_codels);
   void connect_all();
-  void connect(ColorBlockData& color_block);
-  const ColorBlockBase* get_access_point(const Coord& coord,
-                                         Direction direction);
-  const ColorBlockBase* make_white_path(
+  void connect(ColourBlockData& colour_block);
+  BlockPointer get_access_point(const Coord& coord,
+                                Direction direction);
+  BlockPointer make_white_path(
       const ConnectedCodel& connected, const Coord& coord, Direction direction);
-  const ColorBlockBase* black_block() const;
+  BlockPointer black_block() const;
  private:
-  CodelTable table_;
-  std::vector<ColorBlockData> color_blocks_;
+  std::vector<ColourBlockData> colour_blocks_;
   std::vector<MonoBlockData> mono_blocks_;
 };
 
-std::vector<ColorBlockPtr> color_block_network(const CodelTable& table);
+std::vector<Block> colour_block_network(const CodelTable& table);
 
 #endif  // PIET_I_BLOCK_INFO_HPP

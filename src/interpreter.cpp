@@ -1,6 +1,7 @@
 #include "interpreter.hpp"
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <iterator>
 #include "codel_table.hpp"
 #include "colour.hpp"
@@ -51,7 +52,7 @@ void Stack::roll_command() {
       const auto step = pop_get();
       pop();
       if (2 <= depth) {
-        const auto rolls = (step < 0) ? (step % depth + depth) : (step % depth);
+        const auto rolls = (step % depth + depth) % depth;
         const auto top = c.rbegin();
         std::rotate(top, std::next(top, rolls), std::next(top, depth));
       }
@@ -137,6 +138,7 @@ void Interpreter::nop_command() {
   assert(false);
 }
 void Interpreter::push_command() {
+  assert(current_->codel_size());
   stack_.push_command(current_->codel_size());
 }
 void Interpreter::pop_command() {

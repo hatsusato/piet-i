@@ -4,6 +4,7 @@
 #include <stack>
 #include <vector>
 #include "block.hpp"
+#include "block_info.hpp"
 
 class Stack : public std::stack<int, std::vector<int> > {
  public:
@@ -28,12 +29,11 @@ class Stack : public std::stack<int, std::vector<int> > {
 class Interpreter {
   using Command = void (Interpreter::*)();
  public:
-  explicit Interpreter(std::vector<ColorBlockPtr>&& network);
+  explicit Interpreter(std::vector<Block>&& network);
   void run();
   bool stepwise_execute();
  private:
-  void do_command(const ColorBlockBase* current,
-                  const ColorBlockBase* next);
+  void do_command(BlockPointer current, BlockPointer next);
   void next_direction();
   void next_choose();
   void nop_command();
@@ -56,8 +56,8 @@ class Interpreter {
   void out_char_command();
   void set_commands();
  private:
-  const std::vector<ColorBlockPtr> network_;
-  const ColorBlockBase* current_;
+  const std::vector<Block> network_;
+  BlockPointer current_;
   Direction direction_;
   Choose choose_;
   Stack stack_;

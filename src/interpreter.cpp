@@ -78,7 +78,7 @@ int Stack::pop_get() {
   return value;
 }
 
-Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
+Interpreter::Interpreter(std::vector<Block>&& network)
     : network_(std::move(network)),
       current_(network_.front()->address()),
       direction_(Direction::RIGHT),
@@ -116,8 +116,7 @@ bool Interpreter::stepwise_execute() {
   }
   return false;
 }
-void Interpreter::do_command(const ColorBlockBase* current,
-                             const ColorBlockBase* next) {
+void Interpreter::do_command(BlockPointer current, BlockPointer next) {
   const Codel& current_codel = current->codel();
   const Codel& next_codel = next->codel();
   const auto current_hue = static_cast<int>(current_codel.color());

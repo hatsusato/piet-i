@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include "colour.hpp"
 
 void Stack::push_command(size_t number) {
   push(static_cast<int>(number));
@@ -93,7 +94,7 @@ bool Interpreter::stepwise_execute() {
     }
     if (next->is_colour()) {
       if (!through_white) {
-        do_command(current_, next);
+        do_command(next);
       }
       current_ = next;
       return true;
@@ -107,17 +108,10 @@ bool Interpreter::stepwise_execute() {
   }
   return false;
 }
-void Interpreter::do_command(BlockPointer current, BlockPointer next) {
-  const Codel& current_codel = current->codel();
-  const Codel& next_codel = next->codel();
-  const auto current_hue = static_cast<int>(current_codel.color());
-  const auto next_hue = static_cast<int>(next_codel.color());
-  const auto hue_diff = (next_hue - current_hue + 6) % 6;
-  const auto current_lightness = static_cast<int>(current_codel.brightness());
-  const auto next_lightness = static_cast<int>(next_codel.brightness());
-  const auto lightness_diff = (next_lightness - current_lightness + 3) % 3;
-  const auto diff = hue_diff * 3 + lightness_diff;
-  (this->*commands_[diff])();
+void Interpreter::do_command(BlockPointer next) {
+  assert(current_->is_colour() && next->is_colour());
+  const auto index = difference(current_->colour(), next->colour());
+  (this->*commands_[index])();
 }
 void Interpreter::nop_command() {
   assert(false);

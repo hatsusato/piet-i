@@ -33,7 +33,7 @@ class Interpreter {
   void run();
   bool stepwise_execute();
  private:
-  void do_command(BlockPointer current, BlockPointer next);
+  void do_command(BlockPointer next);
   void next_direction();
   void next_choose();
   void nop_command();

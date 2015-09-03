@@ -1,5 +1,4 @@
 #include "codel_table.hpp"
-#include "codel.hpp"
 #include "coord.hpp"
 
 namespace /* unnamed */ {

@@ -1,6 +1,4 @@
 #include <iostream>
-#include "block.hpp"
-#include "codel.hpp"
 #include "codel_table.hpp"
 #include "interpreter.hpp"
 #include "png.hpp"

@@ -25,10 +25,11 @@ void show_pixel(const Codel& codel) {
 }
 
 void visualize(const Image& image) {
-  const auto table = make_codel_table(image);
-  for (size_t row = 0; row < table.height(); ++row) {
-    for (size_t col = 0; col < table.width(); ++col) {
-      show_pixel(table[row][col]);
+  const auto table = make_codel_table(image, RegardUnknownAs::UNKNOWN);
+  for (size_t y = 0; y < table.height(); ++y) {
+    const auto& row = table[y];
+    for (size_t x = 0; x < table.width(); ++x) {
+      show_pixel(row[x]);
     }
     std::cout << std::endl;
   }

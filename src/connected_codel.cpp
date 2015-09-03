@@ -2,7 +2,7 @@
 #include "codel_table.hpp"
 
 ConnectedCodel::ConnectedCodel(const Codel& codel, const Coordinates& coords)
-    : codel_(codel), coords_(coords), edges_(coords)
+    : codel_(codel), coords_(coords), edges_(make_edges(coords))
 {}
 const Codel& ConnectedCodel::codel() const {
   return codel_;

@@ -30,6 +30,13 @@ struct enumeration_trait_indexing {
   static constexpr bool does_index = true;
 };
 
+#define ENUM_INDEXING(E)                                        \
+  template <>                                                   \
+  struct enumeration_traits<E> : enumeration_trait_indexing {   \
+    using type = typename std::underlying_type<E>::type;        \
+    static constexpr type count = static_cast<type>(E::COUNT);  \
+  };
+
 template <typename E,
           typename U = typename std::enable_if<
             enumeration_traits<E>::does_index,

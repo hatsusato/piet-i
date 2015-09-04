@@ -5,6 +5,14 @@
 #include "coord.hpp"
 #include "utility.hpp"
 
+void ColourBlockData::add(const AdjacentCodel& adjacent) {
+  const auto& codel = adjacent.codel();
+  assert(codel);
+  auto block = codel.is_colour() ?
+      make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
+  emplace_back(std::move(block), adjacent);
+}
+
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {
   initialize(make_adjacent_codels(table));

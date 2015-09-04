@@ -14,6 +14,8 @@ using ColourDatum = std::tuple<std::unique_ptr<ColourBlock>, AdjacentCodel>;
 using MonoDatum = std::tuple<Block, BlockPointer>;
 
 class ColourBlockData : public std::vector<ColourDatum> {
+ public:
+  void add(const AdjacentCodel& adjacent);
 };
 
 class MonoBlockData : public std::vector<MonoDatum> {

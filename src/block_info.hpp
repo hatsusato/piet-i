@@ -27,6 +27,7 @@ class MonoBlockData : public std::vector<MonoDatum> {
  public:
   MonoBlockData();
   const_iterator which_hold(BlockPointer pointer) const;
+  BlockPointer make_white(BlockPointer pointer);
   template <typename OutputIt>
   OutputIt extract(OutputIt dst);
 };

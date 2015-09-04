@@ -49,6 +49,15 @@ auto MonoBlockData::which_hold(BlockPointer pointer) const -> const_iterator {
   };
   return std::find_if(begin(), end(), predicate);
 }
+BlockPointer MonoBlockData::make_white(BlockPointer pointer) {
+  const auto which = which_hold(pointer);
+  if (which != end()) {
+    return std::get<0>(*which)->address();
+  } else {
+    emplace_back(make_unique<WhiteBlock>(pointer), pointer);
+    return std::get<0>(back())->address();
+  }
+}
 template <typename OutputIt>
 OutputIt MonoBlockData::extract(OutputIt dst) {
   for (auto&& datum : std::move(*this)) {

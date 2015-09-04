@@ -17,6 +17,12 @@ std::unique_ptr<T, std::default_delete<T> > make_unique(Args&&... args) {
       new T(std::forward<Args>(args)...));
 }
 
+template <bool B>
+using enabler = typename std::enable_if<B, std::nullptr_t>::type;
+
+#define ENABLER(B)\
+  enabler<B> = nullptr
+
 template <typename E>
 struct enumeration_traits {};
 

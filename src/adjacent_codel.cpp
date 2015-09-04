@@ -1,4 +1,4 @@
-#include "connected_codel.hpp"
+#include "adjacent_codel.hpp"
 #include "codel_table.hpp"
 
 ConnectedCodel::ConnectedCodel(const Codel& codel, const Coordinates& coords)

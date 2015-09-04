@@ -1,7 +1,7 @@
 #include "block_info.hpp"
 #include <algorithm>
+#include "adjacent_codel.hpp"
 #include "codel_table.hpp"
-#include "connected_codel.hpp"
 #include "coord.hpp"
 
 BlockInfo::BlockInfo(const CodelTable& table)

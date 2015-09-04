@@ -1,6 +1,7 @@
 #ifndef PIET_I_BLOCK_INFO_HPP
 #define PIET_I_BLOCK_INFO_HPP
 
+#include <memory>
 #include <tuple>
 #include "block.hpp"
 #include "direction.hpp"

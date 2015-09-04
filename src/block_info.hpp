@@ -42,8 +42,6 @@ class BlockInfo {
   void connect_all();
   void connect(ColourBlockData& colour_block);
   BlockPointer get_target(const Coord& coord, Direction direction);
-  BlockPointer make_white_path(
-      const AdjacentCodel& adjacent, const Coord& coord, Direction direction);
  private:
   ColourBlockData colour_blocks_;
   MonoBlockData mono_blocks_;

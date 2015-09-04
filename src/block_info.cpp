@@ -120,23 +120,6 @@ BlockPointer BlockInfo::get_target(const Coord& coord, Direction direction) {
   }
   return mono_blocks_.black_block();
 }
-BlockPointer BlockInfo::make_white_path(
-    const AdjacentCodel& adjacent, const Coord& coord, Direction direction) {
-  const auto next_coord = adjacent.find_out_of_range(coord, direction);
-  const auto next_pointer = get_access_point(next_coord, direction);
-  const auto exist = std::find_if(
-      begin(mono_blocks_), end(mono_blocks_),
-      [next_pointer](const MonoBlockData& data) -> bool {
-        return std::get<1>(data) == next_pointer;
-      });
-  if (exist == end(mono_blocks_)) {
-    mono_blocks_.emplace_back(make_unique<WhiteBlock>(next_pointer),
-                              next_pointer);
-    return std::get<0>(mono_blocks_.back())->address();
-  } else {
-    return std::get<0>(*exist)->address();
-  }
-}
 
 std::vector<Block> colour_block_network(const CodelTable& table) {
   std::vector<Block> result;

@@ -60,11 +60,11 @@ std::tuple<Coord, Coord> edge_minmax(const Coordinates& coords,
   const auto make = std::get<1>(functions);
   const auto compare = std::get<2>(functions);
   const auto filtered = filter(coords);
-  decltype(begin(filtered)) minimum, maximum;
-  std::tie(minimum, maximum) =
+  decltype(begin(filtered)) left, right;
+  std::tie(left, right) =
       std::minmax_element(begin(filtered), end(filtered), compare);
-  assert(minimum != end(filtered) && maximum != end(filtered));
-  return std::make_tuple(make(*minimum), make(*maximum));
+  assert(left != end(filtered) && right != end(filtered));
+  return std::make_tuple(make(*left), make(*right));
 }
 }  // namespace /* unnamed */
 
@@ -72,11 +72,12 @@ Edges<Coord> make_edges(const Coordinates& coords) {
   assert(!coords.empty());
   Edges<Coord> result;
   const auto range = coords.range();
+  Coord left, right;
   for (Direction direction; direction; ++direction) {
-    const auto minmax =
+    std::tie(left, right) =
         edge_minmax(coords, direction, range[direction.value()]);
-    result.edge(direction, CC::LEFT) = std::get<0>(minmax).next(direction);
-    result.edge(direction, CC::RIGHT) = std::get<1>(minmax).next(direction);
+    result.edge(direction, CC::LEFT) = left.next(direction);
+    result.edge(direction, CC::RIGHT) = right.next(direction);
   }
   return result;
 }

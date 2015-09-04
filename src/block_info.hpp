@@ -26,6 +26,8 @@ class ColourBlockData : public std::vector<ColourDatum> {
 class MonoBlockData : public std::vector<MonoDatum> {
  public:
   MonoBlockData();
+  template <typename OutputIt>
+  OutputIt extract(OutputIt dst);
 };
 
 class BlockInfo {

@@ -43,6 +43,14 @@ void ColourBlockData::add(const AdjacentCodel& adjacent) {
 MonoBlockData::MonoBlockData() {
   emplace_back(make_unique<BlackBlock>(), nullptr);
 }
+template <typename OutputIt>
+OutputIt MonoBlockData::extract(OutputIt dst) {
+  for (auto&& datum : std::move(*this)) {
+    *dst++ = std::move(std::get<0>(datum));
+  }
+  clear();
+  return dst;
+}
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(table), mono_blocks_() {

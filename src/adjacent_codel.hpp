@@ -7,9 +7,9 @@
 
 class CodelTable;
 
-class ConnectedCodel {
+class AdjacentCodel {
  public:
-  ConnectedCodel(const Codel& codel, const Coordinates& coords);
+  AdjacentCodel(const Codel& codel, const Coordinates& coords);
   const Codel& codel() const;
   size_t size() const;
   const Coord& edge(Direction direction, Choose choose) const;
@@ -23,6 +23,6 @@ class ConnectedCodel {
 
 void search_connected_codel(CodelTable& table, Coordinates& coords,
                             const Codel& codel, const Coord& current);
-std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
+std::vector<AdjacentCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CONNECTED_CODEL_HPP

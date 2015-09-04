@@ -8,24 +8,24 @@
 
 using Block = std::unique_ptr<BlockBase>;
 class CodelTable;
-class ConnectedCodel;
+class AdjacentCodel;
 class Coord;
 
 class BlockInfo {
   using ColourBlockData =
-      std::tuple<std::unique_ptr<ColourBlock>, ConnectedCodel>;
+      std::tuple<std::unique_ptr<ColourBlock>, AdjacentCodel>;
   using MonoBlockData = std::tuple<Block, BlockPointer>;
  public:
   explicit BlockInfo(const CodelTable& table);
   std::vector<Block> extract_blocks();
  private:
-  void initialize(const std::vector<ConnectedCodel>& connected_codels);
+  void initialize(const std::vector<AdjacentCodel>& connected_codels);
   void connect_all();
   void connect(ColourBlockData& colour_block);
   BlockPointer get_access_point(const Coord& coord,
                                 Direction direction);
   BlockPointer make_white_path(
-      const ConnectedCodel& connected, const Coord& coord, Direction direction);
+      const AdjacentCodel& connected, const Coord& coord, Direction direction);
   BlockPointer black_block() const;
  private:
   std::vector<ColourBlockData> colour_blocks_;

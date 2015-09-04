@@ -24,7 +24,7 @@ std::vector<Block> BlockInfo::extract_blocks() {
   return result;
 }
 void BlockInfo::initialize(
-    const std::vector<ConnectedCodel>& connected_codels) {
+    const std::vector<AdjacentCodel>& connected_codels) {
   assert(colour_blocks_.empty() && mono_blocks_.empty());
   mono_blocks_.emplace_back(make_unique<BlackBlock>(), nullptr);
   for (auto&& connected : connected_codels) {
@@ -82,7 +82,7 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
   }
 }
 BlockPointer BlockInfo::make_white_path(
-    const ConnectedCodel& connected, const Coord& coord, Direction direction) {
+    const AdjacentCodel& connected, const Coord& coord, Direction direction) {
   const auto next_coord = connected.find_out_of_range(coord, direction);
   const auto next_pointer = get_access_point(next_coord, direction);
   const auto exist = std::find_if(

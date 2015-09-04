@@ -16,6 +16,7 @@ using MonoDatum = std::tuple<Block, BlockPointer>;
 class ColourBlockData : public std::vector<ColourDatum> {
  public:
   void add(const AdjacentCodel& adjacent);
+  const_iterator which_include(const Coord& coord) const;
 };
 
 class MonoBlockData : public std::vector<MonoDatum> {

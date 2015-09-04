@@ -12,6 +12,13 @@ void ColourBlockData::add(const AdjacentCodel& adjacent) {
       make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
   emplace_back(std::move(block), adjacent);
 }
+auto ColourBlockData::which_include(const Coord& coord) const
+    -> const_iterator {
+  const auto predicate = [coord](const ColourDatum& datum) -> bool {
+    return std::get<1>(datum).includes(coord);
+  };
+  return std::find_if(begin(), end(), predicate);
+}
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {

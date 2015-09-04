@@ -10,11 +10,16 @@
 class AdjacentCodel;
 class CodelTable;
 class Coord;
+using ColourDatum = std::tuple<std::unique_ptr<ColourBlock>, AdjacentCodel>;
+using MonoDatum = std::tuple<Block, BlockPointer>;
+
+class ColourBlockData : public std::vector<ColourDatum> {
+};
+
+class MonoBlockData : public std::vector<MonoDatum> {
+};
 
 class BlockInfo {
-  using ColourBlockData =
-      std::tuple<std::unique_ptr<ColourBlock>, AdjacentCodel>;
-  using MonoBlockData = std::tuple<Block, BlockPointer>;
  public:
   explicit BlockInfo(const CodelTable& table);
   std::vector<Block> extract_blocks();
@@ -28,8 +33,8 @@ class BlockInfo {
       const AdjacentCodel& adjacent, const Coord& coord, Direction direction);
   BlockPointer black_block() const;
  private:
-  std::vector<ColourBlockData> colour_blocks_;
-  std::vector<MonoBlockData> mono_blocks_;
+  ColourBlockData colour_blocks_;
+  MonoBlockData mono_blocks_;
 };
 
 std::vector<Block> colour_block_network(const CodelTable& table);

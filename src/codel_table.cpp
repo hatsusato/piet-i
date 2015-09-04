@@ -55,7 +55,7 @@ const Codel& CodelTable::at(const Coord& position) const {
   return rows_[position.y()][position.x()];
 }
 
-size_t codel_size(const Image& image) {
+size_t codel_magnification(const Image& image) {
   const size_t width = image.get_width();
   const size_t height = image.get_height();
   size_t minimum = gcd(width, height);
@@ -91,9 +91,9 @@ size_t codel_size(const Image& image) {
 }
 
 CodelTable make_codel_table(const Image& image, RegardUnknownAs as) {
-  const auto step = codel_size(image);
-  const auto w = image.get_width() / step;
-  const auto h = image.get_height() / step;
+  const auto magnification = codel_magnification(image);
+  const auto width = image.get_width() / magnification;
+  const auto height = image.get_height() / magnification;
   const auto alternative = [as]() -> Codel {
     switch (as) {
       case RegardUnknownAs::BLACK:
@@ -104,12 +104,12 @@ CodelTable make_codel_table(const Image& image, RegardUnknownAs as) {
       return Codel::unknown;
     }
   }();
-  CodelTable table(w, h);
-  for (size_t row = 0; row < h; ++row) {
-    const auto& src_row = image[row * step];
+  CodelTable table(width, height);
+  for (size_t row = 0; row < height; ++row) {
+    const auto& src_row = image[row * magnification];
     auto& dst_row = table[row];
-    for (size_t col = 0; col < w; ++col) {
-      const auto& pixel = src_row[col * step];
+    for (size_t col = 0; col < width; ++col) {
+      const auto& pixel = src_row[col * magnification];
       const auto codel = make_codel(pixel);
       dst_row[col] = codel ? codel : alternative;
     }

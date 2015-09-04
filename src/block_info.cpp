@@ -1,16 +1,19 @@
 #include "block_info.hpp"
 #include <algorithm>
+#include <iterator>
+#include <functional>
 #include "adjacent_codel.hpp"
 #include "codel_table.hpp"
 #include "coord.hpp"
 #include "utility.hpp"
 
-void ColourBlockData::add(const AdjacentCodel& adjacent) {
-  const auto& codel = adjacent.codel();
-  assert(codel);
-  auto block = codel.is_colour() ?
-      make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
-  emplace_back(std::move(block), adjacent);
+ColourBlockData::ColourBlockData(const CodelTable& table) {
+  using namespace std::placeholders;
+  using std::begin;
+  using std::end;
+  const auto adjacent_codels = make_adjacent_codels(table);
+  const auto add = std::bind(&ColourBlockData::add, this, _1);
+  std::for_each(begin(adjacent_codels), end(adjacent_codels), add);
 }
 auto ColourBlockData::which_include(const Coord& coord) const
     -> const_iterator {
@@ -18,6 +21,13 @@ auto ColourBlockData::which_include(const Coord& coord) const
     return std::get<1>(datum).includes(coord);
   };
   return std::find_if(begin(), end(), predicate);
+}
+void ColourBlockData::add(const AdjacentCodel& adjacent) {
+  const auto& codel = adjacent.codel();
+  assert(codel);
+  auto block = codel.is_colour() ?
+      make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
+  emplace_back(std::move(block), adjacent);
 }
 
 MonoBlockData::MonoBlockData() {

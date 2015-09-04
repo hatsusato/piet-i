@@ -2,14 +2,17 @@
 #define PIET_I_COLOUR_HPP
 
 #include "png.hpp"
+#include "utility.hpp"
 
-enum class Hue {
+enum class Hue : int {
   RED, YELLOW, GREEN, CYAN, BLUE, MAGENTA, COUNT
 };
+ENUM_INDEXING(Hue);
 
-enum class Lightness {
+enum class Lightness : int {
   LIGHT, NORMAL, DARK, COUNT
 };
+ENUM_INDEXING(Lightness);
 
 struct Colour {
  public:

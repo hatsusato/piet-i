@@ -102,30 +102,23 @@ void BlockInfo::connect(ColourBlockData& colour_block) {
     }
   }
 }
-BlockPointer BlockInfo::get_access_point(const Coord& coord,
-                                         Direction direction) {
-  using std::begin;
+BlockPointer BlockInfo::get_target(const Coord& coord, Direction direction) {
   using std::end;
-  const auto includes =
-      std::find_if(begin(colour_blocks_), end(colour_blocks_),
-                   [coord](const ColourBlockData& data) -> bool {
-                     return std::get<1>(data).includes(coord);
-                   });
-  if (includes == end(colour_blocks_)) {
-    return black_block();
-  } else {
-    const auto& block = std::get<0>(*includes);
-    const auto& adjacent = std::get<1>(*includes);
-    assert(adjacent.codel());
-    switch (adjacent.codel().type()) {
-      case ColourType::WHITE:
-        return make_white_path(adjacent, coord, direction);
-      case ColourType::BLACK:
-        return black_block();
-      default:
-        return block->address();
+  const auto which = colour_blocks_.which_include(coord);
+  if (which != end(colour_blocks_)) {
+    const auto& block = std::get<0>(*which);
+    const auto& adjacent = std::get<1>(*which);
+    const auto& codel = adjacent.codel();
+    assert(codel);
+    if (codel.is_colour()) {
+      return block->address();
+    } else if (codel.is_white()) {
+      const auto next_coord = adjacent.find_out_of_range(coord, direction);
+      const auto next_pointer = get_target(next_coord, direction);
+      return mono_blocks_.make_white(next_pointer);
     }
   }
+  return mono_blocks_.black_block();
 }
 BlockPointer BlockInfo::make_white_path(
     const AdjacentCodel& adjacent, const Coord& coord, Direction direction) {

@@ -75,8 +75,8 @@ Edges<Coord> make_edges(const Coordinates& coords) {
   for (Direction direction; direction; ++direction) {
     const auto minmax =
         edge_minmax(coords, direction, range[direction.value()]);
-    result.edge(direction, CC::LEFT) = std::get<0>(minmax);
-    result.edge(direction, CC::RIGHT) = std::get<1>(minmax);
+    result.edge(direction, CC::LEFT) = std::get<0>(minmax).next(direction);
+    result.edge(direction, CC::RIGHT) = std::get<1>(minmax).next(direction);
   }
   return result;
 }

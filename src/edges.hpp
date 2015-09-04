@@ -1,5 +1,5 @@
-#ifndef PIET_I_EDGE_HPP
-#define PIET_I_EDGE_HPP
+#ifndef PIET_I_EDGES_HPP
+#define PIET_I_EDGES_HPP
 
 #include <array>
 #include "coord.hpp"
@@ -21,4 +21,4 @@ class Edges {
 
 Edges<Coord> make_edges(const Coordinates& coords);
 
-#endif  // PIET_I_EDGE_HPP
+#endif  // PIET_I_EDGES_HPP

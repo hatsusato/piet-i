@@ -1,5 +1,5 @@
-#ifndef PIET_I_COLOR_BLOCK_HPP
-#define PIET_I_COLOR_BLOCK_HPP
+#ifndef PIET_I_BLOCK_HPP
+#define PIET_I_BLOCK_HPP
 
 #include "colour.hpp"
 #include "direction.hpp"
@@ -54,4 +54,4 @@ class WhiteBlock : public BlockBase {
   BlockPointer next_;
 };
 
-#endif  // PIET_I_COLOR_BLOCK_HPP
+#endif  // PIET_I_BLOCK_HPP

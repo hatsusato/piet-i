@@ -1,5 +1,5 @@
-#ifndef PIET_I_CONNECTED_CODEL_HPP
-#define PIET_I_CONNECTED_CODEL_HPP
+#ifndef PIET_I_ADJACENT_CODEL_HPP
+#define PIET_I_ADJACENT_CODEL_HPP
 
 #include "codel.hpp"
 #include "coord.hpp"
@@ -21,8 +21,8 @@ class AdjacentCodel {
   Edges<Coord> edges_;
 };
 
-void search_connected_codel(CodelTable& table, Coordinates& coords,
-                            const Codel& codel, const Coord& current);
-std::vector<AdjacentCodel> extract_connected_codels(const CodelTable& table);
+void search_adjacent_codel(CodelTable& table, Coordinates& coords,
+                           const Codel& codel, const Coord& current);
+std::vector<AdjacentCodel> extract_adjacent_codels(const CodelTable& table);
 
-#endif  // PIET_I_CONNECTED_CODEL_HPP
+#endif  // PIET_I_ADJACENT_CODEL_HPP

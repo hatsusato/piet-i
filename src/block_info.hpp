@@ -19,13 +19,13 @@ class BlockInfo {
   explicit BlockInfo(const CodelTable& table);
   std::vector<Block> extract_blocks();
  private:
-  void initialize(const std::vector<AdjacentCodel>& connected_codels);
+  void initialize(const std::vector<AdjacentCodel>& adjacent_codels);
   void connect_all();
   void connect(ColourBlockData& colour_block);
   BlockPointer get_access_point(const Coord& coord,
                                 Direction direction);
   BlockPointer make_white_path(
-      const AdjacentCodel& connected, const Coord& coord, Direction direction);
+      const AdjacentCodel& adjacent, const Coord& coord, Direction direction);
   BlockPointer black_block() const;
  private:
   std::vector<ColourBlockData> colour_blocks_;

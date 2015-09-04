@@ -6,7 +6,7 @@
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {
-  initialize(extract_connected_codels(table));
+  initialize(extract_adjacent_codels(table));
   connect_all();
 }
 std::vector<Block> BlockInfo::extract_blocks() {
@@ -24,15 +24,15 @@ std::vector<Block> BlockInfo::extract_blocks() {
   return result;
 }
 void BlockInfo::initialize(
-    const std::vector<AdjacentCodel>& connected_codels) {
+    const std::vector<AdjacentCodel>& adjacent_codels) {
   assert(colour_blocks_.empty() && mono_blocks_.empty());
   mono_blocks_.emplace_back(make_unique<BlackBlock>(), nullptr);
-  for (auto&& connected : connected_codels) {
-    const auto& codel = connected.codel();
+  for (auto&& adjacent : adjacent_codels) {
+    const auto& codel = adjacent.codel();
     assert(codel);
     auto block = codel.is_colour() ?
-        make_unique<ColourBlock>(codel.colour(), connected.size()) : nullptr;
-    colour_blocks_.emplace_back(std::move(block), connected);
+        make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
+    colour_blocks_.emplace_back(std::move(block), adjacent);
   }
 }
 void BlockInfo::connect_all() {
@@ -44,11 +44,11 @@ void BlockInfo::connect_all() {
 }
 void BlockInfo::connect(ColourBlockData& colour_block) {
   auto& block = std::get<0>(colour_block);
-  const auto& connected = std::get<1>(colour_block);
-  if (connected.codel().is_colour()) {
+  const auto& adjacent = std::get<1>(colour_block);
+  if (adjacent.codel().is_colour()) {
     for (Direction direction; direction; ++direction) {
       for (Choose choose; choose; ++choose) {
-        const auto& edge = connected.edge(direction, choose);
+        const auto& edge = adjacent.edge(direction, choose);
         const auto next = get_access_point(edge, direction);
         assert(block->colour() && block->colour() != next->colour());
         block->set_next(next, direction, choose);
@@ -69,11 +69,11 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
     return black_block();
   } else {
     const auto& block = std::get<0>(*includes);
-    const auto& connected = std::get<1>(*includes);
-    assert(connected.codel());
-    switch (connected.codel().type()) {
+    const auto& adjacent = std::get<1>(*includes);
+    assert(adjacent.codel());
+    switch (adjacent.codel().type()) {
       case ColourType::WHITE:
-        return make_white_path(connected, coord, direction);
+        return make_white_path(adjacent, coord, direction);
       case ColourType::BLACK:
         return black_block();
       default:
@@ -82,8 +82,8 @@ BlockPointer BlockInfo::get_access_point(const Coord& coord,
   }
 }
 BlockPointer BlockInfo::make_white_path(
-    const AdjacentCodel& connected, const Coord& coord, Direction direction) {
-  const auto next_coord = connected.find_out_of_range(coord, direction);
+    const AdjacentCodel& adjacent, const Coord& coord, Direction direction) {
+  const auto next_coord = adjacent.find_out_of_range(coord, direction);
   const auto next_pointer = get_access_point(next_coord, direction);
   const auto exist = std::find_if(
       begin(mono_blocks_), end(mono_blocks_),

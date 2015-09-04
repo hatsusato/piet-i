@@ -22,6 +22,16 @@ auto ColourBlockData::which_include(const Coord& coord) const
   };
   return std::find_if(begin(), end(), predicate);
 }
+template <typename OutputIt>
+OutputIt ColourBlockData::extract(OutputIt dst) {
+  for (auto&& datum : std::move(*this)) {
+    if (auto block = std::move(std::get<0>(datum))) {
+      *dst++ = std::move(block);
+    }
+  }
+  clear();
+  return dst;
+}
 void ColourBlockData::add(const AdjacentCodel& adjacent) {
   const auto& codel = adjacent.codel();
   assert(codel);

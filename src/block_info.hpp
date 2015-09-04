@@ -17,6 +17,8 @@ class ColourBlockData : public std::vector<ColourDatum> {
  public:
   ColourBlockData(const CodelTable& table);
   const_iterator which_include(const Coord& coord) const;
+  template <typename OutputIt>
+  OutputIt extract(OutputIt dst);
  private:
   void add(const AdjacentCodel& adjacent);
 };

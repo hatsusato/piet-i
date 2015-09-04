@@ -26,11 +26,12 @@ class ColourBlockData : public std::vector<ColourDatum> {
 class MonoBlockData : public std::vector<MonoDatum> {
  public:
   MonoBlockData();
-  const_iterator which_hold(BlockPointer pointer) const;
-  BlockPointer make_white(BlockPointer pointer);
   BlockPointer black_block() const;
+  BlockPointer make_white(BlockPointer pointer);
   template <typename OutputIt>
   OutputIt extract(OutputIt dst);
+ private:
+  const_iterator which_hold(BlockPointer pointer) const;
 };
 
 class BlockInfo {

@@ -43,11 +43,9 @@ void ColourBlockData::add(const AdjacentCodel& adjacent) {
 MonoBlockData::MonoBlockData() {
   emplace_back(make_unique<BlackBlock>(), nullptr);
 }
-auto MonoBlockData::which_hold(BlockPointer pointer) const -> const_iterator {
-  const auto predicate = [pointer](const MonoDatum& datum) -> bool {
-    return std::get<1>(datum) == pointer;
-  };
-  return std::find_if(begin(), end(), predicate);
+BlockPointer MonoBlockData::black_block() const {
+  assert(!empty());
+  return std::get<0>(front())->address();
 }
 BlockPointer MonoBlockData::make_white(BlockPointer pointer) {
   const auto which = which_hold(pointer);
@@ -58,10 +56,6 @@ BlockPointer MonoBlockData::make_white(BlockPointer pointer) {
     return std::get<0>(back())->address();
   }
 }
-BlockPointer MonoBlockData::black_block() const {
-  assert(!empty());
-  return std::get<0>(front())->address();
-}
 template <typename OutputIt>
 OutputIt MonoBlockData::extract(OutputIt dst) {
   for (auto&& datum : std::move(*this)) {
@@ -69,6 +63,12 @@ OutputIt MonoBlockData::extract(OutputIt dst) {
   }
   clear();
   return dst;
+}
+auto MonoBlockData::which_hold(BlockPointer pointer) const -> const_iterator {
+  const auto predicate = [pointer](const MonoDatum& datum) -> bool {
+    return std::get<1>(datum) == pointer;
+  };
+  return std::find_if(begin(), end(), predicate);
 }
 
 BlockInfo::BlockInfo(const CodelTable& table)

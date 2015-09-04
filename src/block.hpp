@@ -1,12 +1,14 @@
 #ifndef PIET_I_BLOCK_HPP
 #define PIET_I_BLOCK_HPP
 
+#include <memory>
 #include "colour.hpp"
 #include "direction.hpp"
 #include "edges.hpp"
 
 class BlockBase;
 using BlockPointer = const BlockBase*;
+using Block = std::unique_ptr<BlockBase>;
 
 class BlockBase {
  protected:

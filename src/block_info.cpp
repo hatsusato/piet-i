@@ -58,6 +58,10 @@ BlockPointer MonoBlockData::make_white(BlockPointer pointer) {
     return std::get<0>(back())->address();
   }
 }
+BlockPointer MonoBlockData::black_block() const {
+  assert(!empty());
+  return std::get<0>(front())->address();
+}
 template <typename OutputIt>
 OutputIt MonoBlockData::extract(OutputIt dst) {
   for (auto&& datum : std::move(*this)) {
@@ -139,10 +143,6 @@ BlockPointer BlockInfo::make_white_path(
   } else {
     return std::get<0>(*exist)->address();
   }
-}
-BlockPointer BlockInfo::black_block() const {
-  assert(!mono_blocks_.empty());
-  return std::get<0>(mono_blocks_.front())->address();
 }
 
 std::vector<Block> colour_block_network(const CodelTable& table) {

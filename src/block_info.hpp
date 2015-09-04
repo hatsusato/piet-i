@@ -28,6 +28,7 @@ class MonoBlockData : public std::vector<MonoDatum> {
   MonoBlockData();
   const_iterator which_hold(BlockPointer pointer) const;
   BlockPointer make_white(BlockPointer pointer);
+  BlockPointer black_block() const;
   template <typename OutputIt>
   OutputIt extract(OutputIt dst);
 };
@@ -44,7 +45,6 @@ class BlockInfo {
                                 Direction direction);
   BlockPointer make_white_path(
       const AdjacentCodel& adjacent, const Coord& coord, Direction direction);
-  BlockPointer black_block() const;
  private:
   ColourBlockData colour_blocks_;
   MonoBlockData mono_blocks_;

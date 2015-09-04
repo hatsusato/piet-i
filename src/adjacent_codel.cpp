@@ -34,14 +34,14 @@ void search_adjacent_codel(CodelTable& table, Coordinates& coords,
   }
 }
 
-std::vector<AdjacentCodel> extract_adjacent_codels(const CodelTable& table) {
-  const auto w = static_cast<int>(table.width());
-  const auto h = static_cast<int>(table.height());
+std::vector<AdjacentCodel> make_adjacent_codels(const CodelTable& table) {
+  const auto width = static_cast<int>(table.width());
+  const auto height = static_cast<int>(table.height());
   auto tmp = table.clone();
   std::vector<AdjacentCodel> result;
-  for (int y = 0; y < h; ++y) {
-    for (int x = 0; x < w; ++x) {
-      const auto current = Coord(x, y);
+  for (int row = 0; row < height; ++row) {
+    for (int col = 0; col < width; ++col) {
+      const auto current = Coord(col, row);
       if (const auto codel = tmp.at(current)) {
         Coordinates coords;
         search_adjacent_codel(tmp, coords, codel, current);

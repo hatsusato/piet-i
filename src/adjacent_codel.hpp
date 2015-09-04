@@ -23,6 +23,6 @@ class AdjacentCodel {
 
 void search_adjacent_codel(CodelTable& table, Coordinates& coords,
                            const Codel& codel, const Coord& current);
-std::vector<AdjacentCodel> extract_adjacent_codels(const CodelTable& table);
+std::vector<AdjacentCodel> make_adjacent_codels(const CodelTable& table);
 
 #endif  // PIET_I_ADJACENT_CODEL_HPP

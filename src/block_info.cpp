@@ -6,7 +6,7 @@
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {
-  initialize(extract_adjacent_codels(table));
+  initialize(make_adjacent_codels(table));
   connect_all();
 }
 std::vector<Block> BlockInfo::extract_blocks() {

@@ -31,7 +31,6 @@ class BlockInfo {
   explicit BlockInfo(const CodelTable& table);
   std::vector<Block> extract_blocks();
  private:
-  void initialize(const std::vector<AdjacentCodel>& adjacent_codels);
   void connect_all();
   void connect(ColourBlockData& colour_block);
   BlockPointer get_access_point(const Coord& coord,

@@ -35,8 +35,7 @@ MonoBlockData::MonoBlockData() {
 }
 
 BlockInfo::BlockInfo(const CodelTable& table)
-    : colour_blocks_(), mono_blocks_() {
-  initialize(make_adjacent_codels(table));
+    : colour_blocks_(table), mono_blocks_() {
   connect_all();
 }
 std::vector<Block> BlockInfo::extract_blocks() {
@@ -52,18 +51,6 @@ std::vector<Block> BlockInfo::extract_blocks() {
   colour_blocks_.clear();
   mono_blocks_.clear();
   return result;
-}
-void BlockInfo::initialize(
-    const std::vector<AdjacentCodel>& adjacent_codels) {
-  assert(colour_blocks_.empty() && mono_blocks_.empty());
-  mono_blocks_.emplace_back(make_unique<BlackBlock>(), nullptr);
-  for (auto&& adjacent : adjacent_codels) {
-    const auto& codel = adjacent.codel();
-    assert(codel);
-    auto block = codel.is_colour() ?
-        make_unique<ColourBlock>(codel.colour(), adjacent.size()) : nullptr;
-    colour_blocks_.emplace_back(std::move(block), adjacent);
-  }
 }
 void BlockInfo::connect_all() {
   using namespace std::placeholders;

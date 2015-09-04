@@ -56,19 +56,11 @@ BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(table), mono_blocks_() {
   connect_all();
 }
-std::vector<Block> BlockInfo::extract_blocks() {
-  std::vector<Block> result;
-  for (auto&& data : std::move(colour_blocks_)) {
-    if (auto block = std::move(std::get<0>(data))) {
-      result.push_back(std::move(block));
-    }
-  }
-  for (auto&& data : std::move(mono_blocks_)) {
-    result.push_back(std::move(std::get<0>(data)));
-  }
-  colour_blocks_.clear();
-  mono_blocks_.clear();
-  return result;
+template <typename OutputIt>
+OutputIt BlockInfo::extract(OutputIt dst) {
+  dst = colour_blocks_.extract(dst);
+  dst = mono_blocks_.extract(dst);
+  return dst;
 }
 void BlockInfo::connect_all() {
   using namespace std::placeholders;

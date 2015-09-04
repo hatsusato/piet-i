@@ -33,7 +33,8 @@ class MonoBlockData : public std::vector<MonoDatum> {
 class BlockInfo {
  public:
   explicit BlockInfo(const CodelTable& table);
-  std::vector<Block> extract_blocks();
+  template <typename OutputIt>
+  OutputIt extract(OutputIt dst);
  private:
   void connect_all();
   void connect(ColourBlockData& colour_block);

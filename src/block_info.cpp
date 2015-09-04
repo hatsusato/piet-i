@@ -20,6 +20,10 @@ auto ColourBlockData::which_include(const Coord& coord) const
   return std::find_if(begin(), end(), predicate);
 }
 
+MonoBlockData::MonoBlockData() {
+  emplace_back(make_unique<BlackBlock>(), nullptr);
+}
+
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {
   initialize(make_adjacent_codels(table));

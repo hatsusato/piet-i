@@ -20,6 +20,8 @@ class ColourBlockData : public std::vector<ColourDatum> {
 };
 
 class MonoBlockData : public std::vector<MonoDatum> {
+ public:
+  MonoBlockData();
 };
 
 class BlockInfo {

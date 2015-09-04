@@ -3,6 +3,7 @@
 #include "adjacent_codel.hpp"
 #include "codel_table.hpp"
 #include "coord.hpp"
+#include "utility.hpp"
 
 BlockInfo::BlockInfo(const CodelTable& table)
     : colour_blocks_(), mono_blocks_() {

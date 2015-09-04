@@ -3,13 +3,12 @@
 
 #include <memory>
 #include <tuple>
+#include <vector>
 #include "block.hpp"
 #include "direction.hpp"
-#include "utility.hpp"
 
-using Block = std::unique_ptr<BlockBase>;
-class CodelTable;
 class AdjacentCodel;
+class CodelTable;
 class Coord;
 
 class BlockInfo {

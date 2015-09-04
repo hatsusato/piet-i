@@ -88,16 +88,16 @@ void BlockInfo::connect_all() {
   const auto connect = std::bind(&BlockInfo::connect, this, _1);
   std::for_each(begin(colour_blocks_), end(colour_blocks_), connect);
 }
-void BlockInfo::connect(ColourBlockData& colour_block) {
-  auto& block = std::get<0>(colour_block);
-  const auto& adjacent = std::get<1>(colour_block);
+void BlockInfo::connect(ColourDatum& datum) {
+  auto& block = std::get<0>(datum);
+  const auto& adjacent = std::get<1>(datum);
   if (adjacent.codel().is_colour()) {
     for (Direction direction; direction; ++direction) {
       for (Choose choose; choose; ++choose) {
         const auto& edge = adjacent.edge(direction, choose);
-        const auto next = get_access_point(edge, direction);
-        assert(block->colour() && block->colour() != next->colour());
-        block->set_next(next, direction, choose);
+        const auto target = get_target(edge, direction);
+        assert(block->colour() && block->colour() != target->colour());
+        block->set_next(target, direction, choose);
       }
     }
   }

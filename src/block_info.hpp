@@ -40,7 +40,7 @@ class BlockInfo {
   OutputIt extract(OutputIt dst);
  private:
   void connect_all();
-  void connect(ColourBlockData& colour_block);
+  void connect(ColourDatum& colour_block);
   BlockPointer get_target(const Coord& coord, Direction direction);
  private:
   ColourBlockData colour_blocks_;

@@ -8,7 +8,8 @@ Codel::Codel(Hue hue, Lightness lightness)
       type_(colour_ ? ColourType::COLOUR : ColourType::UNKNOWN)
 {}
 Codel::Codel(Colour colour)
-    : colour_(colour), type_(ColourType::COLOUR)
+    : colour_(colour),
+      type_(colour_ ? ColourType::COLOUR : ColourType::UNKNOWN)
 {}
 Codel::Codel(ColourType type)
     : colour_(),

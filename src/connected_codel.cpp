@@ -22,15 +22,14 @@ Coord ConnectedCodel::find_out_of_range(const Coord& coord,
 }
 
 void search_connected_codel(CodelTable& table, Coordinates& coords,
-                            const Codel& codel, Coord current) {
+                            const Codel& codel, const Coord& current) {
   coords.push_back(current);
   table.at(current) = Codel::unknown;
   for (Direction direction; direction; ++direction) {
     const auto next = current.next(direction);
-    if (next.inside(0, 0, table.width(), table.height())) {
-      if (table.at(next) == codel) {
-        search_connected_codel(table, coords, codel, next);
-      }
+    if (next.inside(0, 0, table.width(), table.height()) &&
+        table.at(next) == codel) {
+      search_connected_codel(table, coords, codel, next);
     }
   }
 }

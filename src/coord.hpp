@@ -14,7 +14,7 @@ class Coord : public std::tuple<int, int> {
   const int& x() const;
   int& y();
   const int& y() const;
-  Coord& next(Direction direction);
+  Coord next(Direction direction) const;
   bool inside(int left, int top, int right, int bottom) const;
 };
 

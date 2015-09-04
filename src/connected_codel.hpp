@@ -22,7 +22,7 @@ class ConnectedCodel {
 };
 
 void search_connected_codel(CodelTable& table, Coordinates& coords,
-                            const Codel& codel, Coord current);
+                            const Codel& codel, const Coord& current);
 std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
 
 #endif  // PIET_I_CONNECTED_CODEL_HPP

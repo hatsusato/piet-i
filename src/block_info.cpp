@@ -50,8 +50,7 @@ void BlockInfo::connect(ColourBlockData& colour_block) {
       for (Choose choose; choose; ++choose) {
         const auto& edge = connected.edge(direction, choose);
         const auto next = get_access_point(edge, direction);
-        assert(block->colour() && next->colour());
-        assert(block->colour() != next->colour());
+        assert(block->colour() && block->colour() != next->colour());
         block->set_next(next, direction, choose);
       }
     }

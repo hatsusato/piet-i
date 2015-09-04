@@ -131,5 +131,7 @@ BlockPointer BlockInfo::black_block() const {
 }
 
 std::vector<Block> colour_block_network(const CodelTable& table) {
-  return BlockInfo(table).extract_blocks();
+  std::vector<Block> result;
+  BlockInfo(table).extract(std::back_inserter(result));
+  return result;
 }

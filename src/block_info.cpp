@@ -43,6 +43,12 @@ void ColourBlockData::add(const AdjacentCodel& adjacent) {
 MonoBlockData::MonoBlockData() {
   emplace_back(make_unique<BlackBlock>(), nullptr);
 }
+auto MonoBlockData::which_hold(BlockPointer pointer) const -> const_iterator {
+  const auto predicate = [pointer](const MonoDatum& datum) -> bool {
+    return std::get<1>(datum) == pointer;
+  };
+  return std::find_if(begin(), end(), predicate);
+}
 template <typename OutputIt>
 OutputIt MonoBlockData::extract(OutputIt dst) {
   for (auto&& datum : std::move(*this)) {

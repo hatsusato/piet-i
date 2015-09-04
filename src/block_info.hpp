@@ -26,6 +26,7 @@ class ColourBlockData : public std::vector<ColourDatum> {
 class MonoBlockData : public std::vector<MonoDatum> {
  public:
   MonoBlockData();
+  const_iterator which_hold(BlockPointer pointer) const;
   template <typename OutputIt>
   OutputIt extract(OutputIt dst);
 };

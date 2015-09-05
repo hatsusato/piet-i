@@ -1,4 +1,5 @@
 #include "block.hpp"
+#include <cassert>
 
 BlockBase::BlockBase() {}
 BlockBase::~BlockBase() {}

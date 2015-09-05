@@ -1,7 +1,12 @@
 #include "interpreter.hpp"
+#include <cassert>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <iterator>
+#include "block_info.hpp"
+#include "codel_table.hpp"
+#include "colour.hpp"
 
 void Stack::push_command(size_t number) {
   push(static_cast<int>(number));
@@ -27,20 +32,14 @@ void Stack::unary_command() {
     push(static_cast<int>(Op()(pop_get())));
   }
 }
-Direction Stack::pointer_command(Direction direction) {
+void Stack::pointer_command(DP& dp) {
   if (!empty()) {
-    const auto d = static_cast<int>(direction) + pop_get();
-    return static_cast<Direction>(d % 4);
-  } else {
-    return direction;
+    dp += pop_get();
   }
 }
-Choose Stack::switch_command(Choose choose) {
+void Stack::switch_command(CC& cc) {
   if (!empty()) {
-    const auto c = static_cast<int>(choose) + pop_get();
-    return static_cast<Choose>(c % 2);
-  } else {
-    return choose;
+    cc += pop_get();
   }
 }
 void Stack::duplicate_command() {
@@ -55,7 +54,7 @@ void Stack::roll_command() {
       const auto step = pop_get();
       pop();
       if (2 <= depth) {
-        const auto rolls = (step < 0) ? (step % depth + depth) : (step % depth);
+        const auto rolls = (step % depth + depth) % depth;
         const auto top = c.rbegin();
         std::rotate(top, std::next(top, rolls), std::next(top, depth));
       }
@@ -78,69 +77,65 @@ int Stack::pop_get() {
   return value;
 }
 
-Interpreter::Interpreter(std::vector<ColorBlockPtr>&& network)
-    : network_(std::move(network)),
+Interpreter::Interpreter(const CodelTable& table)
+    : network_(colour_block_network(table)),
       current_(network_.front()->address()),
-      direction_(Direction::RIGHT),
-      choose_(Choose::LEFT),
-      stack_(),
-      commands_() {
-  set_commands();
+      dp_(), cc_(), stack_(), commands_() {
+  commands_ = {{
+      nullptr,
+      &Interpreter::push_command,
+      &Interpreter::pop_command,
+      &Interpreter::add_command,
+      &Interpreter::subtract_command,
+      &Interpreter::multiply_command,
+      &Interpreter::divide_command,
+      &Interpreter::mod_command,
+      &Interpreter::not_command,
+      &Interpreter::greater_command,
+      &Interpreter::pointer_command,
+      &Interpreter::switch_command,
+      &Interpreter::duplicate_command,
+      &Interpreter::roll_command,
+      &Interpreter::in_number_command,
+      &Interpreter::in_char_command,
+      &Interpreter::out_number_command,
+      &Interpreter::out_char_command
+    }};
 }
 void Interpreter::run() {
   while (stepwise_execute()) {}
 }
 bool Interpreter::stepwise_execute() {
-  for (int i = 0; i < 4; ++i, next_direction()) {
-    bool choose_changed = false;
-    do {
-      bool next_changed = false;
-      auto next = current_->next(direction_, choose_);
-      if (next->is_white()) {
-        next = next->next(direction_, choose_);
-        next_changed = true;
+  for (int i = 0; i < DP::count * CC::count; ++i) {
+    auto next = current_->next(dp_, cc_);
+    const bool through_white = next->is_white();
+    if (through_white) {
+      next = next->next(dp_, cc_);
+      assert(!next->is_white());
+    }
+    if (next->is_colour()) {
+      if (!through_white) {
+        do_command(next);
       }
-      if (next->is_colored()) {
-        if (!next_changed) {
-          do_command(current_, next);
-        }
-        current_ = next;
-        return true;
-      } else if (!choose_changed) {
-        next_choose();
-        choose_changed = true;
-        continue;
-      }
-      assert(next->is_black() && choose_changed);
-    } while(false);
+      current_ = next;
+      return true;
+    }
+    assert(next->is_black());
+    if (i % CC::count) {
+      ++dp_;
+    } else {
+      ++cc_;
+    }
   }
   return false;
 }
-void Interpreter::do_command(const ColorBlockBase* current,
-                             const ColorBlockBase* next) {
-  const Codel& current_codel = current->codel();
-  const Codel& next_codel = next->codel();
-  const auto current_hue = static_cast<int>(current_codel.color());
-  const auto next_hue = static_cast<int>(next_codel.color());
-  const auto hue_diff = (next_hue - current_hue + 6) % 6;
-  const auto current_lightness = static_cast<int>(current_codel.brightness());
-  const auto next_lightness = static_cast<int>(next_codel.brightness());
-  const auto lightness_diff = (next_lightness - current_lightness + 3) % 3;
-  const auto diff = hue_diff * 3 + lightness_diff;
-  (this->*commands_[diff])();
-}
-void Interpreter::next_direction() {
-  const auto d = static_cast<int>(direction_) + 1;
-  direction_ = static_cast<Direction>(d % 4);
-}
-void Interpreter::next_choose() {
-  const auto c = static_cast<int>(choose_) + 1;
-  choose_ = static_cast<Choose>(c % 2);
-}
-void Interpreter::nop_command() {
-  assert(false);
+void Interpreter::do_command(BlockPointer next) {
+  assert(current_->is_colour() && next->is_colour());
+  const auto index = difference(current_->colour(), next->colour());
+  (this->*commands_[index])();
 }
 void Interpreter::push_command() {
+  assert(current_->codel_size());
   stack_.push_command(current_->codel_size());
 }
 void Interpreter::pop_command() {
@@ -168,10 +163,10 @@ void Interpreter::greater_command() {
   stack_.binary_command<std::greater<int> >();
 }
 void Interpreter::pointer_command() {
-  direction_ = stack_.pointer_command(direction_);
+  stack_.pointer_command(dp_);
 }
 void Interpreter::switch_command() {
-  choose_ = stack_.switch_command(choose_);
+  stack_.switch_command(cc_);
 }
 void Interpreter::duplicate_command() {
   stack_.duplicate_command();
@@ -190,24 +185,4 @@ void Interpreter::out_number_command() {
 }
 void Interpreter::out_char_command() {
   stack_.out_command<wchar_t>();
-}
-void Interpreter::set_commands() {
-  commands_[0] = &Interpreter::nop_command;
-  commands_[1] = &Interpreter::push_command;
-  commands_[2] = &Interpreter::pop_command;
-  commands_[3] = &Interpreter::add_command;
-  commands_[4] = &Interpreter::subtract_command;
-  commands_[5] = &Interpreter::multiply_command;
-  commands_[6] = &Interpreter::divide_command;
-  commands_[7] = &Interpreter::mod_command;
-  commands_[8] = &Interpreter::not_command;
-  commands_[9] = &Interpreter::greater_command;
-  commands_[10] = &Interpreter::pointer_command;
-  commands_[11] = &Interpreter::switch_command;
-  commands_[12] = &Interpreter::duplicate_command;
-  commands_[13] = &Interpreter::roll_command;
-  commands_[14] = &Interpreter::in_number_command;
-  commands_[15] = &Interpreter::in_char_command;
-  commands_[16] = &Interpreter::out_number_command;
-  commands_[17] = &Interpreter::out_char_command;
 }

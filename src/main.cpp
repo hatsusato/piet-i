@@ -1,8 +1,7 @@
 #include <iostream>
-#include "codel.hpp"
-#include "color_block.hpp"
+#include "codel_table.hpp"
 #include "interpreter.hpp"
-#include "utils.hpp"
+#include "png.hpp"
 #include "visualize.hpp"
 
 int main(int argc, char* argv[]) {
@@ -11,11 +10,10 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
   try {
-    auto image = Image(argv[1]);
+    const auto image = Image(argv[1]);
     visualize(image);
-    const auto table = make_codel_table(image);
-    auto network = color_block_network(table);
-    Interpreter interpreter(std::move(network));
+    const auto table = make_codel_table(image, RegardUnknownAs::WHITE);
+    Interpreter interpreter(table);
     interpreter.run();
   } catch (png::error& e) {
     std::cerr << e.what() << std::endl;

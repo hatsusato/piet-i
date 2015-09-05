@@ -1,70 +1,38 @@
 #ifndef PIET_I_CODEL_HPP
 #define PIET_I_CODEL_HPP
 
-#include <vector>
-#include "utils.hpp"
+#include "colour.hpp"
+#include "png.hpp"
+
+enum class ColourType {
+  BLACK, WHITE, COLOUR, UNKNOWN
+};
 
 struct Codel {
  public:
   Codel();
-  Codel(Color color, Brightness brightness);
-  explicit Codel(const Pixel& pixel);
-  bool is_valid() const;
-  bool is_colored() const;
-  Color color() const;
-  Brightness brightness() const;
-  void set_color(Color color);
-  void set_brightness(Brightness brightness);
- private:
-  struct {
-    unsigned color_part_ : 4;
-    unsigned brightness_part_ : 4;
-  };
+  Codel(Hue hue, Lightness lightness);
+  explicit Codel(Colour colour);
+  explicit Codel(ColourType type);
+  explicit operator bool() const;
+  bool is_colour() const;
+  bool is_black() const;
+  bool is_white() const;
+  Colour colour() const;
+  ColourType type() const;
  public:
+  static const Codel black;
+  static const Codel white;
   static const Codel unknown;
+  friend bool operator==(const Codel&, const Codel&);
+ private:
+  Colour colour_;
+  ColourType type_;
 };
+
 bool operator==(const Codel& lhs, const Codel& rhs);
 bool operator!=(const Codel& lhs, const Codel& rhs);
 
-class CodelTable {
- public:
-  using RowType = std::vector<Codel>;
-  CodelTable();
-  CodelTable(size_t width, size_t heigth);
-  CodelTable clone() const;
-  size_t width() const;
-  size_t height() const;
-  void resize(size_t width, size_t height);
-  RowType& operator[](size_t row);
-  const RowType& operator[](size_t row) const;
- private:
-  size_t width_, height_;
-  std::vector<RowType> rows_;
-};
-
-class ConnectedCodel {
- public:
-  explicit ConnectedCodel(const Codel& codel,
-                          const std::vector<Coord>& coords);
-  const Codel& codel() const;
-  size_t size() const;
-  const Coord& edge(Direction direction, Choose choose) const;
-  bool includes(const Coord& coord) const;
-  Coord find_out_of_range(const Coord& coord, Direction direction) const;
- private:
-  void calculate_boundary();
- private:
-  Codel codel_;
-  std::vector<Coord> coords_;
-  // Direction count is 4, Choose count is 2
-  Coord boundary_[4][2];
-};
-
-size_t codel_size(const Image& image);
-CodelTable make_codel_table(const Image& image);
-
-void search_connected_codel(CodelTable& table, std::vector<Coord>& coords,
-                            const Codel& codel, int x, int y);
-std::vector<ConnectedCodel> extract_connected_codels(const CodelTable& table);
+Codel make_codel(const Pixel& pixel);
 
 #endif  // PIET_I_CODEL_HPP

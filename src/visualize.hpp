@@ -1,7 +1,7 @@
 #ifndef PIET_I_VISUALIZE_HPP
 #define PIET_I_VISUALIZE_HPP
 
-#include "utils.hpp"
+#include "png.hpp"
 
 struct Codel;
 

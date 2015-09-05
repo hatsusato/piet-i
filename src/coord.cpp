@@ -1,6 +1,7 @@
 #include "coord.hpp"
 #include <cassert>
 #include <algorithm>
+#include <iterator>
 
 Coord::Coord()
     : Base(0, 0)

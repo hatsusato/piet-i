@@ -13,4 +13,20 @@ enum class Choose : int {
 };
 ENUM_INDEXING(Choose);
 
+struct DP {
+ public:
+  constexpr DP() : direction_(Direction::RIGHT) {}
+  explicit constexpr DP(Direction direction) : direction_(direction) {}
+ private:
+  Direction direction_;
+};
+
+struct CC {
+ public:
+  constexpr CC() : choose_(Choose::LEFT) {}
+  explicit constexpr CC(Choose choose) : choose_(choose) {}
+ private:
+  Choose choose_;
+};
+
 #endif  // PIET_I_DIRECTION_HPP

@@ -1,4 +1,5 @@
 #include "block_info.hpp"
+#include <cassert>
 #include <algorithm>
 #include <iterator>
 #include <functional>

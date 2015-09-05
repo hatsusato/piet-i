@@ -5,7 +5,7 @@
 #include <stack>
 #include <vector>
 #include "block.hpp"
-#include "block_info.hpp"
+#include "direction.hpp"
 
 class CodelTable;
 

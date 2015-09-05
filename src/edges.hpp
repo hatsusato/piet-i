@@ -2,8 +2,10 @@
 #define PIET_I_EDGES_HPP
 
 #include <array>
-#include "coord.hpp"
 #include "direction.hpp"
+
+class Coord;
+class Coordinates;
 
 template <typename T>
 class Edges {

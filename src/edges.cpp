@@ -1,7 +1,11 @@
 #include "edges.hpp"
 #include <cassert>
 #include <algorithm>
+#include <iterator>
 #include <functional>
+#include <tuple>
+#include <vector>
+#include "coord.hpp"
 
 namespace /* unnamed */ {
 std::tuple<std::function<std::vector<int>(const Coordinates&)>,

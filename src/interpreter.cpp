@@ -3,6 +3,7 @@
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include "block_info.hpp"
 #include "codel_table.hpp"
 #include "colour.hpp"
 

@@ -1,6 +1,7 @@
 #ifndef PIET_I_COORD_HPP
 #define PIET_I_COORD_HPP
 
+#include <array>
 #include <tuple>
 #include <vector>
 #include "direction.hpp"

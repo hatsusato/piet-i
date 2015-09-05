@@ -21,7 +21,7 @@ class Coord : public std::tuple<int, int> {
 
 class Coordinates : public std::vector<Coord> {
  public:
-  std::array<int, 4> range() const;
+  std::array<int, DP::count> range() const;
   bool includes(const Coord& coord) const;
   Coord find_out_of_range(const Coord& coord, DP dp) const;
 };

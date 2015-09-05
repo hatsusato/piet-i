@@ -23,6 +23,7 @@ struct Colour {
   Lightness lightness() const;
  public:
   static const Colour unknown;
+  static constexpr int count = index(Hue::COUNT) * index(Lightness::COUNT);
   friend bool operator==(const Colour&, const Colour&);
  private:
   Hue hue_;

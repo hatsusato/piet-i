@@ -26,6 +26,7 @@ struct DP {
   DP& operator++();
   DP& operator+=(int value);
   DP& next();
+  static constexpr int count = index(Direction::COUNT);
  private:
   Direction direction_;
 };
@@ -43,6 +44,7 @@ struct CC {
   CC& operator++();
   CC& operator+=(int value);
   CC& next();
+  static constexpr int count = index(Choose::COUNT);
  private:
   Choose choose_;
 };

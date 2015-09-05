@@ -81,7 +81,7 @@ Interpreter::Interpreter(const CodelTable& table)
       current_(network_.front()->address()),
       dp_(), cc_(), stack_(), commands_() {
   commands_ = {{
-      &Interpreter::nop_command,
+      nullptr,
       &Interpreter::push_command,
       &Interpreter::pop_command,
       &Interpreter::add_command,
@@ -131,9 +131,6 @@ void Interpreter::do_command(BlockPointer next) {
   assert(current_->is_colour() && next->is_colour());
   const auto index = difference(current_->colour(), next->colour());
   (this->*commands_[index])();
-}
-void Interpreter::nop_command() {
-  assert(false);
 }
 void Interpreter::push_command() {
   assert(current_->codel_size());

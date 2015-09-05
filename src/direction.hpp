@@ -25,6 +25,7 @@ struct DP {
   }
   DP& operator++();
   DP& operator+=(int value);
+  DP& next();
  private:
   Direction direction_;
 };
@@ -41,6 +42,7 @@ struct CC {
   }
   CC& operator++();
   CC& operator+=(int value);
+  CC& next();
  private:
   Choose choose_;
 };

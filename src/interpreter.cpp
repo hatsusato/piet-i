@@ -78,10 +78,7 @@ int Stack::pop_get() {
 Interpreter::Interpreter(const CodelTable& table)
     : network_(colour_block_network(table)),
       current_(network_.front()->address()),
-      dp_(DP::RIGHT),
-      cc_(CC::LEFT),
-      stack_(),
-      commands_() {
+      dp_(), cc_(), stack_(), commands_() {
   commands_ = {{
       &Interpreter::nop_command,
       &Interpreter::push_command,

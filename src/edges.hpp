@@ -10,7 +10,7 @@ class Coordinates;
 template <typename T>
 class Edges {
  public:
-  using BothChoose = std::array<T, 2>;
+  using BothChoose = std::array<T, CC::count>;
   T& edge(DP dp, CC cc) {
     return edges_[index(dp)][index(cc)];
   }
@@ -18,7 +18,7 @@ class Edges {
     return edges_[index(dp)][index(cc)];
   }
  private:
-  std::array<BothChoose, 4> edges_;
+  std::array<BothChoose, DP::count> edges_;
 };
 
 Edges<Coord> make_edges(const Coordinates& coords);

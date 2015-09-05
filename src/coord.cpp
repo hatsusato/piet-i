@@ -33,7 +33,7 @@ bool Coord::inside(int left, int top, int right, int bottom) const {
   return (left <= x() && top <= y() && x() < right && y() < bottom);
 }
 
-std::array<int, 4> Coordinates::range() const {
+std::array<int, DP::count> Coordinates::range() const {
   assert(!empty());
   int right, down, left, up;
   right = left = front().x();

@@ -105,7 +105,7 @@ void Interpreter::run() {
   while (stepwise_execute()) {}
 }
 bool Interpreter::stepwise_execute() {
-  for (int i = 0; i < 8; ++i) {
+  for (int i = 0; i < DP::count * CC::count; ++i) {
     auto next = current_->next(dp_, cc_);
     const bool through_white = next->is_white();
     if (through_white) {
@@ -119,7 +119,7 @@ bool Interpreter::stepwise_execute() {
       return true;
     }
     assert(next->is_black());
-    if (i % 2) {
+    if (i % CC::count) {
       ++dp_;
     } else {
       ++cc_;

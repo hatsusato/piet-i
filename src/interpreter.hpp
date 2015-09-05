@@ -63,7 +63,7 @@ class Interpreter {
   DP dp_;
   CC cc_;
   Stack stack_;
-  std::array<Command, 18> commands_;
+  std::array<Command, Colour::count> commands_;
 };
 
 #endif  // PIET_I_INTERPRETER_HPP

@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include <cassert>
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -110,6 +111,7 @@ bool Interpreter::stepwise_execute() {
     const bool through_white = next->is_white();
     if (through_white) {
       next = next->next(dp_, cc_);
+      assert(!next->is_white());
     }
     if (next->is_colour()) {
       if (!through_white) {

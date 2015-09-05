@@ -12,9 +12,9 @@ class AdjacentCodel {
   AdjacentCodel(const Codel& codel, const Coordinates& coords);
   const Codel& codel() const;
   size_t size() const;
-  const Coord& edge(Direction direction, Choose choose) const;
+  const Coord& edge(DP dp, CC cc) const;
   bool includes(const Coord& coord) const;
-  Coord find_out_of_range(const Coord& coord, Direction direction) const;
+  Coord find_out_of_range(const Coord& coord, DP dp) const;
  private:
   Codel codel_;
   Coordinates coords_;

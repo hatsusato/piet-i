@@ -10,23 +10,22 @@ const Codel& AdjacentCodel::codel() const {
 size_t AdjacentCodel::size() const {
   return coords_.size();
 }
-const Coord& AdjacentCodel::edge(Direction direction, Choose choose) const {
-  return edges_.edge(direction, choose);
+const Coord& AdjacentCodel::edge(DP dp, CC cc) const {
+  return edges_.edge(dp, cc);
 }
 bool AdjacentCodel::includes(const Coord& coord) const {
   return coords_.includes(coord);
 }
-Coord AdjacentCodel::find_out_of_range(const Coord& coord,
-                                       Direction direction) const {
-  return coords_.find_out_of_range(coord, direction);
+Coord AdjacentCodel::find_out_of_range(const Coord& coord, DP dp) const {
+  return coords_.find_out_of_range(coord, dp);
 }
 
 void search_adjacent_codel(CodelTable& table, Coordinates& coords,
                            const Codel& codel, const Coord& current) {
   coords.push_back(current);
   table.at(current) = Codel::unknown;
-  for (Direction direction; direction; ++direction) {
-    const auto next = current.next(direction);
+  for (DP dp; dp; dp.next()) {
+    const auto next = current.next(dp);
     if (next.inside(0, 0, table.width(), table.height()) &&
         table.at(next) == codel) {
       search_adjacent_codel(table, coords, codel, next);

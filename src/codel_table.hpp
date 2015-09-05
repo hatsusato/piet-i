@@ -5,7 +5,6 @@
 #include "codel.hpp"
 #include "png.hpp"
 
-struct Codel;
 class Coord;
 
 enum class RegardUnknownAs {

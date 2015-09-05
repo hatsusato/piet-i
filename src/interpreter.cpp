@@ -81,6 +81,7 @@ Interpreter::Interpreter(const CodelTable& table)
     : network_(colour_block_network(table)),
       current_(network_.front()->address()),
       dp_(), cc_(), stack_(), commands_() {
+  assert(current_->is_colour());
   commands_ = {{
       nullptr,
       &Interpreter::push_command,

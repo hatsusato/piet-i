@@ -34,12 +34,11 @@ size_t ColourBlock::codel_size() const {
 bool ColourBlock::is_colour() const {
   return true;
 }
-BlockPointer ColourBlock::next(Direction direction, Choose choose) const {
-  return next_.edge(direction, choose);
+BlockPointer ColourBlock::next(DP dp, CC cc) const {
+  return next_.edge(dp, cc);
 }
-void ColourBlock::set_next(BlockPointer next,
-                           Direction direction, Choose choose) {
-  next_.edge(direction, choose) = next;
+void ColourBlock::set_next(BlockPointer next, DP dp, CC cc) {
+  next_.edge(dp, cc) = next;
 }
 
 BlackBlock::BlackBlock()
@@ -47,7 +46,7 @@ BlackBlock::BlackBlock()
 bool BlackBlock::is_black() const {
   return true;
 }
-BlockPointer BlackBlock::next(Direction, Choose) const {
+BlockPointer BlackBlock::next(DP, CC) const {
   return this;
 }
 
@@ -57,6 +56,6 @@ WhiteBlock::WhiteBlock(BlockPointer next)
 bool WhiteBlock::is_white() const {
   return true;
 }
-BlockPointer WhiteBlock::next(Direction, Choose) const {
+BlockPointer WhiteBlock::next(DP, CC) const {
   return next_;
 }

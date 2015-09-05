@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include <cassert>
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -81,7 +82,7 @@ Interpreter::Interpreter(const CodelTable& table)
       current_(network_.front()->address()),
       dp_(), cc_(), stack_(), commands_() {
   commands_ = {{
-      &Interpreter::nop_command,
+      nullptr,
       &Interpreter::push_command,
       &Interpreter::pop_command,
       &Interpreter::add_command,
@@ -110,6 +111,7 @@ bool Interpreter::stepwise_execute() {
     const bool through_white = next->is_white();
     if (through_white) {
       next = next->next(dp_, cc_);
+      assert(!next->is_white());
     }
     if (next->is_colour()) {
       if (!through_white) {
@@ -131,9 +133,6 @@ void Interpreter::do_command(BlockPointer next) {
   assert(current_->is_colour() && next->is_colour());
   const auto index = difference(current_->colour(), next->colour());
   (this->*commands_[index])();
-}
-void Interpreter::nop_command() {
-  assert(false);
 }
 void Interpreter::push_command() {
   assert(current_->codel_size());

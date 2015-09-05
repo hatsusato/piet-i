@@ -64,10 +64,10 @@ edge_minmax(const Coordinates& coords, DP dp, int border) {
   const auto make = std::get<1>(functions);
   const auto compare = std::get<2>(functions);
   const auto filtered = filter(coords);
+  assert(!filtered.empty());
   decltype(begin(filtered)) left, right;
   std::tie(left, right) =
       std::minmax_element(begin(filtered), end(filtered), compare);
-  assert(left != end(filtered) && right != end(filtered));
   return {{make(*left), make(*right)}};
 }
 }  // namespace /* unnamed */

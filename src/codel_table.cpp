@@ -40,7 +40,7 @@ void CodelTable::resize(size_t width, size_t height) {
   width_ = width;
   height_ = height;
   rows_.resize(height);
-  for (auto&& row : rows_) {
+  for (auto& row : rows_) {
     row.resize(width);
   }
 }

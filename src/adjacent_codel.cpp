@@ -1,4 +1,5 @@
 #include "adjacent_codel.hpp"
+#include <cassert>
 #include "codel_table.hpp"
 
 AdjacentCodel::AdjacentCodel(const Codel& codel, const Coordinates& coords)
@@ -48,5 +49,6 @@ std::vector<AdjacentCodel> make_adjacent_codels(const CodelTable& table) {
       }
     }
   }
+  assert(result.front().includes(Coord(0, 0)));
   return result;
 }

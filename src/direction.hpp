@@ -47,4 +47,11 @@ struct CC {
   Choose choose_;
 };
 
+constexpr int index(DP dp) {
+  return index(static_cast<Direction>(dp));
+}
+constexpr int index(CC cc) {
+  return index(static_cast<Choose>(cc));
+}
+
 #endif  // PIET_I_DIRECTION_HPP

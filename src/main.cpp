@@ -13,6 +13,10 @@ int main(int argc, char* argv[]) {
     const auto image = Image(argv[1]);
     visualize(image);
     const auto table = make_codel_table(image, RegardUnknownAs::WHITE);
+    if (!table[0][0].is_colour()) {
+      std::cerr << "upper left corner must be coloured!" << std::endl;
+      return EXIT_FAILURE;
+    }
     Interpreter interpreter(table);
     interpreter.run();
   } catch (png::error& e) {

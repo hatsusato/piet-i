@@ -7,13 +7,13 @@
 
 template <typename T>
 class Edges {
-  using BothChoose = std::array<T, 2>;
  public:
-  T& edge(Direction direction, Choose choose) {
-    return edges_[direction.value()][choose.value()];
+  using BothChoose = std::array<T, 2>;
+  T& edge(DP dp, CC cc) {
+    return edges_[index(dp)][index(cc)];
   }
-  const T& edge(Direction direction, Choose choose) const {
-    return edges_[direction.value()][choose.value()];
+  const T& edge(DP dp, CC cc) const {
+    return edges_[index(dp)][index(cc)];
   }
  private:
   std::array<BothChoose, 4> edges_;

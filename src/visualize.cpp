@@ -2,12 +2,15 @@
 #include <cassert>
 #include "codel.hpp"
 #include "codel_table.hpp"
+#include "utility.hpp"
 
 namespace /* unnamed */ {
-enum Index {
+enum class Index {
   K, R, G, Y, B, M, C, W
 };
 }  // namespace /* unnamed */
+template <>
+struct enumeration_traits<Index> : enumeration_trait_indexing {};
 
 Index hue_index(Hue hue) {
   switch (hue) {
@@ -76,9 +79,9 @@ void show_pixel(const Codel& codel) {
   static const char text[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
   static const char* reset = "\x1b[0m";
   if (codel) {
-    std::cout << back[back_index(codel)]
-              << fore[fore_index(codel)]
-              << text[back_index(codel)]
+    std::cout << back[index(back_index(codel))]
+              << fore[index(fore_index(codel))]
+              << text[index(back_index(codel))]
               << reset;
   } else {
     std::cout << "?";

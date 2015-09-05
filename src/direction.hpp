@@ -20,6 +20,9 @@ struct DP {
   explicit constexpr operator bool() const {
     return direction_ != Direction::COUNT;
   }
+  explicit constexpr operator Direction() const {
+    return direction_;
+  }
  private:
   Direction direction_;
 };
@@ -30,6 +33,9 @@ struct CC {
   explicit constexpr CC(Choose choose) : choose_(choose) {}
   explicit constexpr operator bool() const {
     return choose_ != Choose::COUNT;
+  }
+  explicit constexpr operator Choose() const {
+    return choose_;
   }
  private:
   Choose choose_;

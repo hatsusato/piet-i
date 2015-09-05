@@ -42,7 +42,7 @@ class BlockInfo {
  private:
   void connect_all();
   void connect(ColourDatum& colour_block);
-  BlockPointer get_target(const Coord& coord, Direction direction);
+  BlockPointer get_target(const Coord& coord, DP dp);
  private:
   ColourBlockData colour_blocks_;
   MonoBlockData mono_blocks_;

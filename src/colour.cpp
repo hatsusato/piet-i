@@ -66,14 +66,7 @@ Colour make_colour(const Pixel& pixel) {
 }
 
 int difference(const Colour& current, const Colour& next) {
-  const int current_hue = static_cast<int>(current.hue());
-  const int next_hue = static_cast<int>(next.hue());
-  const int hue_count = static_cast<int>(Hue::COUNT);
-  const int current_lightness = static_cast<int>(current.lightness());
-  const int next_lightness = static_cast<int>(next.lightness());
-  const int lightness_count = static_cast<int>(Lightness::COUNT);
-  const int hue_diff = (hue_count + next_hue - current_hue) % hue_count;
-  const int lightness_diff =
-      (lightness_count + next_lightness - current_lightness) % lightness_count;
-  return hue_diff * lightness_count + lightness_diff;
+  const int hue_diff = next.hue() - current.hue();
+  const int lightness_diff = next.lightness() - current.lightness();
+  return hue_diff * index(Lightness::COUNT) + lightness_diff;
 }

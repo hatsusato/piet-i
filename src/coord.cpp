@@ -20,12 +20,12 @@ int& Coord::y() {
 const int& Coord::y() const {
   return std::get<1>(*this);
 }
-Coord Coord::next(Direction direction) const {
+Coord Coord::next(DP dp) const {
   static const int dx[] = {1, 0, -1, 0};
   static const int dy[] = {0, 1, 0, -1};
   auto result = *this;
-  result.x() += dx[direction.value()];
-  result.y() += dy[direction.value()];
+  result.x() += dx[index(dp)];
+  result.y() += dy[index(dp)];
   return result;
 }
 bool Coord::inside(int left, int top, int right, int bottom) const {
@@ -50,11 +50,10 @@ bool Coordinates::includes(const Coord& coord) const {
   using std::end;
   return std::find(begin(*this), end(*this), coord) != end(*this);
 }
-Coord Coordinates::find_out_of_range(const Coord& coord,
-                                     Direction direction) const {
+Coord Coordinates::find_out_of_range(const Coord& coord, DP dp) const {
   Coord current = coord;
   while (includes(current)) {
-    current = current.next(direction);
+    current = current.next(dp);
   }
   return current;
 }

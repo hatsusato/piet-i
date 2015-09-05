@@ -20,7 +20,7 @@ class BlockBase {
   virtual bool is_colour() const;
   virtual bool is_white() const;
   virtual bool is_black() const;
-  virtual BlockPointer next(Direction direction, Choose choose) const = 0;
+  virtual BlockPointer next(DP dp, CC cc) const = 0;
   BlockPointer address() const;
  private:
   BlockBase(BlockBase&&) = delete;
@@ -32,8 +32,8 @@ class ColourBlock : public BlockBase {
   Colour colour() const override;
   size_t codel_size() const override;
   bool is_colour() const override;
-  BlockPointer next(Direction direction, Choose choose) const override;
-  void set_next(BlockPointer next, Direction direction, Choose choose);
+  BlockPointer next(DP dp, CC cc) const override;
+  void set_next(BlockPointer next, DP dp, CC cc);
  private:
   Colour colour_;
   size_t codel_size_;
@@ -44,14 +44,14 @@ class BlackBlock : public BlockBase {
  public:
   BlackBlock();
   bool is_black() const override;
-  BlockPointer next(Direction direction, Choose choose) const override;
+  BlockPointer next(DP dp, CC cc) const override;
 };
 
 class WhiteBlock : public BlockBase {
  public:
   explicit WhiteBlock(BlockPointer next);
   bool is_white() const override;
-  BlockPointer next(Direction direction, Choose choose) const override;
+  BlockPointer next(DP dp, CC cc) const override;
  private:
   BlockPointer next_;
 };

@@ -1,44 +1,57 @@
 #ifndef PIET_I_DIRECTION_HPP
 #define PIET_I_DIRECTION_HPP
 
-enum class DP {
-  RIGHT, DOWN, LEFT, UP
+#include "utility.hpp"
+
+enum class Direction : int {
+  RIGHT, DOWN, LEFT, UP, COUNT
 };
+ENUM_INDEXING(Direction);
 
-DP& operator++(DP& dp);
-DP& operator+=(DP& dp, int value);
-
-enum class CC {
-  LEFT, RIGHT
+enum class Choose : int {
+  LEFT, RIGHT, COUNT
 };
+ENUM_INDEXING(Choose);
 
-CC& operator++(CC& cc);
-CC& operator+=(CC& cc, int value);
-
-struct Direction {
+struct DP {
  public:
-  Direction();
-  Direction(DP dp);
-  explicit operator bool() const;
-  operator DP() const;
-  Direction& operator++();
-  int value() const;
+  constexpr DP() : direction_(Direction::RIGHT) {}
+  explicit constexpr DP(Direction direction) : direction_(direction) {}
+  explicit constexpr operator bool() const {
+    return direction_ != Direction::COUNT;
+  }
+  explicit constexpr operator Direction() const {
+    return direction_;
+  }
+  DP& operator++();
+  DP& operator+=(int value);
+  DP& next();
  private:
-  bool valid_;
-  DP dp_;
+  Direction direction_;
 };
 
-struct Choose {
+struct CC {
  public:
-  Choose();
-  Choose(CC cc);
-  explicit operator bool() const;
-  operator CC() const;
-  Choose& operator++();
-  int value() const;
+  constexpr CC() : choose_(Choose::LEFT) {}
+  explicit constexpr CC(Choose choose) : choose_(choose) {}
+  explicit constexpr operator bool() const {
+    return choose_ != Choose::COUNT;
+  }
+  explicit constexpr operator Choose() const {
+    return choose_;
+  }
+  CC& operator++();
+  CC& operator+=(int value);
+  CC& next();
  private:
-  bool valid_;
-  CC cc_;
+  Choose choose_;
 };
+
+constexpr int index(DP dp) {
+  return index(static_cast<Direction>(dp));
+}
+constexpr int index(CC cc) {
+  return index(static_cast<Choose>(cc));
+}
 
 #endif  // PIET_I_DIRECTION_HPP

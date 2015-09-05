@@ -92,17 +92,17 @@ void BlockInfo::connect(ColourDatum& datum) {
   auto& block = std::get<0>(datum);
   const auto& adjacent = std::get<1>(datum);
   if (adjacent.codel().is_colour()) {
-    for (Direction direction; direction; ++direction) {
-      for (Choose choose; choose; ++choose) {
-        const auto& edge = adjacent.edge(direction, choose);
-        const auto target = get_target(edge, direction);
+    for (DP dp; dp; dp.next()) {
+      for (CC cc; cc; cc.next()) {
+        const auto& edge = adjacent.edge(dp, cc);
+        const auto target = get_target(edge, dp);
         assert(block->colour() && block->colour() != target->colour());
-        block->set_next(target, direction, choose);
+        block->set_next(target, dp, cc);
       }
     }
   }
 }
-BlockPointer BlockInfo::get_target(const Coord& coord, Direction direction) {
+BlockPointer BlockInfo::get_target(const Coord& coord, DP dp) {
   using std::end;
   const auto which = colour_blocks_.which_include(coord);
   if (which != end(colour_blocks_)) {
@@ -113,8 +113,8 @@ BlockPointer BlockInfo::get_target(const Coord& coord, Direction direction) {
     if (codel.is_colour()) {
       return block->address();
     } else if (codel.is_white()) {
-      const auto next_coord = adjacent.find_out_of_range(coord, direction);
-      const auto next_pointer = get_target(next_coord, direction);
+      const auto next_coord = adjacent.find_out_of_range(coord, dp);
+      const auto next_pointer = get_target(next_coord, dp);
       return mono_blocks_.make_white(next_pointer);
     }
   }

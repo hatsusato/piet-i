@@ -23,6 +23,8 @@ struct DP {
   explicit constexpr operator Direction() const {
     return direction_;
   }
+  DP& operator++();
+  DP& operator+=(int value);
  private:
   Direction direction_;
 };
@@ -37,6 +39,8 @@ struct CC {
   explicit constexpr operator Choose() const {
     return choose_;
   }
+  CC& operator++();
+  CC& operator+=(int value);
  private:
   Choose choose_;
 };

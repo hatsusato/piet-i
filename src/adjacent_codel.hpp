@@ -1,8 +1,10 @@
 #ifndef PIET_I_ADJACENT_CODEL_HPP
 #define PIET_I_ADJACENT_CODEL_HPP
 
+#include <vector>
 #include "codel.hpp"
 #include "coord.hpp"
+#include "direction.hpp"
 #include "edges.hpp"
 
 class CodelTable;

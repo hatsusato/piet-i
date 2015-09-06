@@ -39,3 +39,26 @@ Integer& Integer::operator-=(const Integer& that) {
   }
   return *this;
 }
+Integer& Integer::operator*=(const Integer& that) {
+  if (value_ == 0 || that.value_ == 0) {
+    value_ = 0;
+  } else if (that.value_ == -1) {
+    if (value_ < -max_limit) {
+      OVERFLOW();
+    }
+  } else {
+    if (0 < value_) {
+      const auto limit = 0 < that.value_ ? max_limit : min_limit;
+      if ((limit / that.value_) < value_) {
+        OVERFLOW();
+      }
+    } else {
+      const auto limit = 0 < that.value_ ? min_limit : max_limit;
+      if (value_ < (limit / that.value_)) {
+        OVERFLOW();
+      }
+    }
+  }
+  value_ *= that.value_;
+  return *this;
+}

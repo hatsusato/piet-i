@@ -7,9 +7,10 @@
 #include "block.hpp"
 #include "direction.hpp"
 
+using Integer = int;
 class CodelTable;
 
-class Stack : public std::stack<int, std::vector<int> > {
+class Stack : public std::stack<Integer, std::vector<Integer> > {
  public:
   void push_command(size_t number);
   void pop_command();
@@ -26,7 +27,7 @@ class Stack : public std::stack<int, std::vector<int> > {
   template <typename T>
   void out_command();
  private:
-  int pop_get();
+  Integer pop_get();
 };
 
 class Interpreter {

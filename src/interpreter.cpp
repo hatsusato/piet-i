@@ -63,9 +63,14 @@ void Stack::roll_command() {
 }
 template <typename T>
 void Stack::in_command() {
-  T value;
-  std::wcin >> value;
-  push(static_cast<int>(value));
+  using Traits = decltype(std::wcin)::traits_type;
+  if (std::wcin.peek() != Traits::eof()) {
+    T value;
+    std::wcin >> value;
+    if (!std::wcin.fail()) {
+      push(static_cast<int>(value));
+    }
+  }
 }
 template <typename T>
 void Stack::out_command() {

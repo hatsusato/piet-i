@@ -29,3 +29,13 @@ Integer& Integer::operator+=(const Integer& that) {
   }
   return *this;
 }
+Integer& Integer::operator-=(const Integer& that) {
+  if (0 < that.value_ && value_ < (min_limit + that.value_)) {
+    OVERFLOW();
+  } else if (that.value_ < 0 && (max_limit + that.value_) < value_) {
+    OVERFLOW();
+  } else {
+    value_ -= that.value_;
+  }
+  return *this;
+}

@@ -62,3 +62,10 @@ Integer& Integer::operator*=(const Integer& that) {
   value_ *= that.value_;
   return *this;
 }
+Integer& Integer::operator/=(const Integer& that) {
+  if (that.value_ == -1 && value_ < -max_limit) {
+    OVERFLOW();
+  }
+  value_ /= that.value_;
+  return *this;
+}

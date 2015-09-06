@@ -15,6 +15,7 @@ struct Integer : private boost::operators<Integer> {
   Integer& operator+=(const Integer& that);
   Integer& operator-=(const Integer& that);
   Integer& operator*=(const Integer& that);
+  Integer& operator/=(const Integer& that);
  private:
   intmax_t value_;
 };

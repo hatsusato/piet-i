@@ -2,8 +2,9 @@
 #define PIET_I_INTEGER_HPP
 
 #include <cstdint>
+#include <boost/operators.hpp>
 
-struct Integer {
+struct Integer : private boost::operators<Integer> {
  public:
   Integer() : value_(0) {}
   template <typename T>

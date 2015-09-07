@@ -126,3 +126,8 @@ Integer Integer::operator-() const {
   }
   return Integer(-value_);
 }
+
+std::wostream& operator<<(std::wostream& os, const Integer& integer) {
+  os << static_cast<intmax_t>(integer);
+  return os;
+}

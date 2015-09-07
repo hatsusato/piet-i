@@ -20,7 +20,11 @@ int main(int argc, char* argv[]) {
     Interpreter interpreter(table);
     interpreter.run();
   } catch (png::error& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "png error: '" << e.what() << "'" << std::endl;
+    return EXIT_FAILURE;
+  } catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: '" << e.what() << "'" << std::endl;
+    return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
 }

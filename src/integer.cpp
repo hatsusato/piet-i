@@ -91,3 +91,15 @@ Integer& Integer::operator%=(const Integer& that) {
   }
   return *this;
 }
+Integer& Integer::operator|=(const Integer& that) {
+  value_ |= that.value_;
+  return *this;
+}
+Integer& Integer::operator&=(const Integer& that) {
+  value_ &= that.value_;
+  return *this;
+}
+Integer& Integer::operator^=(const Integer& that) {
+  value_ ^= that.value_;
+  return *this;
+}

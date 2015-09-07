@@ -1,6 +1,7 @@
 #include "interpreter.hpp"
 #include <cassert>
 #include <algorithm>
+#include <chrono>
 #include <functional>
 #include <iostream>
 #include <iterator>
@@ -109,7 +110,24 @@ Interpreter::Interpreter(const CodelTable& table)
     }};
 }
 void Interpreter::run() {
-  while (stepwise_execute()) {}
+  using Clock = std::chrono::steady_clock;
+  const auto limit = Clock::now() + std::chrono::seconds(10);
+  while (stepwise_execute()) {
+    if (limit < Clock::now()) {
+      std::cout << std::endl;
+      std::cout << "Execution took 10 seconds.\n"
+                << "Would you continue to execute? > ";
+      const auto input = []() -> char {
+        char result;
+        std::cin >> result;
+        return result;
+      }();
+      if (input != 'y' && input != 'Y') {
+        break;
+      }
+      std::cout << std::endl;
+    }
+  }
 }
 bool Interpreter::stepwise_execute() {
   for (int i = 0; i < DP::count * CC::count; ++i) {

@@ -6,8 +6,8 @@
 #include <vector>
 #include "block.hpp"
 #include "direction.hpp"
+#include "integer.hpp"
 
-using Integer = int;
 class CodelTable;
 
 class Stack : public std::stack<Integer, std::vector<Integer> > {

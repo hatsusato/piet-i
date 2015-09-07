@@ -9,7 +9,7 @@
 #include "colour.hpp"
 
 void Stack::push_command(size_t number) {
-  push(static_cast<int>(number));
+  push(static_cast<Integer>(number));
 }
 void Stack::pop_command() {
   if (!empty()) {
@@ -22,14 +22,14 @@ void Stack::binary_command() {
     if (!zero_check || top()) {
       const auto rhs = pop_get();
       const auto lhs = pop_get();
-      push(static_cast<int>(Op()(lhs, rhs)));
+      push(static_cast<Integer>(Op()(lhs, rhs)));
     }
   }
 }
 template <typename Op>
 void Stack::unary_command() {
   if (!empty()) {
-    push(static_cast<int>(Op()(pop_get())));
+    push(static_cast<Integer>(Op()(pop_get())));
   }
 }
 void Stack::pointer_command(DP& dp) {
@@ -65,13 +65,13 @@ template <typename T>
 void Stack::in_command() {
   T value;
   std::wcin >> value;
-  push(static_cast<int>(value));
+  push(static_cast<Integer>(value));
 }
 template <typename T>
 void Stack::out_command() {
   std::wcout << static_cast<T>(pop_get());
 }
-int Stack::pop_get() {
+Integer Stack::pop_get() {
   const auto value = top();
   pop();
   return value;
@@ -143,25 +143,25 @@ void Interpreter::pop_command() {
   stack_.pop_command();
 }
 void Interpreter::add_command() {
-  stack_.binary_command<std::plus<int> >();
+  stack_.binary_command<std::plus<Integer> >();
 }
 void Interpreter::subtract_command() {
-  stack_.binary_command<std::minus<int> >();
+  stack_.binary_command<std::minus<Integer> >();
 }
 void Interpreter::multiply_command() {
-  stack_.binary_command<std::multiplies<int> >();
+  stack_.binary_command<std::multiplies<Integer> >();
 }
 void Interpreter::divide_command() {
-  stack_.binary_command<std::divides<int>, true>();
+  stack_.binary_command<std::divides<Integer>, true>();
 }
 void Interpreter::mod_command() {
-  stack_.binary_command<std::modulus<int>, true>();
+  stack_.binary_command<std::modulus<Integer>, true>();
 }
 void Interpreter::not_command() {
-  stack_.unary_command<std::logical_not<int> >();
+  stack_.unary_command<std::logical_not<Integer> >();
 }
 void Interpreter::greater_command() {
-  stack_.binary_command<std::greater<int> >();
+  stack_.binary_command<std::greater<Integer> >();
 }
 void Interpreter::pointer_command() {
   stack_.pointer_command(dp_);
@@ -176,13 +176,13 @@ void Interpreter::roll_command() {
   stack_.roll_command();
 }
 void Interpreter::in_number_command() {
-  stack_.in_command<int>();
+  stack_.in_command<Integer>();
 }
 void Interpreter::in_char_command() {
   stack_.in_command<wchar_t>();
 }
 void Interpreter::out_number_command() {
-  stack_.out_command<int>();
+  stack_.out_command<Integer>();
 }
 void Interpreter::out_char_command() {
   stack_.out_command<wchar_t>();

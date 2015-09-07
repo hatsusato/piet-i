@@ -103,3 +103,17 @@ Integer& Integer::operator^=(const Integer& that) {
   value_ ^= that.value_;
   return *this;
 }
+Integer& Integer::operator++() {
+  if (value_ == max_limit) {
+    OVERFLOW();
+  }
+  ++value_;
+  return *this;
+}
+Integer& Integer::operator--() {
+  if (value_ == min_limit) {
+    OVERFLOW();
+  }
+  --value_;
+  return *this;
+}

@@ -20,6 +20,8 @@ struct Integer : private boost::operators<Integer> {
   Integer& operator|=(const Integer& that);
   Integer& operator&=(const Integer& that);
   Integer& operator^=(const Integer& that);
+  Integer& operator++();
+  Integer& operator--();
  private:
   intmax_t value_;
 };

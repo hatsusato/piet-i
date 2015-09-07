@@ -127,6 +127,17 @@ Integer Integer::operator-() const {
   return Integer(-value_);
 }
 
+std::wistream& operator>>(std::wistream& is, Integer& integer) {
+  intmax_t value;
+  is >> value;
+  if (is.fail()) {
+    if (value == min_limit || value == max_limit) {
+      OVERFLOW();
+    }
+  }
+  integer = static_cast<Integer>(value);
+  return is;
+}
 std::wostream& operator<<(std::wostream& os, const Integer& integer) {
   os << static_cast<intmax_t>(integer);
   return os;

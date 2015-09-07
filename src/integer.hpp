@@ -2,6 +2,7 @@
 #define PIET_I_INTEGER_HPP
 
 #include <cstdint>
+#include <istream>
 #include <ostream>
 #include <boost/operators.hpp>
 
@@ -29,6 +30,7 @@ struct Integer : private boost::operators<Integer> {
   intmax_t value_;
 };
 
+std::wistream& operator>>(std::wistream& is, Integer& integer);
 std::wostream& operator<<(std::wostream& os, const Integer& integer);
 
 #endif  // PIET_I_INTEGER_HPP

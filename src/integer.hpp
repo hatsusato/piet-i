@@ -8,6 +8,7 @@ struct Integer {
   Integer() : value_(0) {}
   template <typename T>
   explicit Integer(T value) : value_(value) {}
+  operator intmax_t() const;
  private:
   intmax_t value_;
 };

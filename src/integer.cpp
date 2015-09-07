@@ -1,4 +1,5 @@
 #include "integer.hpp"
+#include <cinttypes>
 #include <limits>
 #include <stdexcept>
 
@@ -67,5 +68,26 @@ Integer& Integer::operator/=(const Integer& that) {
     OVERFLOW();
   }
   value_ /= that.value_;
+  return *this;
+}
+Integer& Integer::operator%=(const Integer& that) {
+  if (that.value_ < -max_limit) {
+    if (0 < value_) {
+      value_ += that.value_;
+    } else if (value_ <= that.value_) {
+      value_ -= that.value_;
+    }
+  } else {
+    const bool this_sign = 0 < value_;
+    const bool that_sign = 0 < that.value_;
+    const auto that_abs = std::imaxabs(that.value_);
+    if (value_ < -max_limit) {
+      value_ += that_abs;
+    }
+    value_ = (this_sign ? 1 : -1) * (std::imaxabs(value_) % that_abs);
+    if (value_ != 0 && this_sign != that_sign) {
+      value_ += that.value_;
+    }
+  }
   return *this;
 }

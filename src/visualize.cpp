@@ -8,9 +8,14 @@ namespace /* unnamed */ {
 enum class Index {
   K, R, G, Y, B, M, C, W
 };
+enum class LightnessIndex {
+  W, L, N, D, K
+};
 }  // namespace /* unnamed */
 template <>
 struct enumeration_traits<Index> : enumeration_trait_indexing {};
+template <>
+struct enumeration_traits<LightnessIndex> : enumeration_trait_indexing {};
 
 Index hue_index(Hue hue) {
   switch (hue) {
@@ -69,6 +74,29 @@ Index back_index(const Codel& codel) {
   return Index::K;
 }
 
+LightnessIndex light_index(const Codel& codel) {
+  switch (codel.type()) {
+    case ColourType::BLACK:
+      return LightnessIndex::K;
+    case ColourType::WHITE:
+      return LightnessIndex::W;
+    case ColourType::COLOUR:
+      switch (codel.colour().lightness()) {
+        case Lightness::LIGHT:
+          return LightnessIndex::L;
+        case Lightness::NORMAL:
+          return LightnessIndex::N;
+        case Lightness::DARK:
+          return LightnessIndex::D;
+        default:
+          assert(false);
+      }
+    default:
+      assert(false);
+  }
+  return LightnessIndex::W;
+}
+
 void show_pixel(const Codel& codel) {
   static const char* fore[] =
       {"\x1b[30;1m", "\x1b[31;1m", "\x1b[32;1m", "\x1b[33;1m",
@@ -76,12 +104,14 @@ void show_pixel(const Codel& codel) {
   static const char* back[] =
       {"\x1b[40;1m", "\x1b[41;1m", "\x1b[42;1m", "\x1b[43;1m",
        "\x1b[44;1m", "\x1b[45;1m", "\x1b[46;1m", "\x1b[47;1m"};
-  static const char text[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
+  static const char text_left[] = {'W', 'L', 'N', 'D', 'K'};
+  static const char text_right[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
   static const char* reset = "\x1b[0m";
   if (codel) {
     std::cout << back[index(back_index(codel))]
               << fore[index(fore_index(codel))]
-              << text[index(back_index(codel))]
+              << text_left[index(light_index(codel))]
+              << text_right[index(back_index(codel))]
               << reset;
   } else {
     std::cout << "?";

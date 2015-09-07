@@ -8,9 +8,14 @@ namespace /* unnamed */ {
 enum class Index {
   K, R, G, Y, B, M, C, W
 };
+enum class LightnessIndex {
+  W, L, N, D, K
+};
 }  // namespace /* unnamed */
 template <>
 struct enumeration_traits<Index> : enumeration_trait_indexing {};
+template <>
+struct enumeration_traits<LightnessIndex> : enumeration_trait_indexing {};
 
 Index hue_index(Hue hue) {
   switch (hue) {

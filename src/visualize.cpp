@@ -114,7 +114,7 @@ void show_pixel(const Codel& codel) {
               << text_right[index(back_index(codel))]
               << reset;
   } else {
-    std::cout << "?";
+    std::cout << "??";
   }
 }
 

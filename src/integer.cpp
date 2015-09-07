@@ -117,3 +117,12 @@ Integer& Integer::operator--() {
   --value_;
   return *this;
 }
+Integer Integer::operator+() const {
+  return *this;
+}
+Integer Integer::operator-() const {
+  if (value_ < -max_limit) {
+    OVERFLOW();
+  }
+  return Integer(-value_);
+}

@@ -22,6 +22,8 @@ struct Integer : private boost::operators<Integer> {
   Integer& operator^=(const Integer& that);
   Integer& operator++();
   Integer& operator--();
+  Integer operator+() const;
+  Integer operator-() const;
  private:
   intmax_t value_;
 };

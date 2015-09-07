@@ -74,6 +74,29 @@ Index back_index(const Codel& codel) {
   return Index::K;
 }
 
+LightnessIndex light_index(const Codel& codel) {
+  switch (codel.type()) {
+    case ColourType::BLACK:
+      return LightnessIndex::K;
+    case ColourType::WHITE:
+      return LightnessIndex::W;
+    case ColourType::COLOUR:
+      switch (codel.colour().lightness()) {
+        case Lightness::LIGHT:
+          return LightnessIndex::L;
+        case Lightness::NORMAL:
+          return LightnessIndex::N;
+        case Lightness::DARK:
+          return LightnessIndex::D;
+        default:
+          assert(false);
+      }
+    default:
+      assert(false);
+  }
+  return LightnessIndex::W;
+}
+
 void show_pixel(const Codel& codel) {
   static const char* fore[] =
       {"\x1b[30;1m", "\x1b[31;1m", "\x1b[32;1m", "\x1b[33;1m",

@@ -104,12 +104,14 @@ void show_pixel(const Codel& codel) {
   static const char* back[] =
       {"\x1b[40;1m", "\x1b[41;1m", "\x1b[42;1m", "\x1b[43;1m",
        "\x1b[44;1m", "\x1b[45;1m", "\x1b[46;1m", "\x1b[47;1m"};
-  static const char text[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
+  static const char text_left[] = {'W', 'L', 'N', 'D', 'K'};
+  static const char text_right[] = {'K', 'R', 'G', 'Y', 'B', 'M', 'C', 'W'};
   static const char* reset = "\x1b[0m";
   if (codel) {
     std::cout << back[index(back_index(codel))]
               << fore[index(fore_index(codel))]
-              << text[index(back_index(codel))]
+              << text_left[index(light_index(codel))]
+              << text_right[index(back_index(codel))]
               << reset;
   } else {
     std::cout << "?";
